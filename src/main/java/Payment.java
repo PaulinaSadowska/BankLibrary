@@ -1,5 +1,3 @@
-package main.java;
-
 import java.math.BigDecimal;
 
 /**
@@ -7,11 +5,11 @@ import java.math.BigDecimal;
  */
 public class Payment implements IPaymentable{
 
-    @Override
     public void transfer(Product product, BigDecimal amount) {
+
     }
 
-    @Override
     public void payment(BigDecimal amount, PaymentDirection direction) {
+
     }
 }
