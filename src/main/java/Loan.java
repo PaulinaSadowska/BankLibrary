@@ -1,4 +1,5 @@
-import main.Interest;
+
+package main.java;
 
 import java.math.BigDecimal;
 
