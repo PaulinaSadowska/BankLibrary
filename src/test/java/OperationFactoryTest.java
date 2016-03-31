@@ -1,9 +1,6 @@
-package test.java;
-
 import org.junit.After;
 import org.junit.Before;
 
-import static org.junit.Assert.*;
 
 /**
  * Created by arasz on 18.03.2016.

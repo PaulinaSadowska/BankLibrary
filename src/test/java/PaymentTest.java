@@ -1,6 +1,3 @@
-package test.java;
-
-import main.java.Payment;
 import org.junit.After;
 import org.junit.Before;
 

@@ -1,9 +1,3 @@
-package test.java;
-
-import main.java.Account;
-import main.java.Interest;
-import main.java.Investment;
-import main.java.Loan;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +19,13 @@ public class LoanTest {
     public void setUp(){
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_YEAR, -5);
-        endedLoan = new Loan(new Account(), new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
+
+        Account account = new Account(new BigDecimal(1800), new Date(1992, 3, 3),
+                null, new Interest(0.1), 1234, "Jan Kowalski", new OperationManager(), new OperationsHistory());
+
+        endedLoan = new Loan(account, new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
         cal.add(Calendar.DAY_OF_YEAR, +10);
-        ongoingLoan = new Loan(new Account(), new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
+        ongoingLoan = new Loan(account, new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
     }
 
     @Test
@@ -35,6 +33,8 @@ public class LoanTest {
         assertTrue(endedLoan.didEnd());
         assertFalse(ongoingLoan.didEnd());
     }
+
+
 
     @After
     public void tearDown(){
