@@ -1,9 +1,10 @@
+package main.java;
 import java.math.BigDecimal;
 
 /**
  * Created by palka on 11.03.2016.
  */
-public class Debit {
+public class Debit extends Product {
 
     private BigDecimal maxDebitValue;
 
