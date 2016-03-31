@@ -1,5 +1,3 @@
-import main.Interest;
-
 import java.math.BigDecimal;
 
 /**
