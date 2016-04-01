@@ -2,6 +2,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,32 +14,72 @@ import static org.junit.Assert.*;
  */
 public class LoanTest {
 
-    Loan endedLoan;
-    Loan ongoingLoan;
+    Loan _endedLoan;
+    Loan _ongoingLoan;
+    BigDecimal _expectedBalance;
+    Calendar _expectedCreationDate;
+    Calendar _weekAgoDate;
+    Calendar _nextWeekDate;
+    Interest _expectedInterest;
+
     @Before
     public void setUp(){
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_YEAR, -5);
+        _weekAgoDate  = Calendar.getInstance();
+        _weekAgoDate.add(Calendar.DAY_OF_YEAR, -7);
 
-        Account account = new Account(new BigDecimal(1800), new Date(1992, 3, 3),
-                null, new Interest(0.1), 1234, new OperationsHistory());
+        _nextWeekDate  = Calendar.getInstance();
+        _nextWeekDate.add(Calendar.DAY_OF_YEAR, 7);
 
-        endedLoan = new Loan(account, new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
-        cal.add(Calendar.DAY_OF_YEAR, +10);
-        ongoingLoan = new Loan(account, new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
+        _expectedBalance = new BigDecimal(1500);
+        _expectedCreationDate = Calendar.getInstance();
+        _expectedCreationDate.set(2000, 07, 06);
+
+        _expectedInterest = new Interest(0.5);
+
+
+        Account account = null;
+        try {
+            account = (Account)MockFactory.CreateProductMock(_expectedBalance, Account.class);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
+        _endedLoan = new Loan(account, _expectedBalance, _expectedCreationDate.getTime(), _weekAgoDate.getTime(), _expectedInterest);
+        _ongoingLoan = new Loan(account, _expectedBalance, _expectedCreationDate.getTime(), _nextWeekDate.getTime(), _expectedInterest);
     }
 
     @Test
-    public void wykonajTest(){
-        assertTrue(endedLoan.expired());
-        assertFalse(ongoingLoan.expired());
+    public void expiredTest(){
+        assertTrue(_endedLoan.expired());
+        assertFalse(_ongoingLoan.expired());
     }
 
+    @Test
+    public void getBalanceTest(){
+        assertEquals(_expectedBalance, _endedLoan.getBalance());
+        assertEquals(_expectedBalance, _ongoingLoan.getBalance());
+    }
 
+    @Test
+    public void getCreationDateTest(){
+        assertEquals(_expectedCreationDate.getTime(), _endedLoan.getCreationDate());
+        assertEquals(_expectedCreationDate.getTime(), _ongoingLoan.getCreationDate());
+    }
 
-    @After
-    public void tearDown(){
+    @Test
+    public void getExpirationDateTest(){
+        assertEquals(_weekAgoDate.getTime(), _endedLoan.getExpireDate());
+        assertEquals(_nextWeekDate.getTime(), _ongoingLoan.getExpireDate());
+    }
 
+    @Test
+    public void getInterestTest(){
+        assertEquals(_expectedInterest, _endedLoan.getInterest());
+        assertEquals(_expectedInterest, _ongoingLoan.getInterest());
     }
 
 }
