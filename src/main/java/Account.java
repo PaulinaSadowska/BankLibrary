@@ -6,23 +6,17 @@ import java.util.Date;
  */
 public class Account extends Product {
 
-    private OperationManager _operationManager;
     private int _ownerId;
     private OperationsHistory _operationHistory;
 
     public Account(BigDecimal balance, Date creationDate, Date expireDate, Interest interest,
-                   int ownerId , OperationManager manager, OperationsHistory history){
-        this.balance = balance;
-        this.creationDate = creationDate;
-        this.expireDate = expireDate;
-        this.interest = interest;
+                   int ownerId , OperationsHistory history){
+        this._balance = balance;
+        this._creationDate = creationDate;
+        this._expireDate = expireDate;
+        this._interest = interest;
         this._ownerId = ownerId;
-        this._operationManager = manager;
         this._operationHistory = history;
-    }
-
-    public OperationManager getOperationManager() {
-        return _operationManager;
     }
 
     public int getId() {

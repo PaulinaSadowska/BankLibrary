@@ -19,7 +19,7 @@ public class PaymentTest
     @Before
     public void setUp() throws Exception
     {
-
+        _productMock = MockFactory.CreateProductMock(new BigDecimal(0), Account.class);
         _payment = new Payment(OperationType.Payment, new Date(), "Wpłata testowa", _productMock );
     }
 

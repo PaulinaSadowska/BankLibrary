@@ -42,7 +42,7 @@ public class ProductFactory {
             throw new IllegalArgumentException();
 
 
-        return new Account(amountOfMoney, dateStart, dateEnd, interest, id, owner, manager, history);
+        return new Account(amountOfMoney, dateStart, dateEnd, interest, id, history);
     }
 
 }

@@ -18,14 +18,13 @@ public class AccountTest
     private Date _expectedCreationDate;
     private Date _expectedExpireDate;
     private OperationsHistory _expectedOperationHistory;
-    private  OperationManager _expectedOperationManager;
     private Interest _expectedIntrest;
 
     @Before
     public void setUp()
     {
         _account = new Account(_expectedBalance, _expectedCreationDate, _expectedExpireDate,
-                _expectedIntrest, _expectedOwnerId, _expectedOperationManager, _expectedOperationHistory);
+                _expectedIntrest, _expectedOwnerId, _expectedOperationHistory);
     }
 
     @Test

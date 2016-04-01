@@ -21,7 +21,7 @@ public class LoanTest {
         cal.add(Calendar.DAY_OF_YEAR, -5);
 
         Account account = new Account(new BigDecimal(1800), new Date(1992, 3, 3),
-                null, new Interest(0.1), 1234, "Jan Kowalski", new OperationManager(), new OperationsHistory());
+                null, new Interest(0.1), 1234, new OperationsHistory());
 
         endedLoan = new Loan(account, new BigDecimal(1500), new Date(2000, 1,1), cal.getTime(), new Interest(0.5));
         cal.add(Calendar.DAY_OF_YEAR, +10);
@@ -30,8 +30,8 @@ public class LoanTest {
 
     @Test
     public void wykonajTest(){
-        assertTrue(endedLoan.didEnd());
-        assertFalse(ongoingLoan.didEnd());
+        assertTrue(endedLoan.expired());
+        assertFalse(ongoingLoan.expired());
     }
 
 

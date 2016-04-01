@@ -3,14 +3,16 @@
  */
 public class Interest extends Product {
 
-    private double interestValue;
+    private double _interestValue;
+
+    public  Interest(){_interestValue = 0;}
 
     public Interest(double interestValue){
-        this.interestValue = interestValue;
+        this._interestValue = interestValue;
     }
 
-    public double getInterestValue(){
-        return interestValue;
+    public double get_interestValue(){
+        return _interestValue;
     }
 
 }

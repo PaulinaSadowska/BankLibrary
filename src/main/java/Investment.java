@@ -11,10 +11,10 @@ public class Investment extends Product{
 
     public Investment(Account baseAccount, BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest){
         this.baseAccount = baseAccount;
-        this.balance = amountOfMoney;
-        this.creationDate = dateStart;
-        this.expireDate = dateEnd;
-        this.interest = interest;
+        this._balance = amountOfMoney;
+        this._creationDate = dateStart;
+        this._expireDate = dateEnd;
+        this._interest = interest;
     }
 
     public Account getBaseAccount() {

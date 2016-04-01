@@ -8,30 +8,32 @@ import java.util.Date;
 public abstract class Product
 {
 
-    protected BigDecimal balance;
-    protected Interest interest;
-    protected Date creationDate;
-    protected Date expireDate;
+    protected BigDecimal _balance;
+    protected Interest _interest;
+    protected Date _creationDate;
+    protected Date _expireDate;
+
+    public void setBalance(BigDecimal newBalance) { _balance = newBalance;}
 
     public BigDecimal getBalance() {
-        return balance;
+        return _balance;
     }
 
     public Interest getInterest() {
-        return interest;
+        return _interest;
     }
 
     public Date getCreationDate() {
-        return creationDate;
+        return _creationDate;
     }
 
     public Date getExpireDate() {
-        return expireDate;
+        return _expireDate;
     }
 
-    public boolean didEnd(){
+    public boolean expired(){
         Calendar cal = Calendar.getInstance();
-        if(expireDate.before(cal.getTime())) {
+        if(_expireDate.before(cal.getTime())) {
             return true;
         }
         return false;

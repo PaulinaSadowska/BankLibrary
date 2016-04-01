@@ -11,11 +11,35 @@ public class Payment extends Operation implements IPaymentable{
         super(operationType, date, description, product);
     }
 
-    public void transfer(Product product, BigDecimal amount) {
+    /*
+    @pre: product != null, amount > 0
+    @post: porduct.balance+amount, _product.balance-amount
+    @invariant: product.balance <= porduct.balance+amount (?)
+     */
+    public void transfer(Product product, BigDecimal amount)
+    {
 
     }
 
-    public void payment(BigDecimal amount, PaymentDirection direction) {
+    public void payment(BigDecimal amount, PaymentDirection direction) throws IllegalArgumentException
+    {
+        if(amount.longValueExact() < 0)
+            throw new IllegalArgumentException("Negative amount.");
 
+        switch (direction)
+        {
+            case In:
+            {
+                BigDecimal newBalance = product.getBalance().add(amount);
+                product.setBalance(newBalance);
+                break;
+            }
+            case Out:
+            {
+                BigDecimal newBalance = product.getBalance().subtract(amount);
+                product.setBalance(newBalance);
+                break;
+            }
+        }
     }
 }
