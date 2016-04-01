@@ -36,7 +36,7 @@ public class ProductFactory {
     {
 
         //TODO: Czy nie sadzisz, ze fabryka powinna ulatwiac tworzenie obiektow a nie tylko dodawac opakowanie na konstruktor?
-        // - TAK - 
+        // - TAK -
 
         OperationsHistory history = new OperationsHistory();
 

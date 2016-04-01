@@ -23,7 +23,7 @@ public class ProductManagerTest {
     Calendar _expectedExpireDate;
     Calendar _wrongExpireDate;
 
-    private OperationsHistory _expectedOperationHistory;
+    private BigDecimal _expectedDebitValue;
     private Interest _expectedInterest;
 
     @Before
@@ -39,22 +39,22 @@ public class ProductManagerTest {
 
         _expectedBalance = new BigDecimal(1700);
         _expectedOwnerId = 123456;
-        _expectedOperationHistory = new OperationsHistory();
+        _expectedDebitValue = new BigDecimal(6000);
         _expectedInterest = new Interest(0.5);
 
         _manager = new ProductManager();
     }
 
     @Test
-    public void createNewAccountTest(){
+    public void createAccountTest(){
 
         assertTrue(_manager.createNewAccount(_expectedBalance, _expectedExpireDate.getTime(),
-                _expectedInterest, _expectedOwnerId, _expectedOperationHistory));
+                _expectedInterest, _expectedOwnerId, _expectedDebitValue));
     }
 
     @Test
     public void createNewAccountWrongExpireDate(){
         assertFalse(_manager.createNewAccount(_expectedBalance, _wrongExpireDate.getTime(),
-                _expectedInterest, _expectedOwnerId, _expectedOperationHistory));
+                _expectedInterest, _expectedOwnerId, _expectedDebitValue));
     }
 }

@@ -33,7 +33,6 @@ public class LoanTest {
 
         _expectedBalance = new BigDecimal(1500);
         _expectedCreationDate = Calendar.getInstance();
-        _expectedCreationDate.set(2000, 07, 06);
         _expectedInterest = new Interest(0.5);
 
         BigDecimal debitValue = new BigDecimal(3000);

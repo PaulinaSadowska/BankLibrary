@@ -53,13 +53,13 @@ public class AccountTest
     @Test
     public void getCreationDateTest()
     {
-        Assert.assertEquals(_expectedCreationDate, _account.getCreationDate());
+        Assert.assertEquals(_expectedCreationDate.getTime(), _account.getCreationDate());
     }
 
     @Test
     public void getExpireDateTest()
     {
-        Assert.assertEquals(_expectedExpireDate, _account.getExpireDate());
+        Assert.assertEquals(_expectedExpireDate.getTime(), _account.getExpireDate());
     }
 
     @Test

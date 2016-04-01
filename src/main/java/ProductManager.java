@@ -11,6 +11,7 @@ public class ProductManager {
     private ProductFactory _productFactory;
 
     public ProductManager(){
+        _productFactory = new ProductFactory();
         _productList = new ArrayList<Product>();
     }
 
