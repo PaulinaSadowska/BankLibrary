@@ -5,7 +5,8 @@ import java.math.BigDecimal;
  */
 public interface IPaymentable
 {
-    void transfer(Product product, BigDecimal amount);
-    void payment(BigDecimal amount, PaymentDirection direction);
+
+    boolean transfer(Product product, BigDecimal amount);
+    boolean payment(BigDecimal amount, PaymentDirection direction);
 
 }

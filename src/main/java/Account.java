@@ -7,17 +7,25 @@ import java.util.Date;
 public class Account extends Product {
 
     private int _ownerId;
+    private  Debit _debit;
     private OperationsHistory _operationHistory;
 
-    public Account(BigDecimal balance, Date creationDate, Date expireDate, Interest interest,
-                   int ownerId , OperationsHistory history){
-        this._balance = balance;
-        this._creationDate = creationDate;
-        this._expireDate = expireDate;
-        this._interest = interest;
+    public Account(BigDecimal balance, Date expireDate, Interest interest,
+                   int ownerId , OperationsHistory history)
+    {
+        super(balance, expireDate, interest);
         this._ownerId = ownerId;
         this._operationHistory = history;
     }
+
+    public Account(BigDecimal balance, Date expireDate, Interest interest,
+                   int ownerId , OperationsHistory history, Debit debit)
+    {
+        this(balance, expireDate, interest, ownerId, history);
+        _debit = debit;
+    }
+
+    public Debit getDebit()  {return  _debit;}
 
     public int getId() {
         return _ownerId;

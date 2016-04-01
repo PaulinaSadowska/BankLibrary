@@ -8,7 +8,7 @@ public class Interest extends Product {
     public  Interest(){_interestValue = 0;}
 
     public Interest(double interestValue){
-        this._interestValue = interestValue;
+        _interestValue = interestValue;
     }
 
     public double get_interestValue(){

@@ -23,7 +23,7 @@ public class AccountTest
     @Before
     public void setUp()
     {
-        _account = new Account(_expectedBalance, _expectedCreationDate, _expectedExpireDate,
+        _account = new Account(_expectedBalance, _expectedExpireDate,
                 _expectedIntrest, _expectedOwnerId, _expectedOperationHistory);
     }
 

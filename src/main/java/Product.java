@@ -13,6 +13,14 @@ public abstract class Product
     protected Date _creationDate;
     protected Date _expireDate;
 
+    public  Product(BigDecimal balance, Date expireDate, Interest interest)
+    {
+        this._balance = balance;
+        this._creationDate = new Date();
+        this._expireDate = expireDate;
+        this._interest = interest;
+    }
+
     public void setBalance(BigDecimal newBalance) { _balance = newBalance;}
 
     public BigDecimal getBalance() {
