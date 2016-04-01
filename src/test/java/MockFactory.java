@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class MockFactory
 {
-    public static Product CreateProductMock(BigDecimal balance, BigDecimal debit, Class<? extends Product> productClass) throws IllegalAccessException, InvocationTargetException, InstantiationException
+    public static Product CreateProductMock(BigDecimal balance, Debit debit, Class<? extends Product> productClass) throws IllegalAccessException, InvocationTargetException, InstantiationException
     {
         /// Refaktoryzacja: można zastosować słownik który jako klucz przyjmuje typ i zwraca konstruktor
         Product mock = null;
@@ -20,9 +20,9 @@ public class MockFactory
         for(Constructor ctor : constructors )
         {
             Class[] parameterTypes = ctor.getParameterTypes();
-            if(parameterTypes.length > 1)
+            if(parameterTypes.length == 6)
             {
-                mock = (Product) ctor.newInstance(balance, new Date(), new Date(Long.MAX_VALUE),
+                mock = (Product) ctor.newInstance(balance, new Date(Long.MAX_VALUE),
                         new Interest(),11111, new OperationsHistory(), debit);
             }
         }

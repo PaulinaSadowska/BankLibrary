@@ -6,43 +6,47 @@ import java.util.Date;
  */
 public class ProductFactory {
 
-    public Loan createLoan(Account baseAccount, BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest){
+    public Product createLoan(Account baseAccount, BigDecimal amountOfMoney, Date expireDate, Interest interest){
 
-        if(baseAccount==null || amountOfMoney == null || dateStart == null || dateEnd == null || interest == null)
+        if(baseAccount==null || amountOfMoney == null || expireDate == null || interest == null)
             throw new NullPointerException();
 
-        if(dateStart.after(dateEnd))
+        if((new Date()).after(expireDate))
             throw new IllegalArgumentException();
 
 
-        return new Loan(baseAccount, amountOfMoney, dateStart, dateEnd, interest);
+        return new Loan(amountOfMoney, expireDate, interest, baseAccount);
     }
 
 
-    public Investment createInvestment(Account baseAccount, BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest){
+    public Product createInvestment(Account baseAccount, BigDecimal amountOfMoney, Date expireDate, Interest interest){
 
-        if(baseAccount==null || amountOfMoney == null || dateStart == null || dateEnd == null || interest == null)
+        if(baseAccount==null || amountOfMoney == null || expireDate == null || interest == null)
             throw new NullPointerException();
 
-        if(dateStart.after(dateEnd))
+        if((new Date()).after(expireDate))
             throw new IllegalArgumentException();
 
 
-        return new Investment(baseAccount, amountOfMoney, dateStart, dateEnd, interest);
+        return new Investment(amountOfMoney, expireDate, interest, baseAccount);
     }
 
-    public Account createAccount(BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest,
-                                 int id, String owner, OperationManager manager, OperationsHistory history){
+    public Product createAccount(BigDecimal balance, Date expireDate, Interest interest,
+                                 int ownerId, BigDecimal debit)
+    {
 
-        if(amountOfMoney == null || dateStart == null || dateEnd == null || interest == null
-                || owner==null || manager == null || history == null)
+        //TODO: Czy nie sadzisz, ze fabryka powinna ulatwiac tworzenie obiektow a nie tylko dodawac opakowanie na konstruktor?
+
+        OperationsHistory history = new OperationsHistory();
+
+        if (balance == null || expireDate == null || interest == null)
             throw new NullPointerException();
 
-        if(dateStart.after(dateEnd))
+        if((new Date()).after(expireDate))
             throw new IllegalArgumentException();
 
 
-        return new Account(amountOfMoney, dateStart, dateEnd, interest, id, history);
+        return new Account(balance, expireDate, interest, ownerId, history, new Debit(debit));
     }
 
 }

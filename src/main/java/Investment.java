@@ -7,18 +7,17 @@ import java.util.Date;
  */
 public class Investment extends Product{
 
-    protected Account baseAccount;
+    protected Account _baseAccount;
 
-    public Investment(Account baseAccount, BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest){
-        this.baseAccount = baseAccount;
-        this._balance = amountOfMoney;
-        this._creationDate = dateStart;
-        this._expireDate = dateEnd;
-        this._interest = interest;
+    public Investment(BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    {
+        super(balance, expireDate, interest);
+        this._baseAccount = baseAccount;
+
     }
 
     public Account getBaseAccount() {
-        return baseAccount;
+        return _baseAccount;
     }
 
 }

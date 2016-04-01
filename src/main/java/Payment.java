@@ -52,8 +52,10 @@ public class Payment extends Operation implements IPaymentable{
                     {
                         Debit debit = account.getDebit();
                         BigDecimal balancePlusDebit = new BigDecimal(0);
-                        balancePlusDebit.add(debit.getMaxDebitValue());
-                        balancePlusDebit.add(productBalance);
+
+                        balancePlusDebit = balancePlusDebit.add(debit.getMaxDebitValue());
+                        balancePlusDebit = balancePlusDebit.add(productBalance);
+
 
                         if(balancePlusDebit.compareTo(amount) >= 0)
                         {

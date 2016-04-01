@@ -34,7 +34,7 @@ public class PaymentTest
 
     private void initialization(int balance, int debit, Class mockType) throws IllegalAccessException, InstantiationException, InvocationTargetException
     {
-        _productMock = MockFactory.CreateProductMock(new BigDecimal(balance), new BigDecimal(debit), mockType);
+        _productMock = MockFactory.CreateProductMock(new BigDecimal(balance), new Debit(new BigDecimal(debit)), mockType);
         createPayment(_productMock);
     }
 
