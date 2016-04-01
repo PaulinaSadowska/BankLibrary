@@ -6,36 +6,30 @@ import java.util.Date;
  */
 public class Account extends Product {
 
-    private OperationManager mOperationManager;
-    private int id;
-    private String owner;
-    private OperationsHistory mOperationHistory;
+    private OperationManager _operationManager;
+    private int _ownerId;
+    private OperationsHistory _operationHistory;
 
-    public Account(BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest,
-                   int id, String owner, OperationManager manager, OperationsHistory history){
-        this.amountOfMoney = amountOfMoney;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
+    public Account(BigDecimal balance, Date creationDate, Date expireDate, Interest interest,
+                   int ownerId , OperationManager manager, OperationsHistory history){
+        this.balance = balance;
+        this.creationDate = creationDate;
+        this.expireDate = expireDate;
         this.interest = interest;
-        this.id = id;
-        this.owner = owner;
-        this.mOperationManager = manager;
-        this.mOperationHistory = history;
+        this._ownerId = ownerId;
+        this._operationManager = manager;
+        this._operationHistory = history;
     }
 
     public OperationManager getOperationManager() {
-        return mOperationManager;
+        return _operationManager;
     }
 
     public int getId() {
-        return id;
-    }
-
-    public String getOwner() {
-        return owner;
+        return _ownerId;
     }
 
     public OperationsHistory getOperationHistory() {
-        return mOperationHistory;
+        return _operationHistory;
     }
 }

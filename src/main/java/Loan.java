@@ -10,9 +10,9 @@ public class Loan extends Product{
 
     public Loan(Account baseAccount, BigDecimal amountOfMoney, Date dateStart, Date dateEnd, Interest interest){
         this.baseAccount = baseAccount;
-        this.amountOfMoney = amountOfMoney;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
+        this.balance = amountOfMoney;
+        this.creationDate = dateStart;
+        this.expireDate = dateEnd;
         this.interest = interest;
     }
 

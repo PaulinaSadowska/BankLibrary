@@ -5,32 +5,33 @@ import java.util.Date;
 /**
  * Created by palka on 11.03.2016.
  */
-public abstract class Product {
+public abstract class Product
+{
 
-    protected BigDecimal amountOfMoney;
+    protected BigDecimal balance;
     protected Interest interest;
-    protected Date dateStart;
-    protected Date dateEnd;
+    protected Date creationDate;
+    protected Date expireDate;
 
-    public BigDecimal getAmountOfMoney() {
-        return amountOfMoney;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
     public Interest getInterest() {
         return interest;
     }
 
-    public Date getDateStart() {
-        return dateStart;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public Date getDateEnd() {
-        return dateEnd;
+    public Date getExpireDate() {
+        return expireDate;
     }
 
     public boolean didEnd(){
         Calendar cal = Calendar.getInstance();
-        if(dateEnd.before(cal.getTime())) {
+        if(expireDate.before(cal.getTime())) {
             return true;
         }
         return false;
