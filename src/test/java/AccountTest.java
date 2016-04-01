@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -15,15 +16,25 @@ public class AccountTest
 
     private int _expectedOwnerId;
     private BigDecimal _expectedBalance;
-    private Date _expectedCreationDate;
-    private Date _expectedExpireDate;
+    private Calendar _expectedCreationDate;
+    private Calendar _expectedExpireDate;
     private OperationsHistory _expectedOperationHistory;
     private Interest _expectedIntrest;
 
     @Before
     public void setUp()
     {
-        _account = new Account(_expectedBalance, _expectedExpireDate,
+        _expectedCreationDate  = Calendar.getInstance();
+
+        _expectedExpireDate  = Calendar.getInstance();
+        _expectedExpireDate.add(Calendar.DAY_OF_YEAR, 7);
+
+        _expectedBalance = new BigDecimal(1700);
+        _expectedOwnerId = 123456;
+        _expectedOperationHistory = new OperationsHistory();
+        _expectedIntrest = new Interest(0.5);
+
+        _account = new Account(_expectedBalance, _expectedExpireDate.getTime(),
                 _expectedIntrest, _expectedOwnerId, _expectedOperationHistory);
     }
 

@@ -21,6 +21,7 @@ public class LoanTest {
     Calendar _weekAgoDate;
     Calendar _nextWeekDate;
     Interest _expectedInterest;
+    Debit _accountDebit;
 
     @Before
     public void setUp(){
@@ -35,10 +36,13 @@ public class LoanTest {
         _expectedCreationDate.set(2000, 07, 06);
         _expectedInterest = new Interest(0.5);
 
+        BigDecimal debitValue = new BigDecimal(3000);
+        _accountDebit = new Debit(debitValue);
+
 
         Account account = null;
         try {
-            account = (Account)MockFactory.CreateProductMock(_expectedBalance, Account.class);
+            account = (Account)MockFactory.CreateProductMock(_expectedBalance, _accountDebit, Account.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -47,8 +51,8 @@ public class LoanTest {
             e.printStackTrace();
         }
 
-        _endedLoan = new Loan(account, _expectedBalance, _expectedCreationDate.getTime(), _weekAgoDate.getTime(), _expectedInterest);
-        _ongoingLoan = new Loan(account, _expectedBalance, _expectedCreationDate.getTime(), _nextWeekDate.getTime(), _expectedInterest);
+        _endedLoan = new Loan(_expectedBalance, _weekAgoDate.getTime(), _expectedInterest, account);
+        _ongoingLoan = new Loan(_expectedBalance, _nextWeekDate.getTime(), _expectedInterest, account);
     }
 
     @Test
