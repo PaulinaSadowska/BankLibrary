@@ -52,5 +52,7 @@ public class ProductManager {
         return true;
     }
 
+    //pobierz produkty po ownerId lub typie
+
 
 }
