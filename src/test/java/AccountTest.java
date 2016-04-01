@@ -33,6 +33,39 @@ public class AccountTest
         Assert.assertEquals(_expectedOwnerId, _account.getId());
     }
 
+    @Test
+    public void getBalanceTest()
+    {
+        Assert.assertEquals(_expectedBalance, _account.getBalance());
+    }
+
+    @Test
+    public void getCreationDateTest()
+    {
+        Assert.assertEquals(_expectedCreationDate, _account.getCreationDate());
+    }
+
+    @Test
+    public void getExpireDateTest()
+    {
+        Assert.assertEquals(_expectedExpireDate, _account.getExpireDate());
+    }
+
+    @Test
+    public void getInterestTest()
+    {
+        Assert.assertEquals(_expectedIntrest, _account.getInterest());
+    }
+
+    @Test
+    public void getOperationHistoryTest()
+    {
+        Assert.assertEquals(_expectedOperationHistory, _account.getOperationHistory());
+    }
+
+
+
+
     @After
     public void tearDown()
     {
