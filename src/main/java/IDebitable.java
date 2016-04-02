@@ -5,5 +5,12 @@ import java.math.BigDecimal;
  */
 public interface IDebitable
 {
-    void createDebit(BigDecimal debitValue, Account account);
+    /**
+     * Utworzenie debetu
+     * @pre: baseAccount.getDebit() = null
+     * @post: baseAccount.getDebit() = Debit
+     * @invariant:
+     * @return False jezeli konto posiada juz debet
+     */
+    boolean createDebit(BigDecimal debitValue, Account account);
 }

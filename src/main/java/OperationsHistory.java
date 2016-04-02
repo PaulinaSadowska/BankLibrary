@@ -14,7 +14,7 @@ public class OperationsHistory
 
     public OperationsHistory()
     {
-        //TODO: Linked czy Array?
+        //TODO: Linked czy Array? // ArrayList is better!
         _executedOperations = new ArrayList<Operation>();
     }
 

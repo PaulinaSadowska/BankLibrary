@@ -31,6 +31,10 @@ public class Account extends Product
 
     public Debit getDebit()  {return  _debit;}
 
+    public void createDebit(Debit debit)  {
+        this._debit = debit;
+    }
+
     public OperationsHistory getOperationHistory() {
         return _operationHistory;
     }

@@ -1,3 +1,5 @@
+import com.google.inject.Inject;
+
 import java.math.BigDecimal;
 
 /**
@@ -10,6 +12,7 @@ public class Interest implements IInterestable
 
     private double _percent;
 
+    @Inject
     public Interest(IInterestCalculationStrategy calculationStrategy, double percent)
     {
         _interestCalculationStrategy = calculationStrategy;

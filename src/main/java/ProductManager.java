@@ -28,14 +28,14 @@ public class ProductManager {
         return ownerProductList;
     }
 
-    public ArrayList<Product> getProductList(ProductType type) {
+    /*public ArrayList<Product> getProductList(ProductType type) {
         ArrayList<Product> typeProductList = new ArrayList<Product>();
         for(Product product: _productList){
             if(product.getProductType() == type)
                 typeProductList.add(product);
         }
         return typeProductList;
-    }
+    }*/
 
     public boolean createNewAccount(BigDecimal balance, Date expireDate, Interest interest, int ownerId , BigDecimal debitValue){
         return createNewProduct(ProductType.Account, null, balance, expireDate, interest, ownerId, debitValue);
