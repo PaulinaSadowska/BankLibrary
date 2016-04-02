@@ -9,9 +9,9 @@ public class Investment extends Product{
 
     protected Account _baseAccount;
 
-    public Investment(BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Investment(BigDecimal balance, Date expireDate, Interest interest, int ownerId, Account baseAccount)
     {
-        super(balance, expireDate, interest);
+        super(ownerId, balance, expireDate, interest);
         this._baseAccount = baseAccount;
 
     }
@@ -20,4 +20,8 @@ public class Investment extends Product{
         return _baseAccount;
     }
 
+    @Override
+    public ProductType getProductType() {
+        return ProductType.Investment;
+    }
 }

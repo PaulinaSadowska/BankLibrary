@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static org.junit.Assert.*;
@@ -30,9 +31,16 @@ public class ProductManagerTest {
         _wrongExpireDate  = Calendar.getInstance();
         _wrongExpireDate.add(Calendar.DAY_OF_YEAR, -7);
 
+        _interest = new Interest(0.5);
+
+        _searchedOwnerId = 9876;
+        _otherOwnerId = 1234;
+
         _manager = new ProductManager();
         _manager.createNewAccount(new BigDecimal(9999), _expectedExpireDate.getTime(),
                 _interest, _searchedOwnerId, new BigDecimal(300));
+        _manager.createNewAccount(new BigDecimal(9999), _expectedExpireDate.getTime(),
+                _interest, _otherOwnerId, new BigDecimal(300));
     }
 
     @Test
@@ -50,11 +58,19 @@ public class ProductManagerTest {
 
     @Test
     public void getProductsByOwnerIdTest(){
-        //TODO - implement me!
+        ArrayList<Product> out = _manager.getProductList(_searchedOwnerId);
+        assertEquals(out.size(), 1);
+        for(Product p: out){
+            assertEquals(p._ownerId, _searchedOwnerId);
+        }
     }
 
     @Test
     public void getProductsByProductTypeTest(){
-        //todo - implement me!
+        ArrayList<Product> out = _manager.getProductList(ProductType.Account);
+        assertEquals(out.size(), 2);
+        for(Product p: out){
+            assertEquals(p.getProductType(), ProductType.Account);
+        }
     }
 }

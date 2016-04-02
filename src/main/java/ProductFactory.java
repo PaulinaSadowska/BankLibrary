@@ -6,13 +6,13 @@ import java.util.Date;
  */
 public class ProductFactory {
 
-    public Product createLoan(Account baseAccount, BigDecimal balance, Date expireDate, Interest interest){
-        return createProduct(ProductType.Account, null, balance, expireDate, interest, -1, null);
+    public Product createLoan(Account baseAccount, BigDecimal balance, Date expireDate, Interest interest, int ownerId){
+        return createProduct(ProductType.Account, baseAccount, balance, expireDate, interest, ownerId, null);
     }
 
 
-    public Product createInvestment(Account baseAccount, BigDecimal balance, Date expireDate, Interest interest){
-        return createProduct(ProductType.Account, null, balance, expireDate, interest, -1, null);
+    public Product createInvestment(Account baseAccount, BigDecimal balance, Date expireDate, Interest interest, int ownerId){
+        return createProduct(ProductType.Account, baseAccount, balance, expireDate, interest, ownerId, null);
     }
 
     public Product createAccount(BigDecimal balance, Date expireDate, Interest interest,
@@ -34,19 +34,16 @@ public class ProductFactory {
         if(type==ProductType.Account && debit == null)
             throw new NullPointerException();
 
-        if((new Date()).after(expireDate))
-            throw new IllegalArgumentException();
-
-        if(type==ProductType.Account && ownerId == -1)
+        if((new Date()).after(expireDate) || ownerId == -1)
             throw new IllegalArgumentException();
 
         switch(type){
             case Loan:
-                return new Loan(balance, expireDate, interest, baseAccount);
+                return new Loan(balance, expireDate, interest, ownerId, baseAccount);
             case Account:
                 return new Account(balance, expireDate, interest, ownerId, history, new Debit(debit));
             case Investment:
-                return new Investment(balance, expireDate, interest, baseAccount);
+                return new Investment(balance, expireDate, interest, ownerId, baseAccount);
         }
         return null;
     }

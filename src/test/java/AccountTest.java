@@ -41,7 +41,7 @@ public class AccountTest
     @Test
     public void getIdTest()
     {
-        Assert.assertEquals(_expectedOwnerId, _account.getId());
+        Assert.assertEquals(_expectedOwnerId, _account.getOwnerId());
     }
 
     @Test

@@ -8,13 +8,15 @@ import java.util.Date;
 public abstract class Product
 {
 
+    protected int _ownerId;
     protected BigDecimal _balance;
     protected Interest _interest;
     protected Date _creationDate;
     protected Date _expireDate;
 
-    public  Product(BigDecimal balance, Date expireDate, Interest interest)
+    public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest)
     {
+        this._ownerId = ownerId;
         this._balance = balance;
         this._creationDate = new Date();
         this._expireDate = expireDate;
@@ -23,12 +25,18 @@ public abstract class Product
 
     public void setBalance(BigDecimal newBalance) { _balance = newBalance;}
 
+    public abstract ProductType getProductType();
+
     public BigDecimal getBalance() {
         return _balance;
     }
 
     public Interest getInterest() {
         return _interest;
+    }
+
+    public int getOwnerId() {
+        return _ownerId;
     }
 
     public Date getCreationDate() {

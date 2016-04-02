@@ -8,9 +8,9 @@ public class Loan extends Product{
 
     protected Account _baseAccount;
 
-    public Loan(BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Loan(BigDecimal balance, Date expireDate, Interest interest, int ownerId, Account baseAccount)
     {
-        super(balance, expireDate, interest);
+        super(ownerId, balance, expireDate, interest);
         _baseAccount = baseAccount;
     }
 
@@ -19,5 +19,8 @@ public class Loan extends Product{
     }
 
 
-
+    @Override
+    public ProductType getProductType() {
+        return ProductType.Loan;
+    }
 }

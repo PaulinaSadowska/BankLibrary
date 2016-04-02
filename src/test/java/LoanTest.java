@@ -21,6 +21,7 @@ public class LoanTest {
     Calendar _weekAgoDate;
     Calendar _nextWeekDate;
     Interest _expectedInterest;
+    int _ownerId;
     Debit _accountDebit;
 
     @Before
@@ -34,6 +35,8 @@ public class LoanTest {
         _expectedBalance = new BigDecimal(1500);
         _expectedCreationDate = Calendar.getInstance();
         _expectedInterest = new Interest(0.5);
+
+        _ownerId = 1234;
 
         BigDecimal debitValue = new BigDecimal(3000);
         _accountDebit = new Debit(debitValue);
@@ -50,8 +53,8 @@ public class LoanTest {
             e.printStackTrace();
         }
 
-        _endedLoan = new Loan(_expectedBalance, _weekAgoDate.getTime(), _expectedInterest, account);
-        _ongoingLoan = new Loan(_expectedBalance, _nextWeekDate.getTime(), _expectedInterest, account);
+        _endedLoan = new Loan(_expectedBalance, _weekAgoDate.getTime(), _expectedInterest,  _ownerId, account);
+        _ongoingLoan = new Loan(_expectedBalance, _nextWeekDate.getTime(), _expectedInterest, _ownerId, account);
     }
 
     @Test

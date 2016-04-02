@@ -6,15 +6,13 @@ import java.util.Date;
  */
 public class Account extends Product {
 
-    private int _ownerId;
     private  Debit _debit;
     private OperationsHistory _operationHistory;
 
     public Account(BigDecimal balance, Date expireDate, Interest interest,
                    int ownerId , OperationsHistory history)
     {
-        super(balance, expireDate, interest);
-        this._ownerId = ownerId;
+        super(ownerId, balance, expireDate, interest);
         this._operationHistory = history;
     }
 
@@ -27,11 +25,12 @@ public class Account extends Product {
 
     public Debit getDebit()  {return  _debit;}
 
-    public int getId() {
-        return _ownerId;
-    }
-
     public OperationsHistory getOperationHistory() {
         return _operationHistory;
+    }
+
+    @Override
+    public ProductType getProductType() {
+        return ProductType.Account;
     }
 }
