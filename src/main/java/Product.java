@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by palka on 11.03.2016.
+ * Reprezentuje wspólne cechy produktu bankowego ( konta, lokaty, itp. )
  */
 public abstract class Product
 {
@@ -13,19 +14,19 @@ public abstract class Product
     protected Interest _interest;
     protected Date _creationDate;
     protected Date _expireDate;
+    protected OperationsHistory _history;
 
     public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest)
     {
-        this._ownerId = ownerId;
-        this._balance = balance;
-        this._creationDate = new Date();
-        this._expireDate = expireDate;
-        this._interest = interest;
+        _ownerId = ownerId;
+        _balance = balance;
+        _creationDate = new Date();
+        _expireDate = expireDate;
+        _interest = interest;
+        _history = new OperationsHistory();
     }
 
     public void setBalance(BigDecimal newBalance) { _balance = newBalance;}
-
-    public abstract ProductType getProductType();
 
     public BigDecimal getBalance() {
         return _balance;

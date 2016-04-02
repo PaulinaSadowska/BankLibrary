@@ -1,25 +1,33 @@
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by palka on 11.03.2016.
+ * Oprocentowanie. Oblicza
  */
-public class Interest{
+public class Interest implements IInterestable
+{
+    private IInterestCalculationStrategy _interestCalculationStrategy;
 
-    private double _interestValue;
+    private double _percent;
 
-    public Interest(double interestValue)
+    public Interest(IInterestCalculationStrategy calculationStrategy, double percent)
     {
-        _interestValue = interestValue;
+        _interestCalculationStrategy = calculationStrategy;
+        _percent = percent;
     }
 
     public Interest()
     {
-        _interestValue = 0;
+        _percent = 0;
     }
 
-    public double getInterestValue(){
-        return _interestValue;
+    public void setStrategy(IInterestCalculationStrategy strategy)
+    {
+        _interestCalculationStrategy = strategy;
     }
 
+    public BigDecimal calculateInterest(Product product)
+    {
+        return _interestCalculationStrategy.calculateInterest(product, _percent);
+    }
 }

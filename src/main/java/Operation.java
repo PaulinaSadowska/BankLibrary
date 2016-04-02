@@ -1,33 +1,52 @@
 import java.util.Date;
 
 /**
- * Created by palka on 11.03.2016.
- */
-public abstract class Operation {
+ * @author Arasz
+ * Reprezentuje operacje wykonana przez bank
+ **/
+public class Operation
+{
 
-    protected OperationType operationType;
-    protected Date date;
-    protected String description;
-    protected Product product;
+    protected OperationType _operationType;
+    protected Date _date;
+    protected String _description;
+    protected Product _product; // Czy po usunięciu produktu zerujemy tą referencję?
 
-    public Operation(OperationType operationType, Date date, String description, Product product)
+
+    public Operation(OperationType operationType)
     {
-        this.operationType = operationType;
-        this.date = date;
-        this.description = description;
-        this.product = product;
+        _operationType = operationType;
+        _date = new Date();
+        _description = "";
+        _product = null;
+    }
+
+    public Operation(OperationType operationType, Product product)
+    {
+        _operationType = operationType;
+        _date = new Date();
+        _description = "";
+        _product = product;
+    }
+
+    public Operation(OperationType operationType, Product product, String description)
+    {
+        _operationType = operationType;
+        _date = new Date();
+        _description = description;
+        _product = product;
     }
 
     public OperationType getOperationType() {
-        return operationType;
+        return _operationType;
     }
 
     public Date getDate() {
-        return date;
+        return _date;
     }
 
     public String getDescription() {
-        return description;
+        return _description;
     }
 
 }

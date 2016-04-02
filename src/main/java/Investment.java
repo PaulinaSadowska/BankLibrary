@@ -1,14 +1,18 @@
+import com.google.inject.Inject;
+
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Created by arasz on 18.03.2016.
- * stores information about the investment
+ * Lokata.
  */
-public class Investment extends Product{
+public class Investment extends Product implements IClosable{
 
     protected Account _baseAccount;
 
+    @Inject
     public Investment(BigDecimal balance, Date expireDate, Interest interest, int ownerId, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
@@ -20,8 +24,18 @@ public class Investment extends Product{
         return _baseAccount;
     }
 
-    @Override
-    public ProductType getProductType() {
-        return ProductType.Investment;
+    public boolean close()
+    {
+        _history.add(new Operation(OperationType.CloseInvestment, this));
+
+        BigDecimal initialBalance = _baseAccount.getBalance();
+        BigDecimal interest = null;
+
+        if(Calendar.getInstance().after(_expireDate))
+            interest = _interest.calculateInterest(this);
+
+        _baseAccount.setBalance(initialBalance.add(_balance.add(interest)));
+
+        return true;
     }
 }

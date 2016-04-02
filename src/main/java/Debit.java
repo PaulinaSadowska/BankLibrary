@@ -2,18 +2,19 @@ import java.math.BigDecimal;
 
 /**
  * Created by palka on 11.03.2016.
+ * Reprezentuje debet który może posiadać rachunek
  */
-public class Debit{
+public class Debit
+{
+    private BigDecimal _debit;
 
-    private BigDecimal maxDebitValue;
-
-    public Debit(BigDecimal maxDebitValue)
+    public Debit(BigDecimal debitValue)
     {
-        this.maxDebitValue = maxDebitValue;
+        this._debit = debitValue;
     }
 
-    public BigDecimal getMaxDebitValue()
+    public BigDecimal getDebitValue()
     {
-        return maxDebitValue;
+        return _debit;
     }
 }
