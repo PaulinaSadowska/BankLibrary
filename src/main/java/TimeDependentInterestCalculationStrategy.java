@@ -3,7 +3,7 @@ import java.math.BigDecimal;
 /**
  * Created by palka on 02.04.2016.
  */
-public class TimeDependentCalculationStrategy implements IInterestCalculationStrategy {
+public class TimeDependentInterestCalculationStrategy implements IInterestCalculationStrategy {
     public BigDecimal calculateInterest(Product product, double percent) {
         int oneDay = 1000 * 60 * 60 * 24;
         double numOfDays = (1.0 * product.getCreationDate().getTime())/ oneDay;

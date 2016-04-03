@@ -8,7 +8,10 @@ public class OperationsHistory
 {
     final static private OperationsHistory _globalHistory = new OperationsHistory();
 
-    static public OperationsHistory getGlobalHistory() {return  _globalHistory;}
+    static public OperationsHistory getGlobalHistory()
+    {
+        return  _globalHistory;
+    }
 
     private List<Operation> _executedOperations;
 

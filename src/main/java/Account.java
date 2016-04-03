@@ -40,6 +40,9 @@ public class Account extends Product
     }
 
 
+    /**
+     * @return Saldo konta powiększone o debet
+     */
     public BigDecimal getBalanceWithDebit()
     {
         BigDecimal initialBalance;

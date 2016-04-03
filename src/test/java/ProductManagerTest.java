@@ -31,7 +31,7 @@ public class ProductManagerTest {
         _wrongExpireDate  = Calendar.getInstance();
         _wrongExpireDate.add(Calendar.DAY_OF_YEAR, -7);
 
-        _interest = new Interest(new TimeDependentCalculationStrategy(), 0.5);
+        _interest = new Interest(new TimeDependentInterestCalculationStrategy(), 0.5);
 
         _searchedOwnerId = 9876;
         _otherOwnerId = 1234;
