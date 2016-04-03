@@ -7,24 +7,21 @@ import java.util.Map;
 /**
  * Created by arasz on 02.04.2016.
  */
-public class Bank implements IDebitable
+public class Bank
 {
-
-    private Map<Integer, Account> _accounts;
-
-    private List<Account> _accountsList;
+    private ProductManager _productMenager;
 
     private OperationsHistory _operationsHistory;
 
-    public Bank(){
-        _accounts = new HashMap<Integer, Account>();
-        _accountsList = new ArrayList<Account>();
+    public Bank()
+    {
         _operationsHistory =  OperationsHistory.getGlobalHistory();
     }
 
     public boolean createDebit(BigDecimal debitValue, Account account)
     {
-        if(account.hasDebit()){
+        if(account.hasDebit())
+        {
             return false;
         }
         account.createDebit(new Debit(debitValue));
@@ -39,7 +36,8 @@ public class Bank implements IDebitable
      * @return
      * Nieutworznenie konta powinno rzucać wyjatki
      */
-    public void createAccount(){
+    public void createAccount()
+    {
 
     }
 
@@ -52,7 +50,9 @@ public class Bank implements IDebitable
      * @return
      * Nieusuniecie konta powinno rzucać wyjatki
      */
-    public void deleteAccount(){
+    public void deleteAccount()
+    {
+
     }
 
 }

@@ -15,6 +15,9 @@ public abstract class Product
     protected Date _creationDate;
     protected Date _expireDate;
     protected OperationsHistory _history;
+    protected Account _baseAccount;
+
+
 
     public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest)
     {
@@ -25,6 +28,13 @@ public abstract class Product
         _interest = interest;
         _history = new OperationsHistory();
     }
+
+    public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    {
+        this(ownerId, balance, expireDate, interest);
+        _baseAccount = baseAccount;
+    }
+
 
     public void setBalance(BigDecimal newBalance) { _balance = newBalance;}
 

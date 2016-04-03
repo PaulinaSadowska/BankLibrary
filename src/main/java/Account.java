@@ -11,7 +11,6 @@ public class Account extends Product
 {
     private  Debit _debit;
     private OperationsHistory _operationHistory;
-    private List<Product> _productList;
 
     public Account(BigDecimal balance, Date expireDate, Interest interest,
                    int ownerId , OperationsHistory history)
@@ -116,39 +115,4 @@ public class Account extends Product
         }
         return true;
     }
-
-    public void openInvestment(Investment newInvestment)
-    {
-        _productList.add(newInvestment);
-    }
-
-    private <T extends Product> List<T> getElements()
-    {
-        List<T> list = new ArrayList<T>();
-
-        for(Product product: _productList)
-        {
-            T castedProduct = (T) product;
-            if( castedProduct != null)
-                list.add(castedProduct);
-        }
-        return  list;
-    }
-
-    public  List<Investment> getInvestments()
-    {
-        return  getElements();
-    }
-
-    public void makeLoan(Loan newLoan)
-    {
-        _productList.add(newLoan);
-    }
-
-    public List<Loan> getLoans()
-    {
-        return getElements();
-    }
-
-
 }
