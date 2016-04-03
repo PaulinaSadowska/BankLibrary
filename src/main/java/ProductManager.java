@@ -23,7 +23,7 @@ public class ProductManager
         return _products.get(ownerId);
     }
 
-    private <T extends Product> boolean createNewProduct(Class<T> clazz, int ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
                                                          Interest interest, Account baseAccount){
         try
         {
@@ -37,9 +37,32 @@ public class ProductManager
         return true;
     }
 
-    private <T extends Product> boolean createNewProduct(Class<T> clazz, int ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> boolean createNewProduct(Class<T> clazz, int ownerId, BigDecimal balance, Date expireDate,
                                                          Interest interest)
     {
         return createNewProduct(clazz, ownerId, balance, expireDate, interest, null);
+    }
+
+    public int getAvailableOwnerId(){
+        int i=0;
+        while(_products.containsKey(i))
+        {
+            i++;
+        }
+        return i;
+    }
+
+    public IAccount getAccount(Integer ownerId)
+    {
+        List<Product> productList = _products.get(ownerId);
+        if(productList==null){
+            return null;
+        }
+        for(Product p: productList){
+            if(p instanceof IAccount){
+                return (IAccount) p;
+            }
+        }
+        return null;
     }
 }
