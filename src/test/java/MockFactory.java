@@ -2,9 +2,7 @@
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.net.Proxy;
 import java.util.Date;
 
 /**
@@ -23,7 +21,7 @@ public class MockFactory
             if(parameterTypes.length == 6)
             {
                 mock = (Product) ctor.newInstance(balance, new Date(Long.MAX_VALUE),
-                        new Interest(),11111, new OperationsHistory(), debit);
+                        new Interest(),11111, new OperationsRegister(), debit);
             }
         }
 

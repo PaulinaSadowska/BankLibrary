@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by palka on 11.03.2016.
  * Kredyt.
  */
-public class Loan extends Product implements IClosable
+public class Loan extends Product implements ILoan
 {
 
     protected Account _baseAccount;
@@ -17,10 +17,6 @@ public class Loan extends Product implements IClosable
     {
         super(ownerId, balance, expireDate, interest);
         _baseAccount = baseAccount;
-    }
-
-    public Account getBaseAccount() {
-        return _baseAccount;
     }
 
     public BigDecimal getLoanRepayAmount()

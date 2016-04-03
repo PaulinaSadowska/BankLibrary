@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * Created by palka on 11.03.2016.
  * Oprocentowanie. Oblicza
  */
-public class Interest implements IInterestable
+public class Interest implements IInterest
 {
     private IInterestCalculationStrategy _interestCalculationStrategy;
 

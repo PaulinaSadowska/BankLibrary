@@ -1,28 +1,24 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by arasz on 18.03.2016.
  * Konto (rachunek bankowy)
  */
-public class Account extends Product
+public class Account extends Product implements IAccount
 {
     private  Debit _debit;
-    private OperationsHistory _operationHistory;
 
     public Account(BigDecimal balance, Date expireDate, Interest interest,
-                   int ownerId , OperationsHistory history)
+                   int ownerId)
     {
         super(ownerId, balance, expireDate, interest);
-        this._operationHistory = history;
     }
 
     public Account(BigDecimal balance, Date expireDate, Interest interest,
-                   int ownerId , OperationsHistory history, Debit debit)
+                   int ownerId , Debit debit)
     {
-        this(balance, expireDate, interest, ownerId, history);
+        this(balance, expireDate, interest, ownerId);
         _debit = debit;
     }
 
@@ -32,10 +28,6 @@ public class Account extends Product
 
     public void createDebit(Debit debit)  {
         this._debit = debit;
-    }
-
-    public OperationsHistory getOperationHistory() {
-        return _operationHistory;
     }
 
 
@@ -114,5 +106,10 @@ public class Account extends Product
             }
         }
         return true;
+    }
+
+    public OperationsRegister getOperationsHistory()
+    {
+        return _history;
     }
 }

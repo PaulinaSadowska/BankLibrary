@@ -8,20 +8,16 @@ import java.util.Date;
  * Created by arasz on 18.03.2016.
  * Lokata.
  */
-public class Investment extends Product implements IClosable{
+public class Investment extends Product implements IInvestment
+{
 
     protected Account _baseAccount;
 
-    @Inject
     public Investment(BigDecimal balance, Date expireDate, Interest interest, int ownerId, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
         this._baseAccount = baseAccount;
 
-    }
-
-    public Account getBaseAccount() {
-        return _baseAccount;
     }
 
     public boolean close()

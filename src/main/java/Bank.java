@@ -1,8 +1,4 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by arasz on 02.04.2016.
@@ -11,11 +7,11 @@ public class Bank
 {
     private ProductManager _productMenager;
 
-    private OperationsHistory _operationsHistory;
+    private OperationsRegister _operationsHistory;
 
     public Bank()
     {
-        _operationsHistory =  OperationsHistory.getGlobalHistory();
+        _operationsHistory =  OperationsRegister.getGlobalHistory();
     }
 
     public boolean createDebit(BigDecimal debitValue, Account account)
@@ -38,9 +34,8 @@ public class Bank
      */
     public void createAccount()
     {
-
+        
     }
-
 
     /**
      * Usunięcie konta

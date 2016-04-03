@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by arasz on 01.04.2016.
@@ -18,7 +17,7 @@ public class AccountTest
     private BigDecimal _expectedBalance;
     private Calendar _expectedCreationDate;
     private Calendar _expectedExpireDate;
-    private OperationsHistory _expectedOperationHistory;
+    private OperationsRegister _expectedOperationHistory;
     private Interest _expectedIntrest;
 
     @Before
@@ -31,7 +30,7 @@ public class AccountTest
 
         _expectedBalance = new BigDecimal(1700);
         _expectedOwnerId = 123456;
-        _expectedOperationHistory = new OperationsHistory();
+        _expectedOperationHistory = new OperationsRegister();
         _expectedIntrest = new Interest(0.5);
 
         _account = new Account(_expectedBalance, _expectedExpireDate.getTime(),
