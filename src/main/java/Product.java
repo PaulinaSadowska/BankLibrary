@@ -14,7 +14,7 @@ public abstract class Product
     protected Interest _interest;
     protected Date _creationDate;
     protected Date _expireDate;
-    protected OperationsRegister _history;
+    protected OperationsHistory _history;
     protected Account _baseAccount;
 
 
@@ -26,7 +26,7 @@ public abstract class Product
         _creationDate = new Date();
         _expireDate = expireDate;
         _interest = interest;
-        _history = new OperationsRegister();
+        _history = new OperationsHistory();
     }
 
     public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)

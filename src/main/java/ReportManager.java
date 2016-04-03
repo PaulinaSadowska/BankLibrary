@@ -1,3 +1,5 @@
+import com.google.inject.Inject;
+
 import java.util.List;
 
 /**
@@ -6,8 +8,10 @@ import java.util.List;
  */
 public class ReportManager
 {
+    //TODO: Użyć IOC do tworzenia jednej instancji menagera
     private IReportCreationStrategy _reportCreationStrategy;
 
+    @Inject
     public <T> ReportManager(IReportCreationStrategy<T> reportCreationStrategy)
     {
         setReportCreationStrategy(reportCreationStrategy);

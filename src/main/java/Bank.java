@@ -7,11 +7,11 @@ public class Bank
 {
     private ProductManager _productMenager;
 
-    private OperationsRegister _operationsHistory;
+    private OperationsHistory _operationsHistory;
 
     public Bank()
     {
-        _operationsHistory =  OperationsRegister.getGlobalHistory();
+        _operationsHistory =  OperationsHistory.getGlobalHistory();
     }
 
     public boolean createDebit(BigDecimal debitValue, Account account)
@@ -34,7 +34,7 @@ public class Bank
      */
     public void createAccount()
     {
-        
+
     }
 
     /**

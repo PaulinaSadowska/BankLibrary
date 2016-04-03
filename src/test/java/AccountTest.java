@@ -17,7 +17,7 @@ public class AccountTest
     private BigDecimal _expectedBalance;
     private Calendar _expectedCreationDate;
     private Calendar _expectedExpireDate;
-    private OperationsRegister _expectedOperationHistory;
+    private OperationsHistory _expectedOperationHistory;
     private Interest _expectedIntrest;
 
     @Before
@@ -30,7 +30,7 @@ public class AccountTest
 
         _expectedBalance = new BigDecimal(1700);
         _expectedOwnerId = 123456;
-        _expectedOperationHistory = new OperationsRegister();
+        _expectedOperationHistory = new OperationsHistory();
         _expectedIntrest = new Interest(0.5);
 
         _account = new Account(_expectedBalance, _expectedExpireDate.getTime(),
