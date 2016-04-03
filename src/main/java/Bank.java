@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -39,13 +40,13 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    public IAccount createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance,)
+    public IAccount createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance, ProductDuration duration)
     {
         IAccount account = null;
 
-        //nadaj expireDate <- klient przekazalby jaka chce dlugosc, a na tej podstawie bank obliczalby expireDate
-        //nadaj interest <- bank ma swoje pola AccountInterest, loanInterest i InvestmentInterest i nadawalby je. Jak uzaleznic je od trwania?
+        //nadaj interest
 
+        Date expireDate = getExpireDate(duration);
         if(ownerId != null) //klient posiada juz konto
         {
             account = _productManager.getAccount(ownerId);
@@ -53,18 +54,26 @@ public class Bank
         if(account == null) //klient nie posiada konta
         {
             ownerId = _productManager.getAvailableOwnerId();
-            account = _productManager.createNewProduct(Account.class, ownerId, balance, x, x);
+            account = _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, x);
         }
 
         if(!productType.getName().equals(Account.class.getName()))
         {
-            _productManager.createNewProduct(productType, ownerId, balance, x, x, account);
+            _productManager.createNewProduct(productType, ownerId, balance, expireDate, x, account);
         }
         else
         {
             throw new UnsupportedOperationException();
         }
         return account;
+    }
+
+    private Date getExpireDate(ProductDuration duration)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, duration.getNumOfMonths());
+        cal.add(Calendar.YEAR, duration.getNumOfYears());
+        return cal.getTime();
     }
 
     /**
