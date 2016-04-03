@@ -28,10 +28,11 @@ public class Bank implements IDebitable
      * @pre:
      * @post:
      * @invariant:
-     * @return False jesli nie utworzono poprawnie konta
-     * Nie utworznenie i nie usunięcie konta powinno rzucać wyjatki
+     * @return
+     * Nieutworznenie konta powinno rzucać wyjatki
      */
-    public boolean createAccount(){
+    public void createAccount(){
+
         return false;
     }
 
@@ -41,9 +42,10 @@ public class Bank implements IDebitable
      * @pre: account != null
      * @post: account == null
      * @invariant:
-     * @return false jeżeli nie usunięto poprawnie
+     * @return
+     * Nieusuniecie konta powinno rzucać wyjatki
      */
-    public boolean deleteAccount(){
+    public void deleteAccount(){
         return false;
     }
 
