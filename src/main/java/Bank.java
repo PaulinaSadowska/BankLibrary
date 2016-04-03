@@ -1,4 +1,6 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +10,17 @@ import java.util.Map;
 public class Bank implements IDebitable
 {
 
-    private Map<Integer, Account> _accounts = new ;
+    private Map<Integer, Account> _accounts;
 
     private List<Account> _accountsList;
 
-    private OperationsHistory _operationsHistory = OperationsHistory.getGlobalHistory();
+    private OperationsHistory _operationsHistory;
+
+    public Bank(){
+        _accounts = new HashMap<Integer, Account>();
+        _accountsList = new ArrayList<Account>();
+        _operationsHistory =  OperationsHistory.getGlobalHistory();
+    }
 
     public boolean createDebit(BigDecimal debitValue, Account account)
     {
@@ -33,7 +41,6 @@ public class Bank implements IDebitable
      */
     public void createAccount(){
 
-        return false;
     }
 
 
@@ -46,7 +53,6 @@ public class Bank implements IDebitable
      * Nieusuniecie konta powinno rzucać wyjatki
      */
     public void deleteAccount(){
-        return false;
     }
 
 }
