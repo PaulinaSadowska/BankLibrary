@@ -7,12 +7,10 @@ import java.util.Date;
 public class Bank
 {
     private ProductManager _productManager;
-    private OperationsRegister _operationsHistory;
 
     public Bank()
     {
         _productManager = new ProductManager();
-        _operationsHistory =  OperationsRegister.getGlobalHistory();
     }
 
     public boolean createDebit(BigDecimal debitValue, Account account)

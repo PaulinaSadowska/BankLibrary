@@ -108,7 +108,7 @@ public class Account extends Product implements IAccount
         return true;
     }
 
-    public OperationsRegister getOperationsHistory()
+    public OperationsHistory getOperationsHistory()
     {
         return _history;
     }

@@ -5,7 +5,12 @@ public class Report<T>
 {
     protected T _report;
 
-    public T GetReport()
+    public Report(T report)
+    {
+        _report = report;
+    }
+
+    public T getReport()
     {
         return _report;
     }

@@ -4,18 +4,18 @@ import java.util.List;
 /**
  * Created by arasz on 18.03.2016.
  */
-public class OperationsRegister
+public class OperationsHistory
 {
-    final static private OperationsRegister _globalHistory = new OperationsRegister();
+    final static private OperationsHistory _globalHistory = new OperationsHistory();
 
-    static public OperationsRegister getGlobalHistory()
+    static public OperationsHistory getGlobalHistory()
     {
         return  _globalHistory;
     }
 
     private List<Operation> _executedOperations;
 
-    public OperationsRegister()
+    public OperationsHistory()
     {
         //TODO: Linked czy Array? // ArrayList is better!
         _executedOperations = new ArrayList<Operation>();
