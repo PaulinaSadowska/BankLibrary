@@ -37,7 +37,7 @@ public class ProductManager
         return true;
     }
 
-    public <T extends Product> boolean createNewProduct(Class<T> clazz, int ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
                                                          Interest interest)
     {
         return createNewProduct(clazz, ownerId, balance, expireDate, interest, null);

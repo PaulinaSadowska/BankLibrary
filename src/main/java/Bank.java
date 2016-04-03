@@ -35,7 +35,7 @@ public class Bank
      *   jezeli chce stworzyc konto - nadaj nowe id i stworz konto
      *   jezeli chce stworzyc lokate lub kredyt - stworz konto i przypisana do niego lokate lub kredyt.
      *
-     * jezeli ownerId != null
+     * jezeli ownerId != null lub nie znaleziono przypisanego do niego konta
      *    znajdz baseAccount i przypisz mu nowy produkt bankowy (lokata lub kredyt)
      *    jezeli chce zalozyc konto - wyjatek
      *
@@ -44,7 +44,7 @@ public class Bank
     {
         IAccount account = null;
 
-        //nadaj interest
+        Interest interest = new Interest(); //TODO - poprawnie zainicjuj Interest
 
         Date expireDate = getExpireDate(duration);
         if(ownerId != null) //klient posiada juz konto
@@ -54,12 +54,19 @@ public class Bank
         if(account == null) //klient nie posiada konta
         {
             ownerId = _productManager.getAvailableOwnerId();
-            account = _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, x);
+            if(_productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
+            {
+                account = _productManager.getAccount(ownerId);
+            }
+            if(account == null)
+            {
+                throw new UnknownError();
+            }
         }
 
         if(!productType.getName().equals(Account.class.getName()))
         {
-            _productManager.createNewProduct(productType, ownerId, balance, expireDate, x, account);
+            _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, (Account)account);
         }
         else
         {
