@@ -43,7 +43,7 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    public IAccount createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance, ProductDuration duration)
+    public IProduct createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance, ProductDuration duration)
     {
         IAccount account = null;
 

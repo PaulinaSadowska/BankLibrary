@@ -56,7 +56,9 @@ public class ProductManager
         return i;
     }
 
-    private <T> T getProduct(Integer ownerId)
+    // Osobną kwestia jest czy metoda generyczna nie wystarczy?
+
+    private <T extends IProduct> T getProduct(Integer ownerId)
     {
         List<Product> productList = _products.get(ownerId);
         if(productList!=null)

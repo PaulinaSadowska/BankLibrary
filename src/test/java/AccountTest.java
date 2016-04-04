@@ -31,10 +31,10 @@ public class AccountTest
         _expectedBalance = new BigDecimal(1700);
         _expectedOwnerId = 123456;
         _expectedOperationHistory = new OperationsHistory();
-        _expectedIntrest = new Interest(0.5);
+        //_expectedIntrest = new Interest(); -- create Mock
 
         _account = new Account(_expectedBalance, _expectedExpireDate.getTime(),
-                _expectedIntrest, _expectedOwnerId, _expectedOperationHistory);
+                _expectedIntrest, _expectedOwnerId);
     }
 
     @Test

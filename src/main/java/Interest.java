@@ -19,11 +19,6 @@ public class Interest implements IInterest
         _percent = percent;
     }
 
-    public Interest()
-    {
-        _percent = 0;
-    }
-
     public void setStrategy(IInterestCalculationStrategy strategy)
     {
         _interestCalculationStrategy = strategy;
