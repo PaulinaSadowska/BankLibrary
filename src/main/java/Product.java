@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by palka on 11.03.2016.
  * Reprezentuje wspólne cechy produktu bankowego ( konta, lokaty, itp. )
  */
-public abstract class Product implements IProduct
+public abstract class Product
 {
 
     protected int _ownerId;
@@ -36,7 +36,7 @@ public abstract class Product implements IProduct
     }
 
 
-    public void setBalance(BigDecimal newBalance) { _balance = newBalance;}
+    protected void setBalance(BigDecimal newBalance) { _balance = newBalance;}
 
     public BigDecimal getBalance() {
         return _balance;

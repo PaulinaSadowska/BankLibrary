@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by palka on 11.03.2016.
  * Kredyt.
  */
-public class Loan extends Product implements ILoan
+public class Loan extends Product implements IClosable
 {
 
     protected Account _baseAccount;

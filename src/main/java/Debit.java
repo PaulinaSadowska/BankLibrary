@@ -6,11 +6,11 @@ import java.math.BigDecimal;
  */
 public class Debit
 {
-    private BigDecimal _debit;
+    final private BigDecimal _debit;
 
     public Debit(BigDecimal debitValue)
     {
-        this._debit = debitValue;
+        this._debit= debitValue;
     }
 
     public BigDecimal getDebitValue()

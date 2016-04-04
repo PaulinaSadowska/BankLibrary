@@ -5,7 +5,7 @@ import java.util.Date;
  * Created by arasz on 18.03.2016.
  * Konto (rachunek bankowy)
  */
-public class Account extends Product implements IAccount
+public class Account extends Product
 {
     private  Debit _debit;
 
@@ -22,12 +22,14 @@ public class Account extends Product implements IAccount
         _debit = debit;
     }
 
-    public boolean hasDebit() {return _debit!=null;}
+    public boolean hasDebit()
+    {
+        return _debit!=null;
+    }
 
-    public Debit getDebit()  {return  _debit;}
-
-    public void createDebit(Debit debit)  {
-        this._debit = debit;
+    public Debit getDebit()
+    {
+        return  _debit;
     }
 
 
@@ -50,7 +52,7 @@ public class Account extends Product implements IAccount
      @post: porduct.balance+=amount, _product.balance-=amount
      @invariant: product.balance <= porduct.balance+amount (?)
       */
-    public boolean transfer(Product product, BigDecimal amount)
+    public boolean transfer(Integer id, BigDecimal amount)
     {
 
         return false;
@@ -84,11 +86,9 @@ public class Account extends Product implements IAccount
                     if(getDebit()!=null)
                     {
                         Debit debit = getDebit();
-                        BigDecimal balancePlusDebit = new BigDecimal(0);
+                        BigDecimal balancePlusDebit = getBalanceWithDebit();
 
-                        balancePlusDebit = balancePlusDebit.add(debit.getDebitValue());
                         balancePlusDebit = balancePlusDebit.add(productBalance);
-
 
                         if(balancePlusDebit.compareTo(amount) >= 0)
                         {

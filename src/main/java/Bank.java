@@ -43,9 +43,9 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    public IProduct createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance, ProductDuration duration)
+    public Product createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance, ProductDuration duration)
     {
-        IAccount account = null;
+        Account account = null;
 
         Interest interest = new Interest(); //TODO - poprawnie zainicjuj Interest
 

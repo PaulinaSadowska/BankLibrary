@@ -58,7 +58,7 @@ public class ProductManager
 
     // Osobną kwestia jest czy metoda generyczna nie wystarczy?
 
-    private <T extends IProduct> T getProduct(Integer ownerId)
+    private <T extends Product> T getProduct(Integer ownerId)
     {
         List<Product> productList = _products.get(ownerId);
         if(productList!=null)
@@ -73,17 +73,17 @@ public class ProductManager
         return null;
     }
 
-    public IAccount getAccount(Integer ownerId)
+    public Account getAccount(Integer ownerId)
     {
         return getProduct(ownerId);
     }
 
-    public IInterest getInterest(Integer ownerId)
+    public Investment getInvestment(Integer ownerId)
     {
         return getProduct(ownerId);
     }
 
-    public  ILoan getLoan(Integer ownerId)
+    public  Loan getLoan(Integer ownerId)
     {
         return  getProduct(ownerId);
     }

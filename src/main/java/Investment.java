@@ -1,5 +1,3 @@
-import com.google.inject.Inject;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +6,7 @@ import java.util.Date;
  * Created by arasz on 18.03.2016.
  * Lokata.
  */
-public class Investment extends Product implements IInvestment
+public class Investment extends Product implements IClosable
 {
 
     protected Account _baseAccount;
