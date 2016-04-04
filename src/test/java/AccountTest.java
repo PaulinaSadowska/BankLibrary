@@ -33,8 +33,8 @@ public class AccountTest
         _expectedOperationHistory = new OperationsHistory();
         //_expectedIntrest = new Interest(); -- create Mock
 
-        _account = new Account(_expectedBalance, _expectedExpireDate.getTime(),
-                _expectedIntrest, _expectedOwnerId);
+        _account = new Account(_expectedOwnerId, _expectedBalance, _expectedExpireDate.getTime(),
+                _expectedIntrest);
     }
 
     @Test
@@ -65,12 +65,6 @@ public class AccountTest
     public void getInterestTest()
     {
         Assert.assertEquals(_expectedIntrest, _account.getInterest());
-    }
-
-    @Test
-    public void getOperationHistoryTest()
-    {
-        Assert.assertEquals(_expectedOperationHistory, _account.getOperationHistory());
     }
 
 

@@ -21,7 +21,7 @@ public class MockFactory
             if(parameterTypes.length == 6)
             {
                 mock = (Product) ctor.newInstance(balance, new Date(Long.MAX_VALUE),
-                        new Interest(),11111, new OperationsHistory(), debit);
+                        new Interest(new TimeDependentInterestCalculationStrategy(), 0.4),11111, new OperationsHistory(), debit);
             }
         }
 

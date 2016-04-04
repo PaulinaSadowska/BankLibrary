@@ -17,15 +17,16 @@ public class Bank
         _productManager = productManager;
     }
 
-    public boolean createDebit(BigDecimal debitValue, Account account)
+   /* public boolean createDebit(BigDecimal debitValue, int ownerId)
     {
+        Account account = _productManager.getAccount(ownerId);
         if(account.hasDebit())
         {
             return false;
         }
         account.createDebit(new Debit(debitValue));
         return true;
-    }
+    }*/
     
 
     /**
@@ -43,11 +44,12 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    public Product createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance, ProductDuration duration)
+    public Product createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance,
+                                 ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
         Account account = null;
 
-        Interest interest = new Interest(); //TODO - poprawnie zainicjuj Interest
+        Interest interest = new Interest(interestStrategy, interestPercent);
 
         Date expireDate = getExpireDate(duration);
         if(ownerId != null) //klient posiada juz konto

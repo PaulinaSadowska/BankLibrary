@@ -11,5 +11,4 @@ public class BankModule extends AbstractModule
         bind(IInterestCalculationStrategy.class).to(TimeDependentInterestCalculationStrategy.class);
         bind(IReportCreationStrategy.class).to(DefaultReportCreationStrategy.class);
     }
-
 }

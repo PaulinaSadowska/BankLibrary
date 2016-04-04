@@ -1,6 +1,7 @@
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.inject.Inject;
 
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
@@ -23,13 +24,28 @@ public class ProductManager
         return _products.get(ownerId);
     }
 
-    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
-                                                         Interest interest, Account baseAccount){
+    private <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+                                                         Interest interest, Account baseAccount, Debit debit){
         try
         {
-            Constructor<T> constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                    expireDate.getClass(), interest.getClass(), baseAccount != null? baseAccount.getClass():null);
-            _products.put(ownerId, constructor.newInstance());
+            Constructor<T> constructor;
+            if (baseAccount == null && debit == null)
+            {
+                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                        expireDate.getClass(), interest.getClass());
+                _products.put(ownerId, constructor.newInstance(ownerId, balance, expireDate, interest));
+            }
+            if(debit == null && baseAccount !=null)
+            {
+                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                        expireDate.getClass(), interest.getClass(), baseAccount.getClass());
+                _products.put(ownerId, constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount));
+            }
+            if(baseAccount == null && debit != null){
+                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                        expireDate.getClass(), interest.getClass(), debit.getClass());
+                _products.put(ownerId, constructor.newInstance(ownerId, balance, expireDate, interest, debit));
+            }
         }
         catch(Exception e){
             return false;
@@ -37,16 +53,27 @@ public class ProductManager
         return true;
     }
 
+    @Inject
     public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
                                                          Interest interest)
     {
-        return createNewProduct(clazz, ownerId, balance, expireDate, interest, null);
+        return createNewProduct(clazz, ownerId, balance, expireDate, interest, null, null);
     }
 
-    /**
-     * Czemu to jest publiczne?
-     * @return
-     */
+    @Inject
+    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+                                                        Interest interest, Account baseAccount)
+    {
+        return createNewProduct(clazz, ownerId, balance, expireDate, interest, baseAccount, null);
+    }
+
+    @Inject
+    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+                                                        Interest interest, Debit debit)
+    {
+        return createNewProduct(clazz, ownerId, balance, expireDate, interest, null, debit);
+    }
+
     public int getAvailableOwnerId(){
         int i=0;
         while(_products.containsKey(i))

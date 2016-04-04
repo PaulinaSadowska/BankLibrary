@@ -9,16 +9,14 @@ public class Account extends Product
 {
     private  Debit _debit;
 
-    public Account(BigDecimal balance, Date expireDate, Interest interest,
-                   int ownerId)
+    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest)
     {
         super(ownerId, balance, expireDate, interest);
     }
 
-    public Account(BigDecimal balance, Date expireDate, Interest interest,
-                   int ownerId , Debit debit)
+    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Debit debit)
     {
-        this(balance, expireDate, interest, ownerId);
+        this(ownerId, balance, expireDate, interest);
         _debit = debit;
     }
 

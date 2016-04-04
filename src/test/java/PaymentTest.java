@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class PaymentTest
 {
-    private Payment _payment;
+   /* private Payment _payment;
     private Product _productMock;
 
     private void createPayment(Product productMock)
@@ -178,5 +178,5 @@ public class PaymentTest
     public void tearDown() throws Exception
     {
         _payment = null;
-    }
+    }*/
 }
