@@ -58,9 +58,9 @@ public class ProductManager
         if(productList==null){
             return null;
         }
-        for(Product p: productList){
-            if(p instanceof IAccount){
-                return (IAccount) p;
+        for(Product product: productList){
+            if(product instanceof IAccount){
+                return (IAccount) product;
             }
         }
         return null;

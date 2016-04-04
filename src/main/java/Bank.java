@@ -1,3 +1,5 @@
+import com.google.inject.Inject;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,9 +11,10 @@ public class Bank
 {
     private ProductManager _productManager;
 
-    public Bank()
+    @Inject
+    public Bank(ProductManager productManager)
     {
-        _productManager = new ProductManager();
+        _productManager = productManager;
     }
 
     public boolean createDebit(BigDecimal debitValue, Account account)
