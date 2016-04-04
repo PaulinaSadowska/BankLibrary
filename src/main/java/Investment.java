@@ -11,7 +11,7 @@ public class Investment extends Product implements IClosable
 
     protected Account _baseAccount;
 
-    public Investment(int ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Investment(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
         this._baseAccount = baseAccount;

@@ -28,6 +28,13 @@ public class ProductManager
                                                          Interest interest, Account baseAccount, Debit debit){
         try
         {
+            //not allowed
+            if(baseAccount!=null && debit != null)
+            {
+                return false;
+            }
+
+            //find proper constructor and initialize
             Constructor<T> constructor;
             if (baseAccount == null && debit == null)
             {
@@ -83,35 +90,35 @@ public class ProductManager
         return i;
     }
 
-    // Osobną kwestia jest czy metoda generyczna nie wystarczy?
-
-    private <T extends Product> T getProduct(Integer ownerId)
+    private <T extends Product> List<T> getProduct(Class<T> clazz, Integer ownerId)
     {
         List<Product> productList = _products.get(ownerId);
+        List<T> out = new ArrayList<T>();
         if(productList!=null)
         {
             for(Product product: productList)
             {
-                T concreteProduct = (T) product;
-                if(concreteProduct != null)
-                    return concreteProduct;
+                if (clazz.isInstance(product))
+                {
+                    out.add(clazz.cast(product));
+                }
             }
         }
-        return null;
+        return out;
     }
 
-    public Account getAccount(Integer ownerId)
+    public List<Account> getAccount(Integer ownerId)
     {
-        return getProduct(ownerId);
+        return getProduct(Account.class, ownerId);
     }
 
-    public Investment getInvestment(Integer ownerId)
+    public List<Investment> getInvestment(Integer ownerId)
     {
-        return getProduct(ownerId);
+        return getProduct(Investment.class, ownerId);
     }
 
-    public  Loan getLoan(Integer ownerId)
+    public  List<Loan> getLoan(Integer ownerId)
     {
-        return  getProduct(ownerId);
+        return  getProduct(Loan.class, ownerId);
     }
 }

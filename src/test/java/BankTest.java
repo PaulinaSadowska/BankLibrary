@@ -16,5 +16,10 @@ public class BankTest
         _bank = injector.getInstance(Bank.class);
     }
 
+    @Test
+    public void createAccountTest()
+    {
+
+    }
 
 }

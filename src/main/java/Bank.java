@@ -54,14 +54,14 @@ public class Bank
         Date expireDate = getExpireDate(duration);
         if(ownerId != null) //klient posiada juz konto
         {
-            account = _productManager.getAccount(ownerId);
+            account = _productManager.getAccount(ownerId).get(0);
         }
         if(account == null) //klient nie posiada konta
         {
             ownerId = _productManager.getAvailableOwnerId();
             if(_productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
             {
-                account = _productManager.getAccount(ownerId);
+                account = _productManager.getAccount(ownerId).get(0);
             }
             if(account == null)
             {
@@ -79,6 +79,8 @@ public class Bank
         }
         return account;
     }
+
+
 
     private Date getExpireDate(ProductDuration duration)
     {

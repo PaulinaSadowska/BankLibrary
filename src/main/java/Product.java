@@ -19,7 +19,7 @@ public abstract class Product
 
 
 
-    public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest)
+    public  Product(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest)
     {
         _ownerId = ownerId;
         _balance = balance;

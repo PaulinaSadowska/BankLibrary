@@ -13,7 +13,7 @@ public class Loan extends Product implements IClosable
 
     protected Account _baseAccount;
 
-    public Loan(int ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Loan(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
         _baseAccount = baseAccount;
