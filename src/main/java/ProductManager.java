@@ -43,6 +43,10 @@ public class ProductManager
         return createNewProduct(clazz, ownerId, balance, expireDate, interest, null);
     }
 
+    /**
+     * Czemu to jest publiczne?
+     * @return
+     */
     public int getAvailableOwnerId(){
         int i=0;
         while(_products.containsKey(i))
@@ -52,17 +56,33 @@ public class ProductManager
         return i;
     }
 
-    public IAccount getAccount(Integer ownerId)
+    private <T> T getProduct(Integer ownerId)
     {
         List<Product> productList = _products.get(ownerId);
-        if(productList==null){
-            return null;
-        }
-        for(Product product: productList){
-            if(product instanceof IAccount){
-                return (IAccount) product;
+        if(productList!=null)
+        {
+            for(Product product: productList)
+            {
+                T concreteProduct = (T) product;
+                if(concreteProduct != null)
+                    return concreteProduct;
             }
         }
         return null;
+    }
+
+    public IAccount getAccount(Integer ownerId)
+    {
+        return getProduct(ownerId);
+    }
+
+    public IInterest getInterest(Integer ownerId)
+    {
+        return getProduct(ownerId);
+    }
+
+    public  ILoan getLoan(Integer ownerId)
+    {
+        return  getProduct(ownerId);
     }
 }
