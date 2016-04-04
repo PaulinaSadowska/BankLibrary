@@ -44,7 +44,7 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    public Product createProduct(Class<Product> productType, Integer ownerId, BigDecimal balance,
+    private <T extends Product> Product createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
         Account account = null;
@@ -80,7 +80,22 @@ public class Bank
         return account;
     }
 
+    public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    {
+        return (Account)createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
+    }
 
+    public Account createLoan(Integer ownerId, BigDecimal balance,
+                                 ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    {
+        return (Account)createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
+    }
+
+    public Account createInvestment(Integer ownerId, BigDecimal balance,
+                                 ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    {
+        return (Account)createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
+    }
 
     private Date getExpireDate(ProductDuration duration)
     {
