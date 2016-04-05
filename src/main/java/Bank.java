@@ -3,6 +3,7 @@ import com.google.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by arasz on 02.04.2016.
@@ -135,30 +136,60 @@ public class Bank
     public int createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
         return createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
+
     }
 
     public int createLoan(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
+        int id = createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
+        if(ownerId != Constants.ERROR_CODE && ownerId == id)
+        {
+            List<Loan> loans = _productManager.getLoan(ownerId);
+            Loan newLoan = loans.get(loans.size()-1);
+            addToHistory(OperationType.MakeLoan, newLoan);
+        }
+        return id;
+
     }
 
     public int createLoan(BigDecimal balance,
                               ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
+        int id = createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
+        if(id != Constants.ERROR_CODE)
+        {
+            List<Loan> loans = _productManager.getLoan(id);
+            Loan newLoan = loans.get(loans.size()-1);
+            addToHistory(OperationType.MakeLoan, newLoan);
+        }
+        return id;
     }
 
     public int createInvestment(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
+        int id = createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
+        if(ownerId != Constants.ERROR_CODE && ownerId == id)
+        {
+            List<Investment> investments = _productManager.getInvestment(ownerId);
+            Investment newInvestment = investments.get(investments.size()-1);
+            addToHistory(OperationType.OpenInvestment, newInvestment);
+        }
+        return id;
     }
 
     public int createInvestment(BigDecimal balance,
                                     ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
+        int id = createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
+        if(id != Constants.ERROR_CODE)
+        {
+            List<Investment> investments = _productManager.getInvestment(id);
+            Investment newInvestment = investments.get(investments.size()-1);
+            addToHistory(OperationType.OpenInvestment, newInvestment);
+        }
+        return id;
     }
 
     private Date getExpireDate(ProductDuration duration)
