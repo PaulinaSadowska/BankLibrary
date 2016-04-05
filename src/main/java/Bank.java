@@ -10,11 +10,19 @@ import java.util.Date;
 public class Bank
 {
     private ProductManager _productManager;
+    private OperationsHistory _globalHistory;
 
     @Inject
     public Bank(ProductManager productManager)
     {
+        _globalHistory = new OperationsHistory();
         _productManager = productManager;
+    }
+
+    private void addToHistory(OperationType operationType, Product product){
+        Operation operation = new Operation(operationType, product);
+        product.getOperationsHistory().add(operation);
+        _globalHistory.add(operation);
     }
 
     public boolean createDebit(BigDecimal debitValue, int ownerId)
@@ -25,19 +33,28 @@ public class Bank
             return false;
         }
         account.createDebit(new Debit(debitValue));
+        addToHistory(OperationType.MakeDebit, account);
         return true;
     }
 
     public boolean pay(BigDecimal amount, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
-        return account.payment(amount, PaymentDirection.Out);
+        if(!account.payment(amount, PaymentDirection.Out)){
+            return false;
+        }
+        addToHistory(OperationType.Payment, account);
+        return true;
     }
 
     public boolean deposit(BigDecimal amount, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
-        return account.payment(amount, PaymentDirection.In);
+        if(!account.payment(amount, PaymentDirection.In)){
+            return false;
+        }
+        addToHistory(OperationType.Payment, account);
+        return true;
     }
 
     public BigDecimal getAccountBalance(int ownerId)

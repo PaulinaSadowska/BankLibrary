@@ -20,7 +20,7 @@ public class BankTest
     @Before
     public void setUp(){
       //  Injector injector = Guice.createInjector(new BankModule());
-      //  _bank = injector.getInstance(Bank.class); //TODO - popraw, to tak nie dziala!
+      //  _bank = injector.getInstance(Bank.class); //TODO - to tak nie dziala
         _productManager = new ProductManager();
         _bank = new Bank(_productManager);
         _balance = new BigDecimal(1200);

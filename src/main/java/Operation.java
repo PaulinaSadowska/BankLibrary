@@ -1,3 +1,4 @@
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ public class Operation
     public Operation(OperationType operationType)
     {
         _operationType = operationType;
-        _date = new Date();
+        _date = Calendar.getInstance().getTime();
         _description = "";
         _product = null;
     }
@@ -24,7 +25,7 @@ public class Operation
     public Operation(OperationType operationType, Product product)
     {
         _operationType = operationType;
-        _date = new Date();
+        _date = Calendar.getInstance().getTime();
         _description = "";
         _product = product;
     }
@@ -32,7 +33,7 @@ public class Operation
     public Operation(OperationType operationType, Product product, String description)
     {
         _operationType = operationType;
-        _date = new Date();
+        _date = Calendar.getInstance().getTime();
         _description = description;
         _product = product;
     }

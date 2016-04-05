@@ -58,6 +58,11 @@ public abstract class Product
         return _expireDate;
     }
 
+    public OperationsHistory getOperationsHistory()
+    {
+        return _history;
+    }
+
     public boolean expired(){
         Calendar cal = Calendar.getInstance();
         if(_expireDate.before(cal.getTime())) {

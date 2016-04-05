@@ -51,10 +51,10 @@ public class Account extends Product
 
     /*
      @pre: product != null, amount > 0
-     @post: porduct.balance+=amount, _product.balance-=amount
+     @post: product.balance+=amount, _product.balance-=amount
      @invariant: product.balance <= porduct.balance+amount (?)
       */
-    public boolean transfer(Integer id, BigDecimal amount)
+    public boolean transfer(Integer id, BigDecimal amount, int targetOwnerId)
     {
 
         return false;
@@ -106,11 +106,4 @@ public class Account extends Product
         }
         return true;
     }
-
-    public OperationsHistory getOperationsHistory()
-    {
-        return _history;
-    }
-
-
 }
