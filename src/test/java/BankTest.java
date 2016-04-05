@@ -77,4 +77,62 @@ public class BankTest
         assertTrue(_bank.createDebit(new BigDecimal(1800), ownerId));
         assertFalse(_bank.createDebit(new BigDecimal(200), ownerId));
     }
+
+    @Test
+    public void createAccountAndPayTest()
+    {
+        BigDecimal amount = new BigDecimal(200);
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        assertTrue(_bank.pay(amount, ownerId));
+        assertEquals(_balance.subtract(amount), _bank.getAccountBalance(ownerId));
+    }
+
+    @Test
+    public void createAccountAndDepositTest()
+    {
+        BigDecimal amount = new BigDecimal(200);
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        assertTrue(_bank.deposit(amount, ownerId));
+        assertEquals(_balance.add(amount), _bank.getAccountBalance(ownerId));
+    }
+
+    @Test
+    public void createAccountAndFailToPayTest()
+    {
+        BigDecimal amount = _balance.add(new BigDecimal(100));
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        assertFalse(_bank.pay(amount, ownerId));
+        assertEquals(_balance, _bank.getAccountBalance(ownerId));
+    }
+
+    @Test
+    public void createAccountWithDebitAndPayTest()
+    {
+        //try to pay 100 more than banlance on account with debit value = 200
+
+        BigDecimal amount = _balance.add(new BigDecimal(100));
+        BigDecimal debitValue = new BigDecimal(200);
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        _bank.createDebit(debitValue, ownerId);
+        assertTrue(_bank.pay(amount, ownerId));
+        assertEquals(_balance.subtract(amount), _bank.getAccountBalance(ownerId));
+    }
+
+    @Test
+    public void createAccountWithDebitAndFailToPayTest()
+    {
+        //try to pay 100 more than banlance on account with debit value = 50
+
+        BigDecimal amount = _balance.add(new BigDecimal(100));
+        BigDecimal debitValue = new BigDecimal(50);
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        _bank.createDebit(debitValue, ownerId);
+        assertFalse(_bank.pay(amount, ownerId));
+        assertEquals(_balance, _bank.getAccountBalance(ownerId));
+    }
 }

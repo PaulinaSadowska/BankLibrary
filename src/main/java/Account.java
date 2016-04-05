@@ -87,10 +87,7 @@ public class Account extends Product
                 {
                     if(getDebit()!=null)
                     {
-                        Debit debit = getDebit();
                         BigDecimal balancePlusDebit = getBalanceWithDebit();
-
-                        balancePlusDebit = balancePlusDebit.add(productBalance);
 
                         if(balancePlusDebit.compareTo(amount) >= 0)
                         {

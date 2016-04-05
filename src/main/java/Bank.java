@@ -27,7 +27,24 @@ public class Bank
         account.createDebit(new Debit(debitValue));
         return true;
     }
-    
+
+    public boolean pay(BigDecimal amount, int ownerId)
+    {
+        Account account = _productManager.getAccount(ownerId).get(0);
+        return account.payment(amount, PaymentDirection.Out);
+    }
+
+    public boolean deposit(BigDecimal amount, int ownerId)
+    {
+        Account account = _productManager.getAccount(ownerId).get(0);
+        return account.payment(amount, PaymentDirection.In);
+    }
+
+    public BigDecimal getAccountBalance(int ownerId)
+    {
+        Account account = _productManager.getAccount(ownerId).get(0);
+        return account.getBalance();
+    }
 
     /**
      * Utworzenie konta
