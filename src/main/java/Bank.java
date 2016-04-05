@@ -40,8 +40,12 @@ public class Bank
     public boolean pay(BigDecimal amount, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
-        if(!account.payment(amount, PaymentDirection.Out)){
-            return false;
+        if(account!=null)
+        {
+            if(!account.payment(amount, PaymentDirection.Out))
+            {
+                return false;
+            }
         }
         addToHistory(OperationType.Payment, account);
         return true;
@@ -50,11 +54,30 @@ public class Bank
     public boolean deposit(BigDecimal amount, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
-        if(!account.payment(amount, PaymentDirection.In)){
-            return false;
+        if(account!=null)
+        {
+            if(!account.payment(amount, PaymentDirection.In))
+            {
+                return false;
+            }
+            addToHistory(OperationType.Payment, account);
+            return true;
         }
-        addToHistory(OperationType.Payment, account);
-        return true;
+        return false;
+    }
+
+    public boolean transfer(BigDecimal amount, int ownerId, int targetOwnerId)
+    {
+        Account account = _productManager.getAccount(ownerId).get(0);
+        Account targetAccount = _productManager.getAccount(targetOwnerId).get(0);
+        if(account!=null){
+            if(!account.transfer(amount, targetAccount)){
+                return false;
+            }
+            addToHistory(OperationType.Transfer, account);
+            return true;
+        }
+        return false;
     }
 
     public BigDecimal getAccountBalance(int ownerId)

@@ -54,9 +54,12 @@ public class Account extends Product
      @post: product.balance+=amount, _product.balance-=amount
      @invariant: product.balance <= porduct.balance+amount (?)
       */
-    public boolean transfer(Integer id, BigDecimal amount, int targetOwnerId)
+    public boolean transfer(BigDecimal amount, Account account)
     {
-
+        if(payment(amount, PaymentDirection.Out) && account != null){
+            account.payment(amount, PaymentDirection.In);
+            return true;
+        }
         return false;
     }
 

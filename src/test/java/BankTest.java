@@ -135,4 +135,30 @@ public class BankTest
         assertFalse(_bank.pay(amount, ownerId));
         assertEquals(_balance, _bank.getAccountBalance(ownerId));
     }
+
+    @Test
+    public void createAccountsAndTransferTest()
+    {
+        BigDecimal amount = new BigDecimal(200);
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        int targetOwnerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        assertNotEquals(Constants.ERROR_CODE, targetOwnerId);
+        assertTrue(_bank.transfer(amount, ownerId, targetOwnerId));
+        assertEquals(_balance.subtract(amount), _bank.getAccountBalance(ownerId));
+        assertEquals(_balance.add(amount), _bank.getAccountBalance(targetOwnerId));
+    }
+
+    @Test
+    public void createAccountsAndFailToTransferTest()
+    {
+        BigDecimal amount = _balance.add(new BigDecimal(100));
+        int ownerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        int targetOwnerId = _bank.createAccount(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.5);
+        assertNotEquals(Constants.ERROR_CODE, ownerId);
+        assertNotEquals(Constants.ERROR_CODE, targetOwnerId);
+        assertFalse(_bank.transfer(amount, ownerId, targetOwnerId));
+        assertEquals(_balance, _bank.getAccountBalance(ownerId));
+        assertEquals(_balance, _bank.getAccountBalance(targetOwnerId));
+    }
 }
