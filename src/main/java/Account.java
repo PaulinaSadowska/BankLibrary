@@ -30,6 +30,10 @@ public class Account extends Product
         return  _debit;
     }
 
+    public void createDebit(Debit debit) {
+        _debit = debit;
+    }
+
 
     /**
      * @return Saldo konta powiększone o debet
@@ -110,4 +114,6 @@ public class Account extends Product
     {
         return _history;
     }
+
+
 }

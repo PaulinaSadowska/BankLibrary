@@ -1,18 +1,13 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by palka on 01.04.2016.

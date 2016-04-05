@@ -17,16 +17,16 @@ public class Bank
         _productManager = productManager;
     }
 
-   /* public boolean createDebit(BigDecimal debitValue, int ownerId)
+    public boolean createDebit(BigDecimal debitValue, int ownerId)
     {
-        Account account = _productManager.getAccount(ownerId);
+        Account account = _productManager.getAccount(ownerId).get(0);
         if(account.hasDebit())
         {
             return false;
         }
         account.createDebit(new Debit(debitValue));
         return true;
-    }*/
+    }
     
 
     /**
@@ -44,7 +44,7 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    private <T extends Product> Product createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
+    private <T extends Product> int createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
         Account account = null;
@@ -59,42 +59,49 @@ public class Bank
         if(account == null) //klient nie posiada konta
         {
             ownerId = _productManager.getAvailableOwnerId();
-            if(_productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
+            if(!_productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
             {
-                account = _productManager.getAccount(ownerId).get(0);
+                return Constants.ERROR_CODE;
             }
-            if(account == null)
-            {
-                throw new UnknownError();
+            if (productType.getName().equals(Account.class.getName())){
+                return ownerId;
             }
         }
-
-        if(!productType.getName().equals(Account.class.getName()))
+        account = _productManager.getAccount(ownerId).get(0);
+        if(_productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account))
         {
-            _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, (Account)account);
+            return ownerId;
         }
-        else
-        {
-            throw new UnsupportedOperationException();
-        }
-        return account;
+        return Constants.ERROR_CODE;
     }
 
-    public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    public int createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return (Account)createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
+        return createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
     }
 
-    public Account createLoan(Integer ownerId, BigDecimal balance,
+    public int createLoan(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return (Account)createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
+        return createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
     }
 
-    public Account createInvestment(Integer ownerId, BigDecimal balance,
+    public int createLoan(BigDecimal balance,
+                              ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    {
+        return createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
+    }
+
+    public int createInvestment(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
     {
-        return (Account)createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
+        return createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
+    }
+
+    public int createInvestment(BigDecimal balance,
+                                    ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    {
+        return createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
     }
 
     private Date getExpireDate(ProductDuration duration)
