@@ -30,7 +30,8 @@ public class Account extends Product
         return  _debit;
     }
 
-    public void createDebit(Debit debit) {
+    public void createDebit(Debit debit)
+    {
         _debit = debit;
     }
 
@@ -54,13 +55,23 @@ public class Account extends Product
      @post: product.balance+=amount, _product.balance-=amount
      @invariant: product.balance <= porduct.balance+amount (?)
       */
-    public boolean transfer(BigDecimal amount, Account account)
+    public void transfer(BigDecimal amount, Account account) throws BankException
     {
-        if(payment(amount, PaymentDirection.Out) && account != null){
+        if(account == null)
+            throw new NullPointerException("Null account");
+
+        try
+        {
+            this.payment(amount, PaymentDirection.Out);
             account.payment(amount, PaymentDirection.In);
-            return true;
         }
-        return false;
+        catch (Exception ex)
+        {
+            BankException exception = (new BankException("Error during transfer.", OperationType.Transfer));
+            exception.initCause(ex);
+            throw exception;
+        }
+        _history.add(new Operation(OperationType.Transfer, this));
     }
 
     /*
@@ -68,7 +79,7 @@ public class Account extends Product
     @post: _product.balance-=amount ;
     @invariant: _product.balance >= _product.balance-amount; _product.balance >= {debit | 0}
      */
-    public boolean payment(BigDecimal amount, PaymentDirection direction) throws IllegalArgumentException
+    public void payment(BigDecimal amount, PaymentDirection direction) throws IllegalArgumentException, BankException
     {
         if(amount.longValueExact() < 0)
             throw new IllegalArgumentException("Negative amount.");
@@ -93,13 +104,10 @@ public class Account extends Product
                         BigDecimal balancePlusDebit = getBalanceWithDebit();
 
                         if(balancePlusDebit.compareTo(amount) >= 0)
-                        {
                             setBalance(productBalance.subtract(amount));
-                            return true;
-                        }
                     }
-
-                    return false;
+                    else
+                        throw new BankException("Output payment grater than account balance", OperationType.Payment);
                 }
 
                 BigDecimal newBalance = getBalance().subtract(amount);
@@ -107,6 +115,6 @@ public class Account extends Product
                 break;
             }
         }
-        return true;
+        _history.add(new Operation(OperationType.Payment, this));
     }
 }

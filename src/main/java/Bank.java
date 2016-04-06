@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by arasz on 02.04.2016.
  */
-public class Bank implements IHistoryRegistration
+public class Bank
 {
     private ProductManager _productManager;
     private OperationsHistory _globalHistory;
@@ -20,11 +20,6 @@ public class Bank implements IHistoryRegistration
         _productManager = productManager;
     }
 
-    public void registerOperation(Operation executedOperation)
-    {
-        _globalHistory.add(executedOperation);
-    }
-
     public boolean createDebit(BigDecimal debitValue, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
@@ -33,7 +28,7 @@ public class Bank implements IHistoryRegistration
             return false;
         }
         account.createDebit(new Debit(debitValue));
-        registerOperation(new Operation(OperationType.MakeDebit, account));
+        _globalHistory.add(new Operation(OperationType.MakeDebit, account));
         return true;
     }
 
@@ -169,7 +164,7 @@ public class Bank implements IHistoryRegistration
         {
             List<Investment> investments = _productManager.getInvestment(ownerId);
             Investment newInvestment = investments.get(investments.size()-1);
-            registerOperation(new Operation(OperationType.OpenInvestment, newInvestment));
+            _globalHistory.add(new Operation(OperationType.OpenInvestment, newInvestment));
         }
         return id;
     }
