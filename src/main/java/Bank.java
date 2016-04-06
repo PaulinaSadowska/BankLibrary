@@ -1,5 +1,6 @@
 import com.google.inject.Inject;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class Bank
         _globalHistory.add(new Operation(OperationType.MakeDebit));
     }
 
-    public boolean pay(BigDecimal amount, int ownerId)
+   /* public boolean pay(BigDecimal amount, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
         if(account!=null)
@@ -66,7 +67,7 @@ public class Bank
             return true;
         }
         return false;
-    }
+    }*/
 
     public BigDecimal getAccountBalance(int ownerId)
     {
@@ -89,11 +90,11 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    private <T extends Product> int createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
+    private <T extends Product> T createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         Account account = null;
-
         Interest interest = new Interest(interestStrategy, interestPercent);
 
         Date expireDate = getExpireDate(duration);
@@ -104,77 +105,49 @@ public class Bank
         if(account == null) //klient nie posiada konta
         {
             ownerId = _productManager.getAvailableOwnerId();
-            if(!_productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
-            {
-                return Constants.ERROR_CODE;
-            }
             if (productType.getName().equals(Account.class.getName())){
-                return ownerId;
+                return  _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
             }
+            account = _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest));
         }
         account = _productManager.getAccount(ownerId).get(0);
-        if(_productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account))
-        {
-            return ownerId;
-        }
-        return Constants.ERROR_CODE;
+        return _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account))
     }
 
-    public int createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
         return createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
 
     }
 
-    public int createLoan(Integer ownerId, BigDecimal balance,
+    public Loan createLoan(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        int id = createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
-        if(ownerId != Constants.ERROR_CODE && ownerId == id)
-        {
-            List<Loan> loans = _productManager.getLoan(ownerId);
-            Loan newLoan = loans.get(loans.size()-1);
-        }
-        return id;
+        return createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
 
     }
 
-    public int createLoan(BigDecimal balance,
+    public Loan createLoan(BigDecimal balance,
                               ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        int id = createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
-        if(id != Constants.ERROR_CODE)
-        {
-            List<Loan> loans = _productManager.getLoan(id);
-            Loan newLoan = loans.get(loans.size()-1);
-            new Operation(OperationType.MakeLoan, newLoan);
-        }
-        return id;
+        return createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
     }
 
-    public int createInvestment(Integer ownerId, BigDecimal balance,
+    public Investment createInvestment(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        int id = createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
-        if(ownerId != Constants.ERROR_CODE && ownerId == id)
-        {
-            List<Investment> investments = _productManager.getInvestment(ownerId);
-            Investment newInvestment = investments.get(investments.size()-1);
-            _globalHistory.add(new Operation(OperationType.OpenInvestment, newInvestment));
-        }
-        return id;
+        return createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
     }
 
-    public int createInvestment(BigDecimal balance,
+    public Investment createInvestment(BigDecimal balance,
                                     ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        int id = createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
-        if(id != Constants.ERROR_CODE)
-        {
-            List<Investment> investments = _productManager.getInvestment(id);
-            Investment newInvestment = investments.get(investments.size()-1);
-        }
-        return id;
+        return createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
     }
 
     private Date getExpireDate(ProductDuration duration)

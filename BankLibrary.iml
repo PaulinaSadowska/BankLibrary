@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="JUnit4">
         <CLASSES>
           <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/" />
@@ -21,6 +21,13 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Maven: org.mockito:mockito-all:1.9.5" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="Maven: net.bytebuddy:byte-buddy:1.2.3" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="Maven: org.objenesis:objenesis:2.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.google.inject:guice:4.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-all:1.9.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.bytebuddy:byte-buddy:1.2.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.objenesis:objenesis:2.1" level="project" />
