@@ -106,15 +106,16 @@ public class Bank
         {
             ownerId = _productManager.getAvailableOwnerId();
             if (productType.getName().equals(Account.class.getName())){
-                return  _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest))
+                return  _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest);
             }
-            account = _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest));
+            _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest);
         }
         account = _productManager.getAccount(ownerId).get(0);
-        return _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account))
+        return _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account);
     }
 
-    public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
+    public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
+                                 double interestPercent)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
         return createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
