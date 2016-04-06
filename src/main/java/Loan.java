@@ -8,10 +8,10 @@ import java.util.Date;
  * Created by palka on 11.03.2016.
  * Kredyt.
  */
-public class Loan extends Product implements IClosable
+public class Loan extends Product
 {
 
-    protected Account _baseAccount;
+    private Account _baseAccount;
 
     public Loan(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
     {
@@ -42,7 +42,7 @@ public class Loan extends Product implements IClosable
      * @invariant:
      * @return False jesli nie mozna spłacić kredytu
      */
-    public void close() throws BankException
+    public void repay() throws BankException
     {
         if(!canClose())
             throw new BankException("Loan can not be closed",OperationType.RepayLoan);
@@ -50,6 +50,6 @@ public class Loan extends Product implements IClosable
         BigDecimal repayAmount = getLoanRepayAmount();
 
         _baseAccount.setBalance(_baseAccount.getBalance().subtract(repayAmount));
-        _history.add(new Operation(OperationType.RepayLoan, this));
+        _history.add(new Operation(OperationType.RepayLoan));
     }
 }

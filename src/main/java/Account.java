@@ -19,6 +19,10 @@ public class Account extends Product
         this(ownerId, balance, expireDate, interest);
         _debit = debit;
     }
+    public Account(Account account, Debit debit)
+    {
+        this(account.getOwnerId(), account.getBalance(), account.getExpireDate(), account.getInterest(), debit);
+    }
 
     public boolean hasDebit()
     {
@@ -30,10 +34,9 @@ public class Account extends Product
         return  _debit;
     }
 
-    public void createDebit(Debit debit)
-    {
-        _debit = debit;
-    }
+    public void setDebit(Debit debit) { _debit = debit;}
+
+
 
 
     /**
@@ -71,7 +74,7 @@ public class Account extends Product
             exception.initCause(ex);
             throw exception;
         }
-        _history.add(new Operation(OperationType.Transfer, this));
+        _history.add(new Operation(OperationType.Transfer));
     }
 
     /*
@@ -115,6 +118,6 @@ public class Account extends Product
                 break;
             }
         }
-        _history.add(new Operation(OperationType.Payment, this));
+        _history.add(new Operation(OperationType.Payment));
     }
 }

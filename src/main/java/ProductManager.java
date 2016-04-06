@@ -1,9 +1,9 @@
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -24,59 +24,68 @@ public class ProductManager
         return _products.get(ownerId);
     }
 
-    private <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
-                                                         Interest interest, Account baseAccount, Debit debit){
-        try
-        {
-            //not allowed
-            if(baseAccount!=null && debit != null)
-            {
-                return false;
-            }
 
+    public  <T extends Product> void deleteProduct(T product)
+    {
+        /// kiedy moze byc usuniete?
+        if((product instanceof Account))
+        {
+            _products.removeAll(product.getOwnerId());
+        }
+    }
+
+    private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+                                                      Interest interest, Account baseAccount, Debit debit)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
+    {
+            T product = null;
             //find proper constructor and initialize
             Constructor<T> constructor;
             if (baseAccount == null && debit == null)
             {
-                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                         expireDate.getClass(), interest.getClass());
-                _products.put(ownerId, constructor.newInstance(ownerId, balance, expireDate, interest));
+                product = constructor.newInstance(ownerId, balance, expireDate, interest);
+                _products.put(ownerId, product);
             }
-            if(debit == null && baseAccount !=null)
+            if (debit == null && baseAccount != null)
             {
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                         expireDate.getClass(), interest.getClass(), baseAccount.getClass());
-                _products.put(ownerId, constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount));
+                product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
+                _products.put(ownerId, product);
             }
-            if(baseAccount == null && debit != null){
+            if (baseAccount == null && debit != null)
+            {
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                         expireDate.getClass(), interest.getClass(), debit.getClass());
-                _products.put(ownerId, constructor.newInstance(ownerId, balance, expireDate, interest, debit));
+                product = constructor.newInstance(ownerId, balance, expireDate, interest, debit);
+                _products.put(ownerId, product);
             }
-        }
-        catch(Exception e){
-            return false;
-        }
-        return true;
+        return product;
     }
 
+
     @Inject
-    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
                                                          Interest interest)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
         return createNewProduct(clazz, ownerId, balance, expireDate, interest, null, null);
     }
 
     @Inject
-    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
                                                         Interest interest, Account baseAccount)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
         return createNewProduct(clazz, ownerId, balance, expireDate, interest, baseAccount, null);
     }
 
     @Inject
-    public <T extends Product> boolean createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
                                                         Interest interest, Debit debit)
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
         return createNewProduct(clazz, ownerId, balance, expireDate, interest, null, debit);
     }

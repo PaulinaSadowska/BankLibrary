@@ -20,16 +20,12 @@ public class Bank
         _productManager = productManager;
     }
 
-    public boolean createDebit(BigDecimal debitValue, int ownerId)
+    public void createDebit(BigDecimal debitValue, int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
-        if(account.hasDebit())
-        {
-            return false;
-        }
-        account.createDebit(new Debit(debitValue));
-        _globalHistory.add(new Operation(OperationType.MakeDebit, account));
-        return true;
+        account.setDebit(new Debit(debitValue));
+
+        _globalHistory.add(new Operation(OperationType.MakeDebit));
     }
 
     public boolean pay(BigDecimal amount, int ownerId)

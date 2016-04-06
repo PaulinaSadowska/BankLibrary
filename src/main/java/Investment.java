@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by arasz on 18.03.2016.
  * Lokata.
  */
-public class Investment extends Product implements IClosable
+public class Investment extends Product
 {
 
     protected Account _baseAccount;
@@ -20,7 +20,7 @@ public class Investment extends Product implements IClosable
 
     public void close()
     {
-        _history.add(new Operation(OperationType.CloseInvestment, this));
+        _history.add(new Operation(OperationType.CloseInvestment));
 
         BigDecimal initialBalance = _baseAccount.getBalance();
         BigDecimal interest = null;

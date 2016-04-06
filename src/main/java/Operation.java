@@ -11,7 +11,6 @@ public class Operation
     protected OperationType _operationType;
     protected Date _date;
     protected String _description;
-    protected Product _product; // Czy po usunięciu produktu zerujemy tą referencję?
 
 
     public Operation(OperationType operationType)
@@ -19,23 +18,13 @@ public class Operation
         _operationType = operationType;
         _date = Calendar.getInstance().getTime();
         _description = "";
-        _product = null;
     }
 
-    public Operation(OperationType operationType, Product product)
-    {
-        _operationType = operationType;
-        _date = Calendar.getInstance().getTime();
-        _description = "";
-        _product = product;
-    }
-
-    public Operation(OperationType operationType, Product product, String description)
+    public Operation(OperationType operationType, String description)
     {
         _operationType = operationType;
         _date = Calendar.getInstance().getTime();
         _description = description;
-        _product = product;
     }
 
     public OperationType getOperationType() {
