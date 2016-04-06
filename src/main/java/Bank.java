@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by arasz on 02.04.2016.
  */
-public class Bank
+public class Bank implements IHistoryRegistration
 {
     private ProductManager _productManager;
     private OperationsHistory _globalHistory;
@@ -20,10 +20,9 @@ public class Bank
         _productManager = productManager;
     }
 
-    private void addToHistory(OperationType operationType, Product product){
-        Operation operation = new Operation(operationType, product);
-        product.getOperationsHistory().add(operation);
-        _globalHistory.add(operation);
+    public void registerOperation(Operation executedOperation)
+    {
+        _globalHistory.add(executedOperation);
     }
 
     public boolean createDebit(BigDecimal debitValue, int ownerId)
@@ -34,7 +33,7 @@ public class Bank
             return false;
         }
         account.createDebit(new Debit(debitValue));
-        addToHistory(OperationType.MakeDebit, account);
+        registerOperation(new Operation(OperationType.MakeDebit, account));
         return true;
     }
 
@@ -48,7 +47,6 @@ public class Bank
                 return false;
             }
         }
-        addToHistory(OperationType.Payment, account);
         return true;
     }
 
@@ -61,7 +59,6 @@ public class Bank
             {
                 return false;
             }
-            addToHistory(OperationType.Payment, account);
             return true;
         }
         return false;
@@ -75,7 +72,6 @@ public class Bank
             if(!account.transfer(amount, targetAccount)){
                 return false;
             }
-            addToHistory(OperationType.Transfer, account);
             return true;
         }
         return false;
@@ -147,7 +143,6 @@ public class Bank
         {
             List<Loan> loans = _productManager.getLoan(ownerId);
             Loan newLoan = loans.get(loans.size()-1);
-            addToHistory(OperationType.MakeLoan, newLoan);
         }
         return id;
 
@@ -161,7 +156,7 @@ public class Bank
         {
             List<Loan> loans = _productManager.getLoan(id);
             Loan newLoan = loans.get(loans.size()-1);
-            addToHistory(OperationType.MakeLoan, newLoan);
+            new Operation(OperationType.MakeLoan, newLoan);
         }
         return id;
     }
@@ -174,7 +169,7 @@ public class Bank
         {
             List<Investment> investments = _productManager.getInvestment(ownerId);
             Investment newInvestment = investments.get(investments.size()-1);
-            addToHistory(OperationType.OpenInvestment, newInvestment);
+            registerOperation(new Operation(OperationType.OpenInvestment, newInvestment));
         }
         return id;
     }
@@ -187,7 +182,6 @@ public class Bank
         {
             List<Investment> investments = _productManager.getInvestment(id);
             Investment newInvestment = investments.get(investments.size()-1);
-            addToHistory(OperationType.OpenInvestment, newInvestment);
         }
         return id;
     }
