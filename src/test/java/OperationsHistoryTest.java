@@ -25,7 +25,7 @@ public class OperationsHistoryTest
     public void tryGetOperationsWithoutInserting_ThenFail()
     {
         int numberOfOperations = 4;
-        _history.getOperations(4);
+        _history.getOperations(numberOfOperations);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -54,7 +54,7 @@ public class OperationsHistoryTest
     {
         int numberOfOperations = 4;
 
-        for (int i=0; i< numberOfOperations-1; i++)
+        for (int i=0; i< numberOfOperations; i++)
             _history.add(mock(Operation.class));
 
         List<Operation> list = _history.getOperations(numberOfOperations);
@@ -68,7 +68,7 @@ public class OperationsHistoryTest
         int numberOfOperations = 4;
         int numberOfOperationsToGet =2;
 
-        for (int i=0; i< numberOfOperations-1; i++)
+        for (int i=0; i< numberOfOperations; i++)
             _history.add(mock(Operation.class));
 
         List<Operation> list = _history.getOperations(numberOfOperationsToGet);
