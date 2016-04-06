@@ -17,7 +17,7 @@ public class OperationsHistory
 
     public OperationsHistory()
     {
-        //TODO: Linked czy Array? // ArrayList is better!
+        //TODO: Linked czy Array? // ArrayList is better! bo?
         _executedOperations = new ArrayList<Operation>();
     }
 
@@ -27,7 +27,12 @@ public class OperationsHistory
         _globalHistory._executedOperations.add(operation);
     }
 
-    public List<Operation> getLastOperations(int numberOfOperations)
+    public Operation getLastOperation()
+    {
+        return _executedOperations.get(_executedOperations.size()-1);
+    }
+
+    public List<Operation> getOperations(int numberOfOperations)
     {
         return _executedOperations.subList(_executedOperations.size()-numberOfOperations, _executedOperations.size());
     }

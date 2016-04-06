@@ -42,20 +42,14 @@ public class Loan extends Product implements IClosable
      * @invariant:
      * @return False jesli nie mozna spłacić kredytu
      */
-    public boolean close()
+    public void close() throws BankException
     {
+        if(!canClose())
+            throw new BankException("Loan can not be closed",OperationType.RepayLoan);
+
         BigDecimal repayAmount = getLoanRepayAmount();
 
-        boolean canClose = canClose();
-
-        if(canClose)
-        {
-            _baseAccount.setBalance(_baseAccount.getBalance().subtract(repayAmount));
-            _history.add(new Operation(OperationType.RepayLoan, this));
-        }
-
-        return  canClose;
-
-
+        _baseAccount.setBalance(_baseAccount.getBalance().subtract(repayAmount));
+        _history.add(new Operation(OperationType.RepayLoan, this));
     }
 }

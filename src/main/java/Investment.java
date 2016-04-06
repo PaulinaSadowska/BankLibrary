@@ -18,7 +18,7 @@ public class Investment extends Product implements IClosable
 
     }
 
-    public boolean close()
+    public void close()
     {
         _history.add(new Operation(OperationType.CloseInvestment, this));
 
@@ -30,6 +30,5 @@ public class Investment extends Product implements IClosable
 
         _baseAccount.setBalance(initialBalance.add(_balance.add(interest)));
 
-        return true;
     }
 }

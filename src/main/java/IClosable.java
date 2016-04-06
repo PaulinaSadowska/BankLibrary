@@ -5,5 +5,5 @@ import javax.management.OperationsException;
  */
 public interface IClosable
 {
-    boolean close();
+    void close() throws BankException;
 }
