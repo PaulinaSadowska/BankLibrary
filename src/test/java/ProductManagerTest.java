@@ -1,17 +1,14 @@
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+
 
 /**
  * Created by palka on 01.04.2016.

@@ -1,7 +1,11 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.sql.Time;
+import static org.mockito.Matchers.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -45,5 +49,14 @@ public class InterestTest
                 assertEquals(className, TimeDependentInterestCalculationStrategy.class.getName());
             }
         }
+    }
+
+    @Test
+    public void calculateInterestTest(){
+        BigDecimal expectedInterestValue = new BigDecimal(1234);
+        TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
+        when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
+        _interest.setStrategy(strategyMock);
+        assertEquals(_interest.calculateInterest(mock(Product.class)), expectedInterestValue);
     }
 }
