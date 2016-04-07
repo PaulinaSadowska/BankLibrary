@@ -16,7 +16,6 @@ public class TimeDependentInterestCalculationStrategyTest
 {
     private TimeDependentInterestCalculationStrategy interestCalculationStrategy;
     private BigDecimal _balance;
-    private Date _creationDate;
     private Product _product;
     private int _numOfDays;
 
@@ -27,11 +26,11 @@ public class TimeDependentInterestCalculationStrategyTest
         Calendar cal = Calendar.getInstance();
         _numOfDays = 7;
         cal.add(Calendar.DAY_OF_YEAR, (-1) * _numOfDays);
-        _creationDate = cal.getTime();
+        Date creationDate = cal.getTime();
 
         _product = mock(Product.class);
         when(_product.getBalance()).thenReturn(_balance);
-        when(_product.getCreationDate()).thenReturn(_creationDate);
+        when(_product.getCreationDate()).thenReturn(creationDate);
     }
 
     @Test

@@ -1,7 +1,7 @@
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by palka on 01.04.2016.
@@ -27,112 +28,116 @@ public class ProductManagerTest
 
 
     @Test
-    public void createAccountWithoutDebitTest(){
-        try
-        {
-            int ownerId = _manager.getAvailableOwnerId();
-            Product account = _manager.createNewProduct(Account.class, ownerId, mock(BigDecimal.class),
-                    mock(Date.class), mock(Interest.class));
-            assertNotNull(account);
-            assertEquals(ownerId, account.getOwnerId());
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void createAccountWithDebitTest(){
-        int ownerId = _manager.getAvailableOwnerId();
-        //assertTrue(_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest, _debit));
-    }
-
-    @Test
-    public void createLoanWithAccouuntTest()
+    public void createAccountWithoutDebitTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        int ownerId = _manager.getAvailableOwnerId();
-        //_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest);
-        Account account = _manager.getAccount(ownerId).get(0);
-//        assertTrue(_manager.createNewProduct(Loan.class, ownerId, new BigDecimal(700), _nextMonth.getTime(), _interest, account));
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Product account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                    Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        assertEquals((int)ownerId, account.getOwnerId());
     }
 
     @Test
-    public void createInvestmentWithAccountTest()
+    public void createAccountWithDebitTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        int ownerId = _manager.getAvailableOwnerId();
-//        _manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest);
-        Account account = _manager.getAccount(ownerId).get(0);
-//        assertTrue(_manager.createNewProduct(Investment.class, ownerId, new BigDecimal(700), _nextMonth.getTime(), _interest, account));
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Product account = _manager.createNewProduct(Account.class, ownerId, new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3),
+                new Debit(new BigDecimal(123)));
+        assertNotNull(account);
+        assertEquals((int)ownerId, account.getOwnerId());
     }
 
     @Test
-    public void getAccountTest()
+    public void createLoanWithAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        int ownerId = _manager.getAvailableOwnerId();
-//        assertTrue(_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest));
-        Account account =_manager.getAccount(ownerId).get(0);
-        assertEquals(ownerId, account.getOwnerId());
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Account account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+            Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        Loan loan = _manager.createNewProduct(Loan.class, ownerId, new BigDecimal(1500),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3), account);
+        assertNotNull(loan);
+        assertEquals(loan.getOwnerId(), account.getOwnerId());
+    }
+
+   @Test
+    public void createInvestmentWithAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+   {
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Account account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        Investment investment = _manager.createNewProduct(Investment.class, ownerId, new BigDecimal(1500),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3), account);
+        assertNotNull(investment);
+        assertEquals(investment.getOwnerId(), account.getOwnerId());
     }
 
     @Test
-    public void getInvestmentTest()
+    public void getAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        int ownerId = _manager.getAvailableOwnerId();
-//        assertTrue(_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest));
-        Account account =_manager.getAccount(ownerId).get(0);
-//        assertTrue(_manager.createNewProduct(Investment.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest, account));
-        Investment investment =_manager.getInvestment(ownerId).get(0);
-        assertEquals(ownerId, investment.getOwnerId());
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Product account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        assertEquals((int)ownerId, account.getOwnerId());
+        assertTrue(_manager.getAccount(ownerId).contains(account));
     }
 
     @Test
-    public void getLoanTest()
+    public void getInvestmentTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        int ownerId = _manager.getAvailableOwnerId();
-//        assertTrue(_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest));
-        Account account =_manager.getAccount(ownerId).get(0);
-//        assertTrue(_manager.createNewProduct(Loan.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest, account));
-        Loan loan =_manager.getLoan(ownerId).get(0);
-        assertEquals(ownerId, loan.getOwnerId());
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Account account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        Investment investment = _manager.createNewProduct(Investment.class, ownerId, new BigDecimal(1500),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3), account);
+        assertNotNull(investment);
+        assertTrue(_manager.getInvestment(ownerId).contains(investment));
     }
 
     @Test
-    public void getProductListTest()
+    public void getLoanTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        int ownerId = _manager.getAvailableOwnerId();
-//        assertTrue(_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest));
-        List<Account> accounts =_manager.getAccount(ownerId);
-//        assertTrue(_manager.createNewProduct(Loan.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest, accounts.get(0)));
-//        assertTrue(_manager.createNewProduct(Investment.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest, accounts.get(0)));
-//        assertTrue(_manager.createNewProduct(Investment.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest, accounts.get(0)));
-
-        List<Loan> loans =_manager.getLoan(ownerId);
-        List<Investment> investments = _manager.getInvestment(ownerId);
-
-        List<Product> list = _manager.getProductList(ownerId);
-
-        for(Account account: accounts)
-        {
-            assertTrue(list.contains(account));
-        }
-        for(Loan loan : loans)
-        {
-            assertTrue(list.contains(loan));
-        }
-        for(Investment investment: investments)
-        {
-            assertTrue(list.contains(investment));
-        }
-
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Account account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        Loan loan = _manager.createNewProduct(Loan.class, ownerId, new BigDecimal(1500),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3), account);
+        assertNotNull(loan);
+        assertTrue(_manager.getLoan(ownerId).contains(loan));
     }
 
+    @Test
+    public void getProductListTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Account account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        Loan loan = _manager.createNewProduct(Loan.class, ownerId, new BigDecimal(1500),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3), account);
+        assertNotNull(loan);
+        Investment investment = _manager.createNewProduct(Investment.class, ownerId, new BigDecimal(1500),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3), account);
+        assertNotNull(investment);
+        assertTrue(_manager.getProductList(ownerId).contains(loan));
+        assertTrue(_manager.getProductList(ownerId).contains(account));
+        assertTrue(_manager.getProductList(ownerId).contains(investment));
+    }
+
+    @Test
+    public void deleteAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        Integer ownerId = _manager.getAvailableOwnerId();
+        Account account = _manager.createNewProduct(Account.class, ownerId,  new BigDecimal(1200),
+                Calendar.getInstance().getTime(), new Interest(mock(TimeDependentInterestCalculationStrategy.class), 0.3));
+        assertNotNull(account);
+        assertTrue(_manager.getProductList(ownerId).contains(account));
+        _manager.deleteProduct(account);
+        assertFalse(_manager.getProductList(ownerId).contains(account));
+    }
 }

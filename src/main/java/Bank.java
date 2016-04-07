@@ -29,13 +29,6 @@ public class Bank
         _globalHistory.add(new Operation(OperationType.MakeDebit));
     }
 
-    //do czego to?
-    /*public BigDecimal getAccountBalance(int ownerId)
-    {
-        Account account = _productManager.getAccount(ownerId).get(0);
-        return account.getBalance();
-    }*/
-
     /**
      * Utworzenie konta
      * @pre:
