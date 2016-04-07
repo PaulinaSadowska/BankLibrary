@@ -16,6 +16,7 @@ public class Loan extends Product
     public Loan(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
+        _history.add(new Operation(OperationType.MakeLoan));
         _baseAccount = baseAccount;
     }
 

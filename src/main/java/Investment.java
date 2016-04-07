@@ -14,6 +14,7 @@ public class Investment extends Product
     public Investment(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
+        _history.add(new Operation(OperationType.OpenInvestment));
         this._baseAccount = baseAccount;
 
     }
