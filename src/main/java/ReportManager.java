@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class ReportManager
 {
+    OperationsHistory _history = OperationsHistory.getGlobalHistory();
+
     //TODO: Użyć IOC do tworzenia jednej instancji menagera
     private IReportCreationStrategy _reportCreationStrategy;
 
@@ -24,6 +26,7 @@ public class ReportManager
 
     public <T> Report<T>createReport(List<Product> productList)
     {
+        _history.add(new Operation(OperationType.MakeReport));
         return _reportCreationStrategy.createReport(productList);
     }
 }

@@ -42,7 +42,7 @@ public class ProductManager
         else if(value instanceof Date)
         {
             if(Calendar.getInstance().after(value));
-                throw new IllegalArgumentException("Expire date after creation date");
+                throw new IllegalArgumentException("Expire date before creation date");
         }
     }
 
