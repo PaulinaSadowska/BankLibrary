@@ -16,7 +16,7 @@ public class OperationsHistoryTest
     private OperationsHistory _history;
 
     @Before
-    public void create()
+    public void setUp()
     {
         _history = new OperationsHistory();
     }

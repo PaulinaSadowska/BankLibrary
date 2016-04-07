@@ -19,10 +19,6 @@ public class Account extends Product
         this(ownerId, balance, expireDate, interest);
         _debit = debit;
     }
-    public Account(Account account, Debit debit)
-    {
-        this(account.getOwnerId(), account.getBalance(), account.getExpireDate(), account.getInterest(), debit);
-    }
 
     public boolean hasDebit()
     {

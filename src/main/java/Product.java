@@ -36,6 +36,8 @@ public abstract class Product
     }
 
 
+
+
     protected void setBalance(BigDecimal newBalance) { _balance = newBalance;}
 
     public BigDecimal getBalance()
