@@ -41,7 +41,7 @@ public class ProductManager
         }
         else if(value instanceof Date)
         {
-            if(Calendar.getInstance().after(value));
+            if(Calendar.getInstance().getTime().after((Date)value))
                 throw new IllegalArgumentException("Expire date after creation date");
         }
     }

@@ -13,9 +13,11 @@ import static org.junit.Assert.*;
 public class BankTest
 {
     private Bank _bank;
+    private ProductDuration _duration;
 
     @Before
     public void setUp(){
+        _duration = new ProductDuration(1,1);
         _bank = new Bank(new ProductManager());
     }
 
@@ -23,7 +25,7 @@ public class BankTest
     public void createAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
 
-        Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class),
+        Account account = _bank.createAccount(new BigDecimal(1200), _duration,
                 mock(TimeDependentInterestCalculationStrategy.class), 0.5);
         assertNotNull(account);
     }
@@ -31,14 +33,14 @@ public class BankTest
     @Test
     public void createLoanTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        Loan loan = _bank.createLoan(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        Loan loan = _bank.createLoan(new BigDecimal(1200), _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
         assertNotNull(loan);
     }
 
     @Test
     public void createInvestmentTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        Investment investment = _bank.createInvestment(new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+        Investment investment = _bank.createInvestment(new BigDecimal(1200), _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
         assertNotNull(investment);
     }
 
@@ -47,9 +49,9 @@ public class BankTest
     public void createInvestmentToSpecificAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
 
-        Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        Account account = _bank.createAccount(new BigDecimal(1200), _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
         assertNotNull(account);
-        Investment investment = _bank.createInvestment(account.getOwnerId(), new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+        Investment investment = _bank.createInvestment(account.getOwnerId(), new BigDecimal(1200), _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
         assertNotNull(investment);
         assertEquals(account.getOwnerId(), investment.getOwnerId());
     }
@@ -58,9 +60,9 @@ public class BankTest
     @Test
     public void createLoanToAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        Account account = _bank.createAccount(new BigDecimal(1200), _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
         assertNotNull(account);
-        Loan loan = _bank.createLoan(account.getOwnerId(), new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+        Loan loan = _bank.createLoan(account.getOwnerId(), new BigDecimal(1200), _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
         assertNotNull(loan);
         assertEquals(account.getOwnerId(), loan.getOwnerId());
     }
@@ -76,7 +78,7 @@ public class BankTest
     @Test
     public void createAccountWithDebitTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-         Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+         Account account = _bank.createAccount(new BigDecimal(1200), _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
         assertNotNull(account);
         assertFalse(account.hasDebit());
         _bank.createDebit(mock(BigDecimal.class), account.getOwnerId());
