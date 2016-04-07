@@ -6,6 +6,7 @@ import org.mockito.cglib.core.Constants;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.util.Date;
 
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
@@ -15,193 +16,73 @@ import static org.junit.Assert.*;
 public class BankTest
 {
     private Bank _bank;
-    private BigDecimal _balance;
-    private ProductDuration _duration;
-    private ProductManager _productManager;
 
     @Before
     public void setUp(){
-        _productManager = new ProductManager();
-        _bank = new Bank(_productManager);
-        _balance = new BigDecimal(1200);
-        _duration = mock(ProductDuration.class);
+        _bank = new Bank(new ProductManager());
     }
 
     @Test
-    public void createAccountTest()
+    public void createAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        try
-        {
-            Account account = _bank.createAccount(_balance, _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-            assertNotNull(account);
-            assertEquals(_balance, account.getBalance());
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
+
+        Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class),
+                mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        assertNotNull(account);
     }
 
     @Test
-    public void createLoanTest()
+    public void createLoanTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        try
-        {
-            Loan loan = _bank.createLoan(_balance, _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-            assertNotNull(loan);
-            assertEquals(_balance, loan.getBalance());
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
+        Loan loan = _bank.createLoan(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        assertNotNull(loan);
     }
 
     @Test
-    public void createInvestmentTest()
+    public void createInvestmentTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        try
-        {
-            Investment investment = _bank.createInvestment(_balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
-            assertNotNull(investment);
-            assertEquals(_balance, investment.getBalance());
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
+        Investment investment = _bank.createInvestment(new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+        assertNotNull(investment);
     }
 
 
     @Test
-    public void createInvestmentToSpecificAccountTest()
+    public void createInvestmentToSpecificAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        try
-        {
-            Account account = _bank.createAccount(_balance, _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-            assertNotNull(account);
-            Investment investment = _bank.createInvestment(account.getOwnerId(), _balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
-            assertNotNull(investment);
-            assertEquals(_balance, investment.getBalance());
-            assertEquals(account.getOwnerId(), investment.getOwnerId());
 
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        } }
-
-
-    @Test
-    public void createLoanToAccountTest()
-    {
-        try
-        {
-            Account account = _bank.createAccount(_balance, _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-            assertNotNull(account);
-            Loan loan = _bank.createLoan(account.getOwnerId(), _balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
-            assertNotNull(loan);
-            assertEquals(_balance, loan.getBalance());
-            assertEquals(account.getOwnerId(), loan.getOwnerId());
-
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void createLoanToNonexistingAccountTest()
-    {
-        try
-        {
-            int ownerId = 999;
-            _bank.createLoan(ownerId, _balance, _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
-            fail("loan should not be created");
-
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
-        catch(IndexOutOfBoundsException e){
-            //loan should not be created because account don't exist
-        }
+        Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        assertNotNull(account);
+        Investment investment = _bank.createInvestment(account.getOwnerId(), new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+        assertNotNull(investment);
+        assertEquals(account.getOwnerId(), investment.getOwnerId());
     }
 
 
     @Test
-    public void createAccountWithDebitTest()
+    public void createLoanToAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        try
-        {
-            Account account = _bank.createAccount(_balance, _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-            assertNotNull(account);
-            assertEquals(_balance, account.getBalance());
-            assertFalse(account.hasDebit());
-            _bank.createDebit(new BigDecimal(2000), account.getOwnerId());
-            assertTrue(account.hasDebit());
-        } catch (InvocationTargetException e)
-        {
-            fail(e.getMessage());
-        } catch (NoSuchMethodException e)
-        {
-            fail(e.getMessage());
-        } catch (InstantiationException e)
-        {
-            fail(e.getMessage());
-        } catch (IllegalAccessException e)
-        {
-            fail(e.getMessage());
-        }
+        Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        assertNotNull(account);
+        Loan loan = _bank.createLoan(account.getOwnerId(), new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+        assertNotNull(loan);
+        assertEquals(account.getOwnerId(), loan.getOwnerId());
+    }
+
+    @Test (expected=IndexOutOfBoundsException.class)
+    public void createLoanToNonexistingAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        int ownerId = 999;
+        _bank.createLoan(ownerId, new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
+    }
+
+
+    @Test
+    public void createAccountWithDebitTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+         Account account = _bank.createAccount(new BigDecimal(1200), mock(ProductDuration.class), mock(TimeDependentInterestCalculationStrategy.class), 0.5);
+        assertNotNull(account);
+        assertFalse(account.hasDebit());
+        _bank.createDebit(mock(BigDecimal.class), account.getOwnerId());
+        assertTrue(account.hasDebit());
     }
 }

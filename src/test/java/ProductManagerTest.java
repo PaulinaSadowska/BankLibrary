@@ -3,8 +3,10 @@ import com.google.inject.Injector;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,26 +19,35 @@ public class ProductManagerTest
 {
 
     private ProductManager _manager;
-    Calendar _nextMonth;
-    Interest _interest;
-    Debit _debit;
 
     @Before
     public void setUp(){
         _manager = new ProductManager();
-
-        _nextMonth = Calendar.getInstance();
-        _nextMonth.add(Calendar.MONTH, 1);
-        _interest = mock(Interest.class);
-        _debit = new Debit(new BigDecimal(2345));
-
     }
 
 
     @Test
-    public void createAccountTest(){
-        int ownerId = _manager.getAvailableOwnerId();
-       // assertTrue(_manager.createNewProduct(Account.class, ownerId, new BigDecimal(1500), _nextMonth.getTime(), _interest));
+    public void createAccountWithoutDebitTest(){
+        try
+        {
+            int ownerId = _manager.getAvailableOwnerId();
+            Product account = _manager.createNewProduct(Account.class, ownerId, mock(BigDecimal.class),
+                    mock(Date.class), mock(Interest.class));
+            assertNotNull(account);
+            assertEquals(ownerId, account.getOwnerId());
+        } catch (InvocationTargetException e)
+        {
+            fail(e.getMessage());
+        } catch (NoSuchMethodException e)
+        {
+            fail(e.getMessage());
+        } catch (InstantiationException e)
+        {
+            fail(e.getMessage());
+        } catch (IllegalAccessException e)
+        {
+            fail(e.getMessage());
+        }
     }
 
     @Test
