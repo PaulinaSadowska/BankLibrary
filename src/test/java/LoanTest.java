@@ -19,12 +19,6 @@ import static org.mockito.Mockito.when;
  * */
 public class LoanTest {
 
-
-    @Before
-    public void setUp(){
-
-    }
-
     private Account createAccountInstance(BigDecimal balance)
     {
         return new Account(12, balance, mock(Date.class), mock(Interest.class));

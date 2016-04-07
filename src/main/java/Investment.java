@@ -23,9 +23,9 @@ public class Investment extends Product
         _history.add(new Operation(OperationType.CloseInvestment));
 
         BigDecimal initialBalance = _baseAccount.getBalance();
-        BigDecimal interest = null;
+        BigDecimal interest = new BigDecimal(0);
 
-        if(Calendar.getInstance().after(_expireDate))
+        if(Calendar.getInstance().getTime().after(_expireDate))
             interest = _interest.calculateInterest(this);
 
         _baseAccount.setBalance(initialBalance.add(_balance.add(interest)));
