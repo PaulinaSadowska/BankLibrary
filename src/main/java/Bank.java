@@ -29,11 +29,12 @@ public class Bank
         _globalHistory.add(new Operation(OperationType.MakeDebit));
     }
 
-    public BigDecimal getAccountBalance(int ownerId)
+    //do czego to?
+    /*public BigDecimal getAccountBalance(int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
         return account.getBalance();
-    }
+    }*/
 
     /**
      * Utworzenie konta
@@ -52,7 +53,7 @@ public class Bank
      */
     private <T extends Product> T createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IndexOutOfBoundsException
     {
         Account account = null;
         Interest interest = new Interest(interestStrategy, interestPercent);
@@ -84,7 +85,7 @@ public class Bank
 
     public Loan createLoan(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
     {
         return createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
 
@@ -92,21 +93,21 @@ public class Bank
 
     public Loan createLoan(BigDecimal balance,
                               ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
     {
         return createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
     }
 
     public Investment createInvestment(Integer ownerId, BigDecimal balance,
                                  ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
     {
         return createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
     }
 
     public Investment createInvestment(BigDecimal balance,
                                     ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
     {
         return createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
     }
