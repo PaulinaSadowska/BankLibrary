@@ -1,6 +1,8 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -8,84 +10,55 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- * Created by palka on 31.03.2016.
+ * Created by Paulina Sadowska on 31.03.2016.
  * */
 public class LoanTest {
 
-   /* Loan _endedLoan;
-    Loan _ongoingLoan;
-    BigDecimal _expectedBalance;
-    Calendar _expectedCreationDate;
-    Calendar _weekAgoDate;
-    Calendar _nextWeekDate;
-    Interest _expectedInterest;
-    int _ownerId;
-    Debit _accountDebit;
 
     @Before
     public void setUp(){
-        _weekAgoDate  = Calendar.getInstance();
-        _weekAgoDate.add(Calendar.DAY_OF_YEAR, -7);
 
-        _nextWeekDate  = Calendar.getInstance();
-        _nextWeekDate.add(Calendar.DAY_OF_YEAR, 7);
+    }
 
-        _expectedBalance = new BigDecimal(1500);
-        _expectedCreationDate = Calendar.getInstance();
-        _expectedInterest = new Interest(0.5);
-
-        _ownerId = 1234;
-
-        BigDecimal debitValue = new BigDecimal(3000);
-        _accountDebit = new Debit(debitValue);
-
-
-        Account account = null;
-        try {
-            account = (Account)MockFactory.CreateProductMock(_expectedBalance, _accountDebit, Account.class);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        _endedLoan = new Loan(_expectedBalance, _weekAgoDate.getTime(), _expectedInterest,  _ownerId, account);
-        _ongoingLoan = new Loan(_expectedBalance, _nextWeekDate.getTime(), _expectedInterest, _ownerId, account);
+    private Account createAccountInstance(BigDecimal balance)
+    {
+        return new Account(12, balance, mock(Date.class), mock(Interest.class));
     }
 
     @Test
-    public void expiredTest(){
-        assertTrue(_endedLoan.expired());
-        assertFalse(_ongoingLoan.expired());
+    public void repayLoanTest() throws BankException
+    {
+        BigDecimal accountBalance = new BigDecimal(1200);
+        BigDecimal loanBalance = new BigDecimal(200);
+
+        Account account = createAccountInstance(accountBalance);
+
+        Interest interest = mock(Interest.class);
+        when(interest.calculateInterest(any(Product.class))).thenReturn(new BigDecimal(0));
+
+        Loan loan = new Loan(12, loanBalance, mock(Date.class), interest, account);
+        loan.repay();
+        assertEquals(account.getBalance(), accountBalance.subtract(loanBalance));
     }
 
-    @Test
-    public void getBalanceTest(){
-        assertEquals(_expectedBalance, _endedLoan.getBalance());
-        assertEquals(_expectedBalance, _ongoingLoan.getBalance());
-    }
+    @Test (expected = BankException.class)
+    public void failToRepayLoanTest() throws BankException
+    {
+        BigDecimal accountBalance = new BigDecimal(1200);
+        BigDecimal loanBalance = new BigDecimal(2000);
 
-    @Test
-    public void getCreationDateTest(){
-        assertEquals(_expectedCreationDate.getTime(), _endedLoan.getCreationDate());
-        assertEquals(_expectedCreationDate.getTime(), _ongoingLoan.getCreationDate());
-    }
+        Account account = createAccountInstance(accountBalance);
 
-    @Test
-    public void getExpirationDateTest(){
-        assertEquals(_weekAgoDate.getTime(), _endedLoan.getExpireDate());
-        assertEquals(_nextWeekDate.getTime(), _ongoingLoan.getExpireDate());
-    }
+        Interest interest = mock(Interest.class);
+        when(interest.calculateInterest(any(Product.class))).thenReturn(new BigDecimal(0));
 
-    @Test
-    public void getInterestTest(){
-        assertEquals(_expectedInterest, _endedLoan.getInterest());
-        assertEquals(_expectedInterest, _ongoingLoan.getInterest());
+        Loan loan = new Loan(12, loanBalance, mock(Date.class), interest, account);
+        loan.repay();
     }
-*/
 }
 
