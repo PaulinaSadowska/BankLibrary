@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,8 +17,10 @@ public class OperationsHistory
 
     public OperationsHistory()
     {
-        //TODO: Linked czy Array? // ArrayList is better! bo?
-        _executedOperations = new ArrayList<Operation>();
+        //TODO: Linked czy Array?
+        // http://beginnersbook.com/2013/12/difference-between-arraylist-and-linkedlist-in-java/
+        // "if there is a requirement of frequent addition and deletion in application then LinkedList is a best choice."
+        _executedOperations = new LinkedList<Operation>();
     }
 
     public void add(Operation operation)

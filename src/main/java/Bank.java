@@ -29,46 +29,6 @@ public class Bank
         _globalHistory.add(new Operation(OperationType.MakeDebit));
     }
 
-   /* public boolean pay(BigDecimal amount, int ownerId)
-    {
-        Account account = _productManager.getAccount(ownerId).get(0);
-        if(account!=null)
-        {
-            if(!account.payment(amount, PaymentDirection.Out))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean deposit(BigDecimal amount, int ownerId)
-    {
-        Account account = _productManager.getAccount(ownerId).get(0);
-        if(account!=null)
-        {
-            if(!account.payment(amount, PaymentDirection.In))
-            {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public boolean transfer(BigDecimal amount, int ownerId, int targetOwnerId)
-    {
-        Account account = _productManager.getAccount(ownerId).get(0);
-        Account targetAccount = _productManager.getAccount(targetOwnerId).get(0);
-        if(account!=null){
-            if(!account.transfer(amount, targetAccount)){
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }*/
-
     public BigDecimal getAccountBalance(int ownerId)
     {
         Account account = _productManager.getAccount(ownerId).get(0);
