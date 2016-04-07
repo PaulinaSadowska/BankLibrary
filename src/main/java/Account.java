@@ -66,7 +66,7 @@ public class Account extends Product
         }
         catch (Exception ex)
         {
-            BankException exception = (new BankException("Error during transfer.", OperationType.Transfer));
+            BankException exception = new BankException("Error during transfer.", OperationType.Transfer);
             exception.initCause(ex);
             throw exception;
         }

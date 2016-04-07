@@ -5,6 +5,11 @@ public class BankException extends Exception
 {
     private  OperationType _operationType;
 
+    public BankException(String message)
+    {
+        this(message, OperationType.None);
+    }
+
     public BankException(String message, OperationType operationType)
     {
         super(message);

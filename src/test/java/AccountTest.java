@@ -154,7 +154,6 @@ public class AccountTest
         int expectrdValue = balance ;
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
-        BigDecimal expectedAmount = new BigDecimal(expectrdValue);
 
         _account = createInstance(balance, debit);
 
@@ -174,25 +173,94 @@ public class AccountTest
         _account.transfer(transferAmount, null);
     }
 
-    @Test
+    @Test(expected = BankException.class)
     public void makeTransferForAmountGreaterThanBalanceNoDebit_ThenThrowBankException() throws BankException
     {
         int balance = 500;
-        int transferValue = 200;
-        int localExpectedValue = balance - transferValue;
-        int targetExpectedValue = balance +transferValue;
+        int transferValue = 600;
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
-        BigDecimal localExpectedAmount = new BigDecimal(localExpectedValue);
-        BigDecimal targetExpectedAmount = new BigDecimal(targetExpectedValue);
 
         _account = createInstance(balance);
         Account targetAccount = createInstance(balance);
 
         _account.transfer(transferAmount, targetAccount);
-
-        Assert.assertEquals(localExpectedAmount, _account.getBalance());
-        Assert.assertEquals(targetExpectedAmount, targetAccount.getBalance());
     }
+
+    @Test(expected = BankException.class)
+    public void makeTransferForAmountGreaterThanBalancePlusDebit_ThenThrowBankException() throws BankException
+    {
+        int debit = 100;
+        int balance = 500;
+        int transferValue = 610;
+
+        BigDecimal transferAmount = new BigDecimal(transferValue);
+
+        _account = createInstance(balance, debit);
+        Account targetAccount = createInstance(balance);
+
+        _account.transfer(transferAmount, targetAccount);
+    }
+
+    @Test
+    public void makeTransferForAmountEqualToBalancePlusDebit_ThenBalancesChanges() throws BankException
+    {
+        int debit = 100;
+        int balance = 500;
+        int transferValue = 600;
+        int localBalanceAfterTransfer = -debit;
+        int targetBalanceAfterTransfer = transferValue + balance;
+
+        BigDecimal transferAmount = new BigDecimal(transferValue);
+        BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
+        BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
+
+        _account = createInstance(balance, debit);
+        Account targetAccount = createInstance(balance);
+
+        _account.transfer(transferAmount, targetAccount);
+
+        Assert.assertEquals(expectedLocalBalance, _account.getBalance());
+        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
+    }
+
+    @Test
+    public void makeTransferForAmountLessThanBalancePlusDebit_ThenBalancesChanges() throws BankException
+    {
+        int debit = 100;
+        int balance = 680;
+        int transferValue = 600;
+        int localBalanceAfterTransfer = balance - transferValue;
+        int targetBalanceAfterTransfer = transferValue + balance;
+
+        BigDecimal transferAmount = new BigDecimal(transferValue);
+        BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
+        BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
+
+        _account = createInstance(balance, debit);
+        Account targetAccount = createInstance(balance);
+
+        _account.transfer(transferAmount, targetAccount);
+
+        Assert.assertEquals(expectedLocalBalance, _account.getBalance());
+        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
+    }
+
+    @Test(expected = BankException.class)
+    public void makeTransferForWrongAmount_ThenThrowsException() throws BankException
+    {
+        int debit = 100;
+        int balance = 680;
+        int transferValue = -600;
+
+        BigDecimal transferAmount = new BigDecimal(transferValue);
+
+        _account = createInstance(balance, debit);
+        Account targetAccount = createInstance(balance);
+
+        _account.transfer(transferAmount, targetAccount);
+
+    }
+
 
 }

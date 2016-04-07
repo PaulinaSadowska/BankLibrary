@@ -1,7 +1,9 @@
 /**
  * Created by palka on 11.03.2016.
  */
-public enum OperationType {
+public enum OperationType
+{
+    None,
     MakeDebit,
     CalculateInterest,
     ChangeInterestMachanizm,
@@ -11,5 +13,5 @@ public enum OperationType {
     RepayLoan,
     Transfer,
     Payment,
-    makeReport
+    MakeReport
 }

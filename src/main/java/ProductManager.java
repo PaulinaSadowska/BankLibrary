@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -24,6 +25,26 @@ public class ProductManager
         return _products.get(ownerId);
     }
 
+    private <T> void  validateInput(T input)
+    {
+        T value = input;
+
+        if(value instanceof Integer)
+        {
+            if(((Integer)value) < 0)
+                throw new IllegalArgumentException("Owner id cant be less than 0");
+        }
+        else if(value instanceof BigDecimal)
+        {
+            if(((BigDecimal) value).longValue() < 0)
+                throw new IllegalArgumentException("Balance cant be initialized with value less than  0");
+        }
+        else if(value instanceof Date)
+        {
+            if(Calendar.getInstance().after(value));
+                throw new IllegalArgumentException("Expire date after creation date");
+        }
+    }
 
     public  <T extends Product> void deleteProduct(T product)
     {
@@ -38,6 +59,11 @@ public class ProductManager
                                                       Interest interest, Account baseAccount, Debit debit)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
+
+            validateInput(ownerId);
+            validateInput(balance);
+            validateInput(expireDate);
+
             T product = null;
             //find proper constructor and initialize
             Constructor<T> constructor;
