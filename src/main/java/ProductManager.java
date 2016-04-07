@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -41,7 +40,7 @@ public class ProductManager
         }
         else if(value instanceof Date)
         {
-            if(Calendar.getInstance().after(value));
+            if(Calendar.getInstance().getTime().after((Date)value))
                 throw new IllegalArgumentException("Expire date before creation date");
         }
     }
