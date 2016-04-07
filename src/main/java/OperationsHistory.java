@@ -33,6 +33,6 @@ public class OperationsHistory
 
     public List<Operation> getOperations(int numberOfOperations)
     {
-        return _executedOperations.subList(_executedOperations.size()-numberOfOperations, _executedOperations.size());
+        return  _executedOperations.subList(_executedOperations.size()-numberOfOperations, _executedOperations.size());
     }
 }

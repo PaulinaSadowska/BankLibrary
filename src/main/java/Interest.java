@@ -8,6 +8,8 @@ import java.math.BigDecimal;
  */
 public class Interest
 {
+    OperationsHistory _history = OperationsHistory.getGlobalHistory();
+
     private IInterestCalculationStrategy _interestCalculationStrategy;
 
     private double _percent;
@@ -21,11 +23,13 @@ public class Interest
 
     public void setStrategy(IInterestCalculationStrategy strategy)
     {
+        _history.add(new Operation(OperationType.ChangeInterestMechanism));
         _interestCalculationStrategy = strategy;
     }
 
     public BigDecimal calculateInterest(Product product)
     {
+        product.getOperationsHistory().add(new Operation(OperationType.CalculateInterest));
         return _interestCalculationStrategy.calculateInterest(product, _percent);
     }
 }

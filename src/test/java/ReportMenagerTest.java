@@ -3,7 +3,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +24,7 @@ public class ReportMenagerTest
         when(reportMock.getReport()).thenReturn(_reportString);
 
         IReportCreationStrategy reportCreationStrategyMock = mock(DefaultReportCreationStrategy.class);
-        when(reportCreationStrategyMock.createReport(new ArrayList<Product>())).thenReturn(reportMock);
+        when(reportCreationStrategyMock.createReport(any(List.class))).thenReturn(reportMock);
 
         _reportManager = new ReportManager(reportCreationStrategyMock);
     }

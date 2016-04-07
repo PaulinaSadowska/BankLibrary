@@ -55,8 +55,10 @@ public class InterestTest
     public void calculateInterestTest(){
         BigDecimal expectedInterestValue = new BigDecimal(1234);
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
+        Product productMock = mock(Product.class);
+        when(productMock.getOperationsHistory()).thenReturn(new OperationsHistory());
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
         _interest.setStrategy(strategyMock);
-        assertEquals(_interest.calculateInterest(mock(Product.class)), expectedInterestValue);
+        assertEquals(_interest.calculateInterest(productMock), expectedInterestValue);
     }
 }

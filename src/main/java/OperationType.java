@@ -6,7 +6,7 @@ public enum OperationType
     None,
     MakeDebit,
     CalculateInterest,
-    ChangeInterestMachanizm,
+    ChangeInterestMechanism,
     OpenInvestment,
     CloseInvestment,
     MakeLoan,

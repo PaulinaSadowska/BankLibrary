@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,21 +24,17 @@ public class AccountTest
 
     private Account createInstance(int balance)
     {
-        Interest intrestMock = mock(Interest.class);
-        when(intrestMock.calculateInterest(mock(Account.class))).thenReturn(new BigDecimal(100));
-
-        return new Account(12, new BigDecimal(balance), mock(Date.class), intrestMock);
+        Interest interestMock = mock(Interest.class);
+        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock);
     }
 
     private Account createInstance(int balance, int debitValue)
     {
-        Interest intrestMock = mock(Interest.class);
-        when(intrestMock.calculateInterest(mock(Account.class))).thenReturn(new BigDecimal(100));
-
+        Interest interestMock = mock(Interest.class);
         Debit debitMock = mock(Debit.class);
         when(debitMock.getDebitValue()).thenReturn(new BigDecimal(debitValue));
 
-        return new Account(12, new BigDecimal(balance), mock(Date.class), intrestMock, debitMock);
+        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock);
     }
 
     @Test
