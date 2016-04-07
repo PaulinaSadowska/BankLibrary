@@ -98,21 +98,26 @@ public class Account extends Product
                 // Zwraca 1 gdy amount jest wieksza od balance
                 if(amount.compareTo(productBalance) > 0)
                 {
-                    if(getDebit()!=null)
+                    if(hasDebit())
                     {
                         BigDecimal balancePlusDebit = getBalanceWithDebit();
 
-                        if(balancePlusDebit.compareTo(amount) >= 0)
+                        if (balancePlusDebit.compareTo(amount) >= 0)
+                        {
                             setBalance(productBalance.subtract(amount));
+                            return;
+                        }
                     }
-                    else
-                        throw new BankException("Output payment grater than account balance", OperationType.Payment);
                 }
-
-                BigDecimal newBalance = getBalance().subtract(amount);
-                setBalance(newBalance);
-                break;
+                else
+                {
+                    BigDecimal newBalance = getBalance().subtract(amount);
+                    setBalance(newBalance);
+                    return;
+                }
+                throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
             }
+
         }
         _history.add(new Operation(OperationType.Payment));
     }
