@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by palka on 07.04.2016.
+ * Created by Paulina Sadowska on 07.04.2016.
  */
 public class TimeDependentInterestCalculationStrategyTest
 {
