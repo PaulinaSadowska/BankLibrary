@@ -2,10 +2,9 @@ package Bank;
 
 import Operations.Operation;
 import Operations.OperationType;
-import Products.Account;
-import Products.Investment;
-import Products.Loan;
-import Products.Product;
+import Products.*;
+import Utils.IInterestCalculationStrategy;
+import Utils.OperationsHistory;
 import com.google.inject.Inject;
 
 import java.lang.reflect.InvocationTargetException;

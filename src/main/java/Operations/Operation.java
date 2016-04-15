@@ -1,5 +1,6 @@
 package Operations;
 
+import Bank.BankException;
 import Operations.OperationType;
 
 import java.util.Calendar;
@@ -32,10 +33,22 @@ public class Operation
         _description = description;
     }
 
-    public void checkExecuted() throws BankException
+    public void checkExecuted(boolean undo) throws BankException
     {
-        if(_executed)
-            throw new BankException("Operation can't be executed more than oncee");
+        if(_executed && !undo)
+            throw new BankException("Operation can't be executed more than once");
+        else if(!_executed && undo)
+            throw new BankException("Operation not executed and undo called");
+    }
+
+    public  boolean getExecuted()
+    {
+        return _executed;
+    }
+
+    protected void setExecuted(boolean executed)
+    {
+        _executed = executed;
     }
 
     public OperationType getOperationType() {

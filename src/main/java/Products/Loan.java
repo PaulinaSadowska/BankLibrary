@@ -1,5 +1,8 @@
 package Products;
 
+import Bank.BankException;
+import Operations.Operation;
+import Operations.OperationType;
 import Products.Account;
 
 import java.math.BigDecimal;

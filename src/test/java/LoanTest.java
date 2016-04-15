@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

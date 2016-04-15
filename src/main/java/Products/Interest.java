@@ -3,6 +3,8 @@ package Products;
 import Operations.Operation;
 import Operations.OperationType;
 import Products.Product;
+import Utils.IInterestCalculationStrategy;
+import Utils.OperationsHistory;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;

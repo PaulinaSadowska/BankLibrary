@@ -11,4 +11,9 @@ public interface ICommand
      * Executes command
      */
     void execute() throws BankException;
+
+    /**
+     * Undo command
+     */
+    void undo() throws BankException;
 }

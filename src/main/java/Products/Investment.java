@@ -1,5 +1,7 @@
 package Products;
 
+import Operations.Operation;
+import Operations.OperationType;
 import Products.Account;
 
 import java.math.BigDecimal;

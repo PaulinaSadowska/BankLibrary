@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static Utils.ProductFactory.createAccount;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -24,21 +25,6 @@ public class AccountTest
 {
     private Account _account;
 
-    private Account createInstance(int balance)
-    {
-        Interest interestMock = mock(Interest.class);
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock);
-    }
-
-    private Account createInstance(int balance, int debitValue)
-    {
-        Interest interestMock = mock(Interest.class);
-        Debit debitMock = mock(Debit.class);
-        when(debitMock.getDebitValue()).thenReturn(new BigDecimal(debitValue));
-
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock);
-    }
-
     @Test
     public void  paymentIn500_ThenBalanceIncreasedBy500() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
     {
@@ -47,7 +33,7 @@ public class AccountTest
         int expectedValue = balance+paymentValue;
 
         //Inicjalizacja
-        _account = createInstance(balance);
+        _account = createAccount(balance);
 
         BigDecimal expectedAmount = new BigDecimal(expectedValue);
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
@@ -58,7 +44,7 @@ public class AccountTest
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BankException.class)
     public void paymentInNegativeAmount_ThenThrowsException() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
     {
         int balance = 0;
@@ -67,7 +53,7 @@ public class AccountTest
         //Inicjalizacja
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
-        _account = createInstance(balance);
+        _account = createAccount(balance);
         _account.doOperation(new PaymentOperation(_account, PaymentDirection.In, paymentAmount, OperationType.Payment));
     }
 
@@ -83,7 +69,7 @@ public class AccountTest
         BigDecimal expectedAmount = new BigDecimal(expectedValue);
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
-        _account = createInstance(balance);
+        _account = createAccount(balance);
 
         _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
@@ -102,7 +88,7 @@ public class AccountTest
         BigDecimal expectedAmount = new BigDecimal(expectedValue);
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
-        _account = createInstance(balance);
+        _account = createAccount(balance);
 
         _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
     }
@@ -118,7 +104,7 @@ public class AccountTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
         BigDecimal expectedAmount = new BigDecimal(expectedValue);
 
-        _account = createInstance(balance, debit);
+        _account = createAccount(balance, debit);
 
         _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
@@ -136,7 +122,7 @@ public class AccountTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
         BigDecimal expectedAmount = new BigDecimal(-debit);
 
-        _account = createInstance(balance, debit);
+        _account = createAccount(balance, debit);
 
         _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
@@ -154,7 +140,7 @@ public class AccountTest
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
-        _account = createInstance(balance, debit);
+        _account = createAccount(balance, debit);
 
         _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
     }
@@ -167,7 +153,7 @@ public class AccountTest
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
-        _account = createInstance(balance);
+        _account = createAccount(balance);
 
         _account.doOperation(new TransferOperation(_account, null, transferAmount, OperationType.Payment));
     }
@@ -180,8 +166,8 @@ public class AccountTest
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
-        _account = createInstance(balance);
-        Account targetAccount = createInstance(balance);
+        _account = createAccount(balance);
+        Account targetAccount = createAccount(balance);
 
         _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
     }
@@ -195,8 +181,8 @@ public class AccountTest
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
-        _account = createInstance(balance, debit);
-        Account targetAccount = createInstance(balance);
+        _account = createAccount(balance, debit);
+        Account targetAccount = createAccount(balance);
 
         _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
     }
@@ -214,8 +200,8 @@ public class AccountTest
         BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
         BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
 
-        _account = createInstance(balance, debit);
-        Account targetAccount = createInstance(balance);
+        _account = createAccount(balance, debit);
+        Account targetAccount = createAccount(balance);
 
         _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
 
@@ -236,8 +222,8 @@ public class AccountTest
         BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
         BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
 
-        _account = createInstance(balance, debit);
-        Account targetAccount = createInstance(balance);
+        _account = createAccount(balance, debit);
+        Account targetAccount = createAccount(balance);
 
         _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
 
@@ -246,7 +232,7 @@ public class AccountTest
     }
 
     @Test(expected = BankException.class)
-    public void makeTransferForWrongAmount_ThenThrowsException() throws BankException
+    public void makeTransfer_wrongAmount_ThrowsException() throws BankException
     {
         int debit = 100;
         int balance = 680;
@@ -254,11 +240,10 @@ public class AccountTest
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
-        _account = createInstance(balance, debit);
-        Account targetAccount = createInstance(balance);
+        _account = createAccount(balance, debit);
+        Account targetAccount = createAccount(balance);
 
         _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
-
     }
 
 

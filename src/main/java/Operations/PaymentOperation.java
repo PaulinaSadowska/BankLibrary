@@ -1,5 +1,6 @@
 package Operations;
 
+import Bank.BankException;
 import Products.Account;
 
 import java.math.BigDecimal;
@@ -24,10 +25,11 @@ public class PaymentOperation extends Operation implements ICommand
     @Override
     public void execute() throws BankException
     {
-        checkExecuted();
+        if(getExecuted())
+            return;
 
         if(amount.longValueExact() < 0)
-            throw new IllegalArgumentException("Negative amount.");
+            throw new BankException("Negative amount");
 
         switch (direction)
         {
@@ -42,27 +44,37 @@ public class PaymentOperation extends Operation implements ICommand
 
                 BigDecimal productBalance = sourceAccount.getBalance();
                 // Zwraca 1 gdy amount jest wieksza od balance
-                if (amount.compareTo(productBalance) > 0)
-                {
-                    if (sourceAccount.hasDebit())
-                    {
-                        BigDecimal balancePlusDebit = sourceAccount.getBalanceWithDebit();
-
-                        if (balancePlusDebit.compareTo(amount) >= 0)
-                        {
-                            sourceAccount.setBalance(productBalance.subtract(amount));
-                            return;
-                        }
-                    }
-                }
-                else
+                if (amount.compareTo(productBalance) <= 0)
                 {
                     BigDecimal newBalance = sourceAccount.getBalance().subtract(amount);
                     sourceAccount.setBalance(newBalance);
-                    return;
                 }
-                throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
+                else
+                {
+                    if (!sourceAccount.hasDebit())
+                        throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
+
+                    BigDecimal balancePlusDebit = sourceAccount.getBalanceWithDebit();
+
+                    if (balancePlusDebit.compareTo(amount) < 0)
+                        throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
+
+                    sourceAccount.setBalance(productBalance.subtract(amount));
+                }
+                break;
             }
         }
-        }
+        _executed = true;
+    }
+
+    @Override
+    public void undo() throws BankException
+    {
+        if(!getExecuted())
+            return;
+
+        direction = (direction == PaymentDirection.In) ? PaymentDirection.Out : PaymentDirection.In;
+        setExecuted(false);
+        execute();
+    }
 }

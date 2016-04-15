@@ -1,6 +1,7 @@
 package Products;
 
 import Products.Account;
+import Utils.OperationsHistory;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -42,7 +43,7 @@ public abstract class Product
 
 
 
-    protected void setBalance(BigDecimal newBalance)
+    public void setBalance(BigDecimal newBalance)
     {
         _balance = newBalance;
     }

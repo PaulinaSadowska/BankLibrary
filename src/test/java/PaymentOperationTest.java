@@ -5,6 +5,7 @@ import Operations.PaymentOperation;
 import Operations.PaymentDirection;
 import Products.Account;
 import Products.Interest;
+import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,23 +19,29 @@ import static org.mockito.Mockito.mock;
  */
 public class PaymentOperationTest
 {
-    //TODO: move it to separate class because DRY
-    private Account createInstance(int balance)
+    @Test
+    public void makePayment_directionInAmountCorrect_increaseAmountBalance() throws BankException
     {
-        Interest interestMock = mock(Interest.class);
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock);
+        Account account = ProductFactory.createAccount(0);
+        BigDecimal amount = new BigDecimal(10);
+
+        ICommand command = new PaymentOperation(account, PaymentDirection.In, amount, OperationType.Payment);
+
+        command.execute();
+
+        Assert.assertEquals(account.getBalance(), amount);
     }
 
     @Test
-    public void testExecute_directionInAmmountCorrect_increaseAmountBalance() throws BankException
+    public void makeAndUndoPayment_directionOutCorrectAmount_balanceNotChanged() throws BankException
     {
-        Account account = createInstance(0);
-        BigDecimal ammount = new BigDecimal(10);
-
-        ICommand commmand = new PaymentOperation(account, PaymentDirection.In, ammount, OperationType.Payment);
-
-        commmand.execute();
-
-        Assert.assertEquals(account.getBalance(), ammount);
+        int balance = 100;
+        Account account = ProductFactory.createAccount(balance);
+        BigDecimal amount = new BigDecimal(50);
+        ICommand command = new PaymentOperation(account, PaymentDirection.Out, amount, OperationType.Payment);
+        command.execute();
+        Assert.assertEquals(amount, account.getBalance());
+        command.undo();
+        Assert.assertEquals(new BigDecimal(balance), account.getBalance());
     }
 }
