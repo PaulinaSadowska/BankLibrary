@@ -46,7 +46,7 @@ public class Loan extends Product
     public void repay() throws BankException
     {
         if(!canClose())
-            throw new BankException("Loan can not be closed",OperationType.RepayLoan);
+            throw new BankException("Loan can not be closed", OperationType.RepayLoan);
 
         BigDecimal repayAmount = getLoanRepayAmount();
 
