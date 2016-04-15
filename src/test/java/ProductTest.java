@@ -1,3 +1,6 @@
+import Products.Account;
+import Products.Interest;
+import Products.Product;
 import org.junit.*;
 
 import java.math.BigDecimal;

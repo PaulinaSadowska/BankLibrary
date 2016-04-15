@@ -1,0 +1,53 @@
+package Operations;
+
+import Operations.OperationType;
+
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * @author Arasz
+ * Reprezentuje operacje wykonana przez bank
+ **/
+public class Operation
+{
+
+    protected OperationType _operationType;
+    protected Date _date;
+    protected String _description;
+    protected boolean _executed;
+
+
+    public Operation(OperationType operationType)
+    {
+        _operationType = operationType;
+        _date = Calendar.getInstance().getTime();
+        _description = "";
+    }
+
+    public Operation(OperationType operationType, String description)
+    {
+        _operationType = operationType;
+        _date = Calendar.getInstance().getTime();
+        _description = description;
+    }
+
+    public void checkExecuted() throws BankException
+    {
+        if(_executed)
+            throw new BankException("Operation can't be executed more than oncee");
+    }
+
+    public OperationType getOperationType() {
+        return _operationType;
+    }
+
+    public Date getDate() {
+        return _date;
+    }
+
+    public String getDescription() {
+        return _description;
+    }
+
+}

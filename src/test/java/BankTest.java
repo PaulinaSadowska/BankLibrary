@@ -1,4 +1,7 @@
 
+import Bank.Bank;
+import Products.*;
+import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,12 +1,14 @@
-import org.junit.After;
+import Bank.BankException;
+import Operations.OperationType;
+import Operations.PaymentOperation;
+import Operations.PaymentDirection;
+import Operations.TransferOperation;
+import Products.Account;
+import Products.Debit;
+import Products.Interest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -51,7 +53,7 @@ public class AccountTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
         //Test
-        _account.doOperation(new PaymentCommand(_account,PaymentDirection.In, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.In, paymentAmount, OperationType.Payment));
         //Sprawdzenie
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -66,7 +68,7 @@ public class AccountTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
         _account = createInstance(balance);
-        _account.doOperation(new PaymentCommand(_account, PaymentDirection.In, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.In, paymentAmount, OperationType.Payment));
     }
 
     @Test
@@ -83,7 +85,7 @@ public class AccountTest
 
         _account = createInstance(balance);
 
-        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -102,7 +104,7 @@ public class AccountTest
 
         _account = createInstance(balance);
 
-        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
     }
 
     @Test
@@ -118,7 +120,7 @@ public class AccountTest
 
         _account = createInstance(balance, debit);
 
-        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -136,7 +138,7 @@ public class AccountTest
 
         _account = createInstance(balance, debit);
 
-        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -154,7 +156,7 @@ public class AccountTest
 
         _account = createInstance(balance, debit);
 
-        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
+        _account.doOperation(new PaymentOperation(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
     }
 
     @Test(expected = NullPointerException.class)
@@ -167,7 +169,7 @@ public class AccountTest
 
         _account = createInstance(balance);
 
-        _account.doOperation(new TransferCommand(_account, null, transferAmount, OperationType.Payment));
+        _account.doOperation(new TransferOperation(_account, null, transferAmount, OperationType.Payment));
     }
 
     @Test(expected = BankException.class)
@@ -181,7 +183,7 @@ public class AccountTest
         _account = createInstance(balance);
         Account targetAccount = createInstance(balance);
 
-        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
+        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
     }
 
     @Test(expected = BankException.class)
@@ -196,7 +198,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
+        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
     }
 
     @Test
@@ -215,7 +217,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
+        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedLocalBalance, _account.getBalance());
         Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
@@ -237,7 +239,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
+        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedLocalBalance, _account.getBalance());
         Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
@@ -255,7 +257,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
+        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
 
     }
 

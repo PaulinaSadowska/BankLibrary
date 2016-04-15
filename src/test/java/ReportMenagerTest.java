@@ -1,3 +1,8 @@
+import Products.Product;
+import Utils.DefaultReportCreationStrategy;
+import Utils.IReportCreationStrategy;
+import Utils.Report;
+import Utils.ReportManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

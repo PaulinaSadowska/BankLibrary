@@ -1,3 +1,5 @@
+import Products.Product;
+import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
 

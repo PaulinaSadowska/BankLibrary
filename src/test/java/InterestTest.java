@@ -1,10 +1,14 @@
+import Products.Interest;
+import Products.Product;
+import Utils.IInterestCalculationStrategy;
+import Utils.OperationsHistory;
+import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.sql.Time;
+
 import static org.mockito.Matchers.*;
 
 import static org.junit.Assert.*;

@@ -1,3 +1,7 @@
+import Products.Account;
+import Products.Product;
+import Utils.DefaultReportCreationStrategy;
+import Utils.Report;
 import org.junit.*;
 
 import java.util.LinkedList;
