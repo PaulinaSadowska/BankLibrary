@@ -21,47 +21,6 @@ public class PaymentCommand extends Operation implements ICommand
     public void execute() throws BankException
     {
         checkExecuted();
-
-        if(amount.longValueExact() < 0)
-            throw new IllegalArgumentException("Negative amount.");
-
-        switch (direction)
-        {
-            case In:
-            {
-                BigDecimal newBalance = sourceAccount.getBalance().add(amount);
-                sourceAccount.setBalance(newBalance);
-                _executed = true;
-                break;
-            }
-            case Out:
-            {
-
-                BigDecimal productBalance = sourceAccount.getBalance();
-                // Zwraca 1 gdy amount jest wieksza od balance
-                if(amount.compareTo(productBalance) > 0)
-                {
-                    if(sourceAccount.hasDebit())
-                    {
-                        BigDecimal balancePlusDebit = sourceAccount.getBalanceWithDebit();
-
-                        if (balancePlusDebit.compareTo(amount) >= 0)
-                        {
-                            sourceAccount.setBalance(productBalance.subtract(amount));
-                            _executed = true;
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    BigDecimal newBalance = sourceAccount.getBalance().subtract(amount);
-                    sourceAccount.setBalance(newBalance);
-                    _executed = true;
-                    return;
-                }
-                throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
-            }
-        }
+        sourceAccount.payment(amount, direction);
     }
 }

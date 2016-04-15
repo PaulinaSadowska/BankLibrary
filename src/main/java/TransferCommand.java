@@ -22,13 +22,10 @@ public class TransferCommand extends Operation implements ICommand
     {
         checkExecuted();
 
-        ICommand outPayment = new PaymentCommand(soruceAccount, PaymentDirection.Out, amount, OperationType.Payment);
-        ICommand inPayment = new PaymentCommand(targetAccount, PaymentDirection.In, amount, OperationType.Payment);
-
         try
         {
-            outPayment.execute();
-            inPayment.execute();
+            soruceAccount.payment(amount, PaymentDirection.Out);
+            targetAccount.payment(amount, PaymentDirection.In);
             _executed = true;
         }
         catch (Exception exe)
