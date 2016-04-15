@@ -11,6 +11,7 @@ public class Operation
     protected OperationType _operationType;
     protected Date _date;
     protected String _description;
+    protected boolean _executed;
 
 
     public Operation(OperationType operationType)
@@ -25,6 +26,12 @@ public class Operation
         _operationType = operationType;
         _date = Calendar.getInstance().getTime();
         _description = description;
+    }
+
+    public void checkExecuted() throws BankException
+    {
+        if(_executed)
+            throw new BankException("Operation can't be executed more than oncee");
     }
 
     public OperationType getOperationType() {

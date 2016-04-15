@@ -80,45 +80,7 @@ public class Account extends Product
      */
     public void payment(BigDecimal amount, PaymentDirection direction) throws IllegalArgumentException, BankException
     {
-        if(amount.longValueExact() < 0)
-            throw new IllegalArgumentException("Negative amount.");
 
-        switch (direction)
-        {
-            case In:
-            {
-                BigDecimal newBalance = getBalance().add(amount);
-                setBalance(newBalance);
-                break;
-            }
-            case Out:
-            {
-
-                BigDecimal productBalance = getBalance();
-                // Zwraca 1 gdy amount jest wieksza od balance
-                if(amount.compareTo(productBalance) > 0)
-                {
-                    if(hasDebit())
-                    {
-                        BigDecimal balancePlusDebit = getBalanceWithDebit();
-
-                        if (balancePlusDebit.compareTo(amount) >= 0)
-                        {
-                            setBalance(productBalance.subtract(amount));
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    BigDecimal newBalance = getBalance().subtract(amount);
-                    setBalance(newBalance);
-                    return;
-                }
-                throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
-            }
-
-        }
         _history.add(new Operation(OperationType.Payment));
     }
 }
