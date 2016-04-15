@@ -22,10 +22,15 @@ public class TransferCommand extends Operation implements ICommand
     {
         checkExecuted();
 
+        if(targetAccount == null || soruceAccount == null)
+            throw new NullPointerException("One of the accounts is null");
+
         try
         {
-            soruceAccount.payment(amount, PaymentDirection.Out);
-            targetAccount.payment(amount, PaymentDirection.In);
+            ICommand outPayment = new PaymentCommand(soruceAccount, PaymentDirection.Out, amount, OperationType.Payment);
+            outPayment.execute();
+            ICommand inPayment = new PaymentCommand(targetAccount, PaymentDirection.In, amount, OperationType.Payment);
+            inPayment.execute();
             _executed = true;
         }
         catch (Exception exe)

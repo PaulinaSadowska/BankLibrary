@@ -49,76 +49,10 @@ public class Account extends Product
         return initialBalance;
     }
 
-    /*
-     @pre: product != null, amount > 0
-     @post: product.balance+=amount, _product.balance-=amount
-     @invariant: product.balance <= porduct.balance+amount (?)
-      */
-    public void transfer(BigDecimal amount, Account account) throws BankException
+    public void doOperation(ICommand operation) throws BankException
     {
-        if(account == null)
-            throw new NullPointerException("Null account");
-
-        try
-        {
-            this.payment(amount, PaymentDirection.Out);
-            account.payment(amount, PaymentDirection.In);
-        }
-        catch (Exception ex)
-        {
-            BankException exception = new BankException("Error during transfer.", OperationType.Transfer);
-            exception.initCause(ex);
-            throw exception;
-        }
-        _history.add(new Operation(OperationType.Transfer));
+        operation.execute();
+        _history.add((Operation) operation);
     }
 
-    /*
-    @pre: amount > 0,
-    @post: _product.balance-=amount ;
-    @invariant: _product.balance >= _product.balance-amount; _product.balance >= {debit | 0}
-     */
-    public void payment(BigDecimal amount, PaymentDirection direction) throws IllegalArgumentException, BankException
-    {
-        if(amount.longValueExact() < 0)
-            throw new IllegalArgumentException("Negative amount.");
-
-        switch (direction)
-        {
-            case In:
-            {
-                BigDecimal newBalance = getBalance().add(amount);
-                setBalance(newBalance);
-                break;
-            }
-            case Out:
-            {
-
-                BigDecimal productBalance = getBalance();
-                // Zwraca 1 gdy amount jest wieksza od balance
-                if(amount.compareTo(productBalance) > 0)
-                {
-                    if(hasDebit())
-                    {
-                        BigDecimal balancePlusDebit = getBalanceWithDebit();
-
-                        if (balancePlusDebit.compareTo(amount) >= 0)
-                        {
-                            setBalance(productBalance.subtract(amount));
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    BigDecimal newBalance = getBalance().subtract(amount);
-                    setBalance(newBalance);
-                    return;
-                }
-                throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
-            }
-
-        }
-        _history.add(new Operation(OperationType.Payment));
-    }
 }

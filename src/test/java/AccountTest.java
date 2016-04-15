@@ -51,7 +51,7 @@ public class AccountTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
         //Test
-        _account.payment(paymentAmount, PaymentDirection.In);
+        _account.doOperation(new PaymentCommand(_account,PaymentDirection.In, paymentAmount, OperationType.Payment));
         //Sprawdzenie
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -66,7 +66,7 @@ public class AccountTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
         _account = createInstance(balance);
-        _account.payment(paymentAmount, PaymentDirection.In);
+        _account.doOperation(new PaymentCommand(_account, PaymentDirection.In, paymentAmount, OperationType.Payment));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class AccountTest
 
         _account = createInstance(balance);
 
-        _account.payment(paymentAmount, PaymentDirection.Out);
+        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -102,7 +102,7 @@ public class AccountTest
 
         _account = createInstance(balance);
 
-        _account.payment(paymentAmount, PaymentDirection.Out);
+        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class AccountTest
 
         _account = createInstance(balance, debit);
 
-        _account.payment(paymentAmount, PaymentDirection.Out);
+        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -136,7 +136,7 @@ public class AccountTest
 
         _account = createInstance(balance, debit);
 
-        _account.payment(paymentAmount, PaymentDirection.Out);
+        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedAmount, _account.getBalance());
     }
@@ -154,7 +154,7 @@ public class AccountTest
 
         _account = createInstance(balance, debit);
 
-        _account.payment(paymentAmount, PaymentDirection.Out);
+        _account.doOperation(new PaymentCommand(_account, PaymentDirection.Out, paymentAmount, OperationType.Payment));
     }
 
     @Test(expected = NullPointerException.class)
@@ -167,7 +167,7 @@ public class AccountTest
 
         _account = createInstance(balance);
 
-        _account.transfer(transferAmount, null);
+        _account.doOperation(new TransferCommand(_account, null, transferAmount, OperationType.Payment));
     }
 
     @Test(expected = BankException.class)
@@ -181,7 +181,7 @@ public class AccountTest
         _account = createInstance(balance);
         Account targetAccount = createInstance(balance);
 
-        _account.transfer(transferAmount, targetAccount);
+        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
     }
 
     @Test(expected = BankException.class)
@@ -196,7 +196,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.transfer(transferAmount, targetAccount);
+        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
     }
 
     @Test
@@ -215,7 +215,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.transfer(transferAmount, targetAccount);
+        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedLocalBalance, _account.getBalance());
         Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
@@ -237,7 +237,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.transfer(transferAmount, targetAccount);
+        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
 
         Assert.assertEquals(expectedLocalBalance, _account.getBalance());
         Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
@@ -255,7 +255,7 @@ public class AccountTest
         _account = createInstance(balance, debit);
         Account targetAccount = createInstance(balance);
 
-        _account.transfer(transferAmount, targetAccount);
+        _account.doOperation(new TransferCommand(_account, targetAccount, transferAmount, OperationType.Payment));
 
     }
 
