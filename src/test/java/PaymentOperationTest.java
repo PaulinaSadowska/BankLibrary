@@ -1,47 +1,182 @@
 import Bank.BankException;
 import Operations.ICommand;
 import Operations.OperationType;
-import Operations.PaymentOperation;
 import Operations.PaymentDirection;
+import Operations.PaymentOperation;
 import Products.Account;
-import Products.Interest;
 import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.util.Date;
 
-import static org.mockito.Mockito.mock;
+import static Utils.ProductFactory.createAccount;
 
 /**
  * Created by arasz on 15.04.2016.
  */
 public class PaymentOperationTest
 {
+    Account account;
+
     @Test
-    public void makePayment_directionInAmountCorrect_increaseAmountBalance() throws BankException
+    public void makeAndUndoPayment_DirectionInCorrectAmount_BalanceNotChanged() throws BankException
     {
-        Account account = ProductFactory.createAccount(0);
-        BigDecimal amount = new BigDecimal(10);
+        int balance = 500;
+        int paymentValue = 100;
+        int expectedValue = balance+paymentValue;
 
-        ICommand command = new PaymentOperation(account, PaymentDirection.In, amount, OperationType.Payment);
+        //Inicjalizacja
+        account = createAccount(balance);
 
-        command.execute();
+        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
-        Assert.assertEquals(account.getBalance(), amount);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
+        operation.execute();
+        Assert.assertEquals(expectedAmount, account.getBalance());
+        operation.undo();
+        Assert.assertEquals(new BigDecimal(balance), account.getBalance());
     }
 
     @Test
-    public void makeAndUndoPayment_directionOutCorrectAmount_balanceNotChanged() throws BankException
+    public void makeAndUndoPayment_DirectionOutCorrectAmount_BalanceNotChanged() throws BankException
     {
         int balance = 100;
-        Account account = ProductFactory.createAccount(balance);
+        account = ProductFactory.createAccount(balance);
         BigDecimal amount = new BigDecimal(50);
         ICommand command = new PaymentOperation(account, PaymentDirection.Out, amount, OperationType.Payment);
         command.execute();
         Assert.assertEquals(amount, account.getBalance());
         command.undo();
         Assert.assertEquals(new BigDecimal(balance), account.getBalance());
+    }
+
+    @Test
+    public void makePayment_in500_balanceIncreasedBy500() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
+    {
+        int balance = 500;
+        int paymentValue = 100;
+        int expectedValue = balance+paymentValue;
+
+        //Inicjalizacja
+        account = createAccount(balance);
+
+        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+
+        //Test
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
+        operation.execute();
+        //Sprawdzenie
+        Assert.assertEquals(expectedAmount, account.getBalance());
+    }
+
+    @Test(expected = BankException.class)
+    public void payment_InNegativeAmount_ThenThrowsException() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
+    {
+        int balance = 0;
+        int paymentValue = -1000;
+
+        //Inicjalizacja
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+
+        account = createAccount(balance);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
+        operation.execute();
+    }
+
+    @Test
+    public void payment_OutAmountLessThanBalance_ThenBalanceDecreasedByAmount() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
+    {
+        int balance = 500;
+        int paymentValue = 400;
+        int expectedValue = balance - paymentValue;
+
+        //Inicjalizacja
+
+        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+
+        account = createAccount(balance);
+
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        operation.execute();
+
+        Assert.assertEquals(expectedAmount, account.getBalance());
+    }
+
+    @Test(expected = BankException.class)
+    public void payment_OutAmountGreaterThanBalanceNoDebit_ThrowsBankException() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    {
+        int balance = 500;
+        int paymentValue = 600;
+        int expectedValue = balance;
+
+        //Inicjalizacja
+
+        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+
+        account = createAccount(balance);
+
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        operation.execute();
+    }
+
+    @Test
+    public void payment_OutAmountLessThanBalancePlusDebit_ThenBalanceDecreasedByAmount() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    {
+        int debit = 200;
+        int balance = 500;
+        int paymentValue = 600;
+        int expectedValue = balance - paymentValue;
+
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+
+        account = createAccount(balance, debit);
+
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        operation.execute();
+
+        Assert.assertEquals(expectedAmount, account.getBalance());
+    }
+
+
+    @Test
+    public void payment_OutAmountEqualToBalancePlusDebit_ThenBalanceEqualsMinusDebit() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    {
+        int debit = 100;
+        int balance = 500;
+        int paymentValue = 600;
+
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+        BigDecimal expectedAmount = new BigDecimal(-debit);
+
+        account = createAccount(balance, debit);
+
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        operation.execute();
+
+        Assert.assertEquals(expectedAmount, account.getBalance());
+    }
+
+
+    @Test(expected = BankException.class)
+    public void payment_OutAmountGreaterThanBalancePlusDebit_ThenThrowsBankException() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    {
+        int debit = 50;
+        int balance = 500;
+        int paymentValue = 600;
+        int expectrdValue = balance ;
+
+        BigDecimal paymentAmount = new BigDecimal(paymentValue);
+
+        account = createAccount(balance, debit);
+
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        operation.execute();
     }
 }
