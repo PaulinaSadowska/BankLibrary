@@ -1,11 +1,9 @@
 import Bank.BankException;
-import Operations.OperationType;
-import Operations.PaymentOperation;
-import Operations.PaymentDirection;
-import Operations.TransferOperation;
+import Operations.*;
 import Products.Account;
 import Products.Debit;
 import Products.Interest;
+import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,108 +21,18 @@ import static org.mockito.Mockito.when;
  */
 public class AccountTest
 {
-    private Account _account;
-
-    @Test(expected = NullPointerException.class)
-    public void makeTransferWithNullAccountArgument_ThenThrow() throws BankException
-    {
-        int balance = 500;
-        int transferValue = 200;
-
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-
-        _account = createAccount(balance);
-
-        _account.doOperation(new TransferOperation(_account, null, transferAmount, OperationType.Payment));
-    }
-
-    @Test(expected = BankException.class)
-    public void makeTransferForAmountGreaterThanBalanceNoDebit_ThenThrowBankException() throws BankException
-    {
-        int balance = 500;
-        int transferValue = 600;
-
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-
-        _account = createAccount(balance);
-        Account targetAccount = createAccount(balance);
-
-        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
-    }
-
-    @Test(expected = BankException.class)
-    public void makeTransferForAmountGreaterThanBalancePlusDebit_ThenThrowBankException() throws BankException
-    {
-        int debit = 100;
-        int balance = 500;
-        int transferValue = 610;
-
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-
-        _account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
-
-        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
-    }
-
     @Test
-    public void makeTransferForAmountEqualToBalancePlusDebit_ThenBalancesChanges() throws BankException
+    public void doOperation_InPaymentOperation_BalanceChanged() throws BankException
     {
-        int debit = 100;
-        int balance = 500;
-        int transferValue = 600;
-        int localBalanceAfterTransfer = -debit;
-        int targetBalanceAfterTransfer = transferValue + balance;
+        int balance = 100;
+        int amount = 100;
 
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-        BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
-        BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
+        Account account = ProductFactory.createAccount(balance);
 
-        _account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, new BigDecimal(amount),
+                OperationType.Payment);
+        account.doOperation(operation);
 
-        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
-
-        Assert.assertEquals(expectedLocalBalance, _account.getBalance());
-        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
+        Assert.assertEquals(new BigDecimal(amount+balance), account.getBalance());
     }
-
-    @Test
-    public void makeTransferForAmountLessThanBalancePlusDebit_ThenBalancesChanges() throws BankException
-    {
-        int debit = 100;
-        int balance = 680;
-        int transferValue = 600;
-        int localBalanceAfterTransfer = balance - transferValue;
-        int targetBalanceAfterTransfer = transferValue + balance;
-
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-        BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
-        BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
-
-        _account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
-
-        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
-
-        Assert.assertEquals(expectedLocalBalance, _account.getBalance());
-        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
-    }
-
-    @Test(expected = BankException.class)
-    public void makeTransfer_wrongAmount_ThrowsException() throws BankException
-    {
-        int debit = 100;
-        int balance = 680;
-        int transferValue = -600;
-
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-
-        _account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
-
-        _account.doOperation(new TransferOperation(_account, targetAccount, transferAmount, OperationType.Payment));
-    }
-
-
 }

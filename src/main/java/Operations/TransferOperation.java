@@ -39,6 +39,7 @@ public class TransferOperation extends Operation implements ICommand
 
         try
         {
+            setExecuted(true);
             for(ICommand operation : operationsList)
                 operation.execute();
         }
