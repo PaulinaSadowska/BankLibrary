@@ -53,7 +53,7 @@ public class TransferOperationTest
         operation.execute();
     }
 
-    @Test()
+    @Test(expected = BankException.class)
     public void makeTransfer_AmountGreaterThanBalanceNoDebit_BalancesNotChanged() throws BankException
     {
         int balance = 500;
@@ -65,17 +65,7 @@ public class TransferOperationTest
         Account targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
-        try
-        {
-            operation.execute();
-        }
-        catch (Exception e)
-        {
-           //e.printStackTrace();
-        }
-
-        Assert.assertEquals(new BigDecimal(balance) ,account.getBalance());
-        Assert.assertEquals(new BigDecimal(balance) ,targetAccount.getBalance());
+        asserOperationUndone(balance, targetAccount, operation);
     }
 
     @Test(expected = BankException.class)
@@ -91,7 +81,7 @@ public class TransferOperationTest
         Account targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
-        operation.execute();
+        asserOperationUndone(balance, targetAccount, operation);
     }
 
     @Test
@@ -152,6 +142,21 @@ public class TransferOperationTest
         account = createAccount(balance, debit);
         Account targetAccount = createAccount(balance);
 
-        account.doOperation(new TransferOperation(account, targetAccount, transferAmount, OperationType.Payment));
+        ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Payment);
+        asserOperationUndone(balance, targetAccount, operation);
+    }
+
+    private void asserOperationUndone(int balance, Account targetAccount, ICommand operation) throws BankException
+    {
+        try
+        {
+            operation.execute();
+        }
+        catch (BankException e)
+        {
+            Assert.assertEquals(new BigDecimal(balance) ,account.getBalance());
+            Assert.assertEquals(new BigDecimal(balance) ,targetAccount.getBalance());
+            throw e;
+        }
     }
 }
