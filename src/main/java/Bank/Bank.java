@@ -27,14 +27,6 @@ public class Bank
         _productManager = productManager;
     }
 
-    public void createDebit(BigDecimal debitValue, int ownerId)
-    {
-        Account account = _productManager.getAccount(ownerId).get(0);
-        account.setDebit(new Debit(debitValue));
-
-        _globalHistory.add(new Operation(OperationType.MakeDebit));
-    }
-
     /**
      * Utworzenie konta
      * @pre:
