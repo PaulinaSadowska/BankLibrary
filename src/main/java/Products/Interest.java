@@ -33,19 +33,12 @@ public class Interest
         _percent = percent;
     }
 
-    public void setStrategy(IInterestCalculationStrategy strategy)
+    public void _setStrategy(IInterestCalculationStrategy strategy)
     {
-        _history.add(new Operation(OperationType.ChangeInterestMechanism));
         _interestCalculationStrategy = strategy;
     }
 
     public IInterestCalculationStrategy getStrategy(){
         return _interestCalculationStrategy;
-    }
-
-    public BigDecimal calculateInterest(Product product)
-    {
-        product.getOperationsHistory().add(new Operation(OperationType.CalculateInterest));
-        return _interestCalculationStrategy.calculateInterest(product, _percent);
     }
 }
