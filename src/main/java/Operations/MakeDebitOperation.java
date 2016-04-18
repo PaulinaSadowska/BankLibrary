@@ -24,7 +24,10 @@ public class MakeDebitOperation extends Operation implements ICommand
     @Override
     public void execute() throws BankException
     {
+        if(getExecuted())
+            return;
         _account.setDebit(new Debit(_debitValue));
+        _executed = true;
     }
 
     @Override
