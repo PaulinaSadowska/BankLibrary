@@ -18,7 +18,7 @@ public class TransferOperationTest
     private Account account;
 
     @Test
-    public void undoTransfer_CorrectAmountAndAccounts_BothBalancesDoNotChanges() throws BankException
+    public void undoTransfer_CorrectAmountAndAccounts_BothBalancesDoNotChanges() throws Exception
     {
         int balance = 500;
         int transferValue = 100;
@@ -40,7 +40,7 @@ public class TransferOperationTest
     }
 
     @Test(expected = NullPointerException.class)
-    public void makeTransfer_NullAccountArgument_ThrowBankException() throws BankException
+    public void makeTransfer_NullAccountArgument_ThrowBankException() throws Exception
     {
         int balance = 500;
         int transferValue = 200;
@@ -54,7 +54,7 @@ public class TransferOperationTest
     }
 
     @Test(expected = BankException.class)
-    public void makeTransfer_AmountGreaterThanBalanceNoDebit_BalancesNotChanged() throws BankException
+    public void makeTransfer_AmountGreaterThanBalanceNoDebit_BalancesNotChanged() throws Exception
     {
         int balance = 500;
         int transferValue = 600;
@@ -69,7 +69,7 @@ public class TransferOperationTest
     }
 
     @Test(expected = BankException.class)
-    public void makeTransfer_AmountGreaterThanBalancePlusDebit_ThrowBankException() throws BankException
+    public void makeTransfer_AmountGreaterThanBalancePlusDebit_ThrowBankException() throws Exception
     {
         int debit = 100;
         int balance = 500;
@@ -85,7 +85,7 @@ public class TransferOperationTest
     }
 
     @Test
-    public void makeTransfer_AmountEqualToBalancePlusDebit_BalancesChanges() throws BankException
+    public void makeTransfer_AmountEqualToBalancePlusDebit_BalancesChanges() throws Exception
     {
         int debit = 100;
         int balance = 500;
@@ -108,7 +108,7 @@ public class TransferOperationTest
     }
 
     @Test
-    public void makeTransfer_AmountLessThanBalancePlusDebit_BalancesChanges() throws BankException
+    public void makeTransfer_AmountLessThanBalancePlusDebit_BalancesChanges() throws Exception
     {
         int debit = 100;
         int balance = 680;
@@ -131,7 +131,7 @@ public class TransferOperationTest
     }
 
     @Test(expected = BankException.class)
-    public void makeTransfer_AmountLessThanZero_ThrowsException() throws BankException
+    public void makeTransfer_AmountLessThanZero_ThrowsException() throws Exception
     {
         int debit = 100;
         int balance = 680;
@@ -146,7 +146,7 @@ public class TransferOperationTest
         asserOperationUndone(balance, targetAccount, operation);
     }
 
-    private void asserOperationUndone(int balance, Account targetAccount, ICommand operation) throws BankException
+    private void asserOperationUndone(int balance, Account targetAccount, ICommand operation) throws Exception
     {
         try
         {

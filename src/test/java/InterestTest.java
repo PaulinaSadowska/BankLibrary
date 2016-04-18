@@ -26,7 +26,7 @@ public class InterestTest
         _interest = new Interest(mock(IInterestCalculationStrategy.class), 0.3);
     }
 
-    @Test
+    /*@Test
     public void setStrategyTest() throws IllegalAccessException
     {
         Class<?> secretClass = _interest.getClass();
@@ -64,5 +64,5 @@ public class InterestTest
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
         _interest.setStrategy(strategyMock);
         assertEquals(_interest.calculateInterest(productMock), expectedInterestValue);
-    }
+    }*/
 }

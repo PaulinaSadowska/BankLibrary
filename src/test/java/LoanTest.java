@@ -23,7 +23,7 @@ public class LoanTest {
         return new Account(12, balance, mock(Date.class), mock(Interest.class));
     }
 
-    @Test
+   /* @Test
     public void repayLoanTest() throws BankException
     {
         BigDecimal accountBalance = new BigDecimal(1200);
@@ -52,6 +52,6 @@ public class LoanTest {
 
         Loan loan = new Loan(12, loanBalance, mock(Date.class), interest, account);
         loan.repay();
-    }
+    }*/
 }
 

@@ -21,7 +21,7 @@ public class PaymentOperationTest
     Account account;
 
     @Test
-    public void makeAndUndoPayment_DirectionInCorrectAmount_BalanceNotChanged() throws BankException
+    public void makeAndUndoPayment_DirectionInCorrectAmount_BalanceNotChanged() throws Exception
     {
         int balance = 500;
         int paymentValue = 100;
@@ -41,7 +41,7 @@ public class PaymentOperationTest
     }
 
     @Test
-    public void makeAndUndoPayment_DirectionOutCorrectAmount_BalanceNotChanged() throws BankException
+    public void makeAndUndoPayment_DirectionOutCorrectAmount_BalanceNotChanged() throws Exception
     {
         int balance = 100;
         account = ProductFactory.createAccount(balance);
@@ -54,7 +54,7 @@ public class PaymentOperationTest
     }
 
     @Test
-    public void makePayment_in500_balanceIncreasedBy500() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
+    public void makePayment_in500_balanceIncreasedBy500() throws Exception
     {
         int balance = 500;
         int paymentValue = 100;
@@ -74,7 +74,7 @@ public class PaymentOperationTest
     }
 
     @Test(expected = BankException.class)
-    public void payment_InNegativeAmount_ThenThrowsException() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
+    public void payment_InNegativeAmount_ThenThrowsException() throws Exception
     {
         int balance = 0;
         int paymentValue = -1000;
@@ -88,7 +88,7 @@ public class PaymentOperationTest
     }
 
     @Test
-    public void payment_OutAmountLessThanBalance_ThenBalanceDecreasedByAmount() throws IllegalAccessException, InstantiationException, InvocationTargetException, BankException
+    public void payment_OutAmountLessThanBalance_ThenBalanceDecreasedByAmount() throws Exception
     {
         int balance = 500;
         int paymentValue = 400;
@@ -108,7 +108,7 @@ public class PaymentOperationTest
     }
 
     @Test(expected = BankException.class)
-    public void payment_OutAmountGreaterThanBalanceNoDebit_ThrowsBankException() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    public void payment_OutAmountGreaterThanBalanceNoDebit_ThrowsBankException() throws Exception
     {
         int balance = 500;
         int paymentValue = 600;
@@ -126,7 +126,7 @@ public class PaymentOperationTest
     }
 
     @Test
-    public void payment_OutAmountLessThanBalancePlusDebit_ThenBalanceDecreasedByAmount() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    public void payment_OutAmountLessThanBalancePlusDebit_ThenBalanceDecreasedByAmount() throws Exception
     {
         int debit = 200;
         int balance = 500;
@@ -146,7 +146,7 @@ public class PaymentOperationTest
 
 
     @Test
-    public void payment_OutAmountEqualToBalancePlusDebit_ThenBalanceEqualsMinusDebit() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    public void payment_OutAmountEqualToBalancePlusDebit_ThenBalanceEqualsMinusDebit() throws Exception
     {
         int debit = 100;
         int balance = 500;
@@ -165,12 +165,12 @@ public class PaymentOperationTest
 
 
     @Test(expected = BankException.class)
-    public void payment_OutAmountGreaterThanBalancePlusDebit_ThenThrowsBankException() throws IllegalAccessException, InvocationTargetException, InstantiationException, BankException
+    public void payment_OutAmountGreaterThanBalancePlusDebit_ThenThrowsBankException() throws Exception
     {
         int debit = 50;
         int balance = 500;
         int paymentValue = 600;
-        int expectrdValue = balance ;
+        int expectedValue = balance ;
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 

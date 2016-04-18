@@ -31,7 +31,7 @@ public class ProductManagerTest
     }
 
 
-    @Test
+ /*   @Test
     public void createAccountWithoutDebitTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         Integer ownerId = _manager.getAvailableOwnerId();
@@ -143,5 +143,5 @@ public class ProductManagerTest
         assertTrue(_manager.getProductList(ownerId).contains(account));
         _manager.deleteProduct(account);
         assertFalse(_manager.getProductList(ownerId).contains(account));
-    }
+    }*/
 }

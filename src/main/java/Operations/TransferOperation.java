@@ -29,7 +29,7 @@ public class TransferOperation extends Operation implements ICommand
     }
 
     @Override
-    public void execute() throws BankException
+    public void execute() throws Exception
     {
         if(getExecuted())
             return;

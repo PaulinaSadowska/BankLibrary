@@ -26,7 +26,7 @@ public class InvestmentTest {
         return new Account(12, balance, mock(Date.class), mock(Interest.class));
     }
 
-    @Test
+  /*  @Test
     public void closeInvestmentTest() throws BankException
     {
         BigDecimal accountBalance = new BigDecimal(1200);
@@ -62,5 +62,5 @@ public class InvestmentTest {
         Investment investment = new Investment(12, loanBalance, expireDate.getTime(), interest, account);
         investment.close();
         assertEquals(account.getBalance(), accountBalance.add(loanBalance));
-    }
+    }*/
 }

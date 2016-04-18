@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class AccountTest
 {
     @Test
-    public void doOperation_InPaymentOperation_BalanceChanged() throws BankException
+    public void doOperation_InPaymentOperation_BalanceChanged() throws Exception
     {
         int balance = 100;
         int amount = 100;

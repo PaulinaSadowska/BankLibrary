@@ -55,7 +55,7 @@ public class Account extends Product
         return initialBalance;
     }
 
-    public void doOperation(ICommand operation) throws BankException
+    public void doOperation(ICommand operation) throws Exception
     {
         operation.execute();
         _history.add((Operation) operation);
