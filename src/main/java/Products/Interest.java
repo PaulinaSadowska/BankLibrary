@@ -19,6 +19,11 @@ public class Interest
 
     private IInterestCalculationStrategy _interestCalculationStrategy;
 
+    public double getPercent()
+    {
+        return _percent;
+    }
+
     private double _percent;
 
     @Inject
@@ -32,6 +37,10 @@ public class Interest
     {
         _history.add(new Operation(OperationType.ChangeInterestMechanism));
         _interestCalculationStrategy = strategy;
+    }
+
+    public IInterestCalculationStrategy getStrategy(){
+        return _interestCalculationStrategy;
     }
 
     public BigDecimal calculateInterest(Product product)
