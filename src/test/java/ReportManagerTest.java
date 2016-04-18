@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by arasz on 07.04.2016.
  */
-public class ReportMenagerTest
+public class ReportManagerTest
 {
     ReportManager _reportManager;
     String _reportString = "Created report";

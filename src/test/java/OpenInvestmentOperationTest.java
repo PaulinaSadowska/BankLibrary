@@ -44,7 +44,7 @@ public class OpenInvestmentOperationTest
     }
 
     @Test (expected=IndexOutOfBoundsException.class)
-    public void createInvestmentToNonexistingAccountTest() throws Exception
+    public void createInvestmentToNonExistingAccountTest() throws Exception
     {
         int ownerId = 999;
         OpenInvestmentOperation openInvestment =
