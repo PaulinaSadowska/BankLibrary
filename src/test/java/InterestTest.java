@@ -1,15 +1,11 @@
+import Bank.BankException;
 import Products.Interest;
-import Products.Product;
 import Utils.IInterestCalculationStrategy;
-import Utils.OperationsHistory;
 import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-
-import static org.mockito.Matchers.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -22,12 +18,13 @@ public class InterestTest
     private Interest _interest;
 
     @Before
-    public void create(){
+    public void create()
+    {
         _interest = new Interest(mock(IInterestCalculationStrategy.class), 0.3);
     }
 
-    /*@Test
-    public void setStrategyTest() throws IllegalAccessException
+    @Test
+    public void setStrategyTest() throws IllegalAccessException, BankException
     {
         Class<?> secretClass = _interest.getClass();
         Field fields[] = secretClass.getDeclaredFields();
@@ -41,8 +38,7 @@ public class InterestTest
             }
         }
 
-        _interest.setStrategy(new TimeDependentInterestCalculationStrategy());
-
+        _interest._setStrategy(new TimeDependentInterestCalculationStrategy());
         fields = secretClass.getDeclaredFields();
         for (Field field : fields)
         {
@@ -55,14 +51,4 @@ public class InterestTest
         }
     }
 
-    @Test
-    public void calculateInterestTest(){
-        BigDecimal expectedInterestValue = new BigDecimal(1234);
-        TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
-        Product productMock = mock(Product.class);
-        when(productMock.getOperationsHistory()).thenReturn(new OperationsHistory());
-        when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
-        _interest.setStrategy(strategyMock);
-        assertEquals(_interest.calculateInterest(productMock), expectedInterestValue);
-    }*/
 }

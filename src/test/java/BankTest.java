@@ -24,15 +24,15 @@ public class BankTest
         _bank = new Bank(new ProductManager());
     }
 
-   /* @Test
-    public void createAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    @Test
+    public void createAccountTest() throws Exception
     {
 
         Account account = _bank.createAccount(new BigDecimal(1200), _duration,
                 mock(TimeDependentInterestCalculationStrategy.class), 0.5);
         assertNotNull(account);
     }
-
+/*
     @Test
     public void createLoanTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {

@@ -41,11 +41,14 @@ public abstract class Product
     }
 
 
-
-
     public void setBalance(BigDecimal newBalance)
     {
         _balance = newBalance;
+    }
+
+    public void addToBalance(BigDecimal amount)
+    {
+        _balance = _balance.add(amount);
     }
 
     public BigDecimal getBalance()
@@ -76,10 +79,7 @@ public abstract class Product
 
     public boolean expired(){
         Calendar cal = Calendar.getInstance();
-        if(_expireDate.before(cal.getTime())) {
-            return true;
-        }
-        return false;
+        return _expireDate.before(cal.getTime());
     }
 
 }

@@ -7,12 +7,12 @@ import Utils.IInterestCalculationStrategy;
 /**
  * Created by arasz on 15.04.2016.
  */
-public class ChangeIntrestMechanizmOperation extends Operation implements ICommand
+public class ChangeInterestMechanismOperation extends Operation implements ICommand
 {
     private Interest _interest;
     private IInterestCalculationStrategy _strategy;
 
-    public ChangeIntrestMechanizmOperation(Interest interest, IInterestCalculationStrategy strategy){
+    public ChangeInterestMechanismOperation(Interest interest, IInterestCalculationStrategy strategy){
         super(OperationType.ChangeInterestMechanism);
         this._interest = interest;
         this._strategy = strategy;
