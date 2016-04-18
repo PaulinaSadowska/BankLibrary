@@ -32,9 +32,8 @@ public class CloseInvestmentOperation extends Operation implements ICommand
         {
             CalculateInterestOperation calculateInterest = new CalculateInterestOperation(_investment, _investment.getInterest());
             calculateInterest.execute();
-            _baseAccount.addToBalance(_investment.getBalance());
-            _executed = true;
         }
+        _baseAccount.addToBalance(_investment.getBalance());
         _executed = true;
     }
 

@@ -54,4 +54,17 @@ public class CloseInvestmentOperationTest
         assertEquals(newInterestBalance.add(_accountBalance), _account.getBalance());
     }
 
+    @Test
+    public void CloseInvestmentBeforeExpireDate() throws BankException
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        Date expireDate = calendar.getTime();
+        Investment investment = new Investment(_ownerId, _balance, expireDate, _interest, _account);
+
+        CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
+        operation.execute();
+        assertEquals(_balance.add(_accountBalance), _account.getBalance());
+    }
+
 }
