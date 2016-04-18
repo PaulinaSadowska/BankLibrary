@@ -37,23 +37,8 @@ public class MakeProductOperation extends Operation implements ICommand
     @Override
     public void execute() throws Exception
     {
-        Account account = null;
-
-        Date expireDate = getExpireDate(_duration);
-        if(_ownerId != null) //klient posiada juz konto
-        {
-            account = _productManager.getAccount(_ownerId).get(0);
-        }
-        if(account == null) //klient nie posiada konta
-        {
-            _ownerId = _productManager.getAvailableOwnerId();
-            if (_productType.getName().equals(Account.class.getName())){
-                 _productManager.createNewProduct(_productType, _ownerId, _balance, expireDate, _interest);
-            }
-            _productManager.createNewProduct(Account.class, _ownerId, _balance, expireDate, _interest);
-        }
-        account = _productManager.getAccount(_ownerId).get(0);
-        _productManager.createNewProduct(_productType, _ownerId, _balance, expireDate, _interest, account);
+        Account account = _productManager.getAccount(_ownerId).get(0);
+        _productManager.createNewProduct(_productType, _ownerId, _balance, _duration, _interest, account);
     }
 
     @Override
@@ -62,12 +47,6 @@ public class MakeProductOperation extends Operation implements ICommand
 
     }
 
-    private Date getExpireDate(ProductDuration duration)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, duration.getNumOfMonths());
-        cal.add(Calendar.YEAR, duration.getNumOfYears());
-        return cal.getTime();
-    }
+
 
 }

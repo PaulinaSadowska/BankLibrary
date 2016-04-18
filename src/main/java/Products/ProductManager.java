@@ -57,11 +57,11 @@ public class ProductManager
         }
     }
 
-    private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
                                                    Interest interest, Account baseAccount, Debit debit)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
-
+            Date expireDate = getExpireDate(duration);
             validateInput(ownerId);
             validateInput(balance);
             validateInput(expireDate);
@@ -95,7 +95,7 @@ public class ProductManager
 
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration expireDate,
                                                          Interest interest)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
@@ -103,7 +103,7 @@ public class ProductManager
     }
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration expireDate,
                                                         Interest interest, Account baseAccount)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
@@ -111,7 +111,7 @@ public class ProductManager
     }
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, Date expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration expireDate,
                                                         Interest interest, Debit debit)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
@@ -157,5 +157,13 @@ public class ProductManager
     public  List<Loan> getLoan(Integer ownerId)
     {
         return  getProduct(Loan.class, ownerId);
+    }
+
+    private Date getExpireDate(ProductDuration duration)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, duration.getNumOfMonths());
+        cal.add(Calendar.YEAR, duration.getNumOfYears());
+        return cal.getTime();
     }
 }

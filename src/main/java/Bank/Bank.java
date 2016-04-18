@@ -1,16 +1,11 @@
 package Bank;
 
-import Operations.Operation;
-import Operations.OperationType;
 import Products.*;
 import Utils.IInterestCalculationStrategy;
 import Utils.OperationsHistory;
 import com.google.inject.Inject;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by arasz on 02.04.2016.
@@ -27,80 +22,13 @@ public class Bank
         _productManager = productManager;
     }
 
-    /**
-     * Utworzenie konta
-     * @pre:
-     * @post:
-     * @invariant:
-     * @return
-     *jezeli ownerId == null
-     *   jezeli chce stworzyc konto - nadaj nowe id i stworz konto
-     *   jezeli chce stworzyc lokate lub kredyt - stworz konto i przypisana do niego lokate lub kredyt.
-     *
-     * jezeli ownerId != null lub nie znaleziono przypisanego do niego konta
-     *    znajdz baseAccount i przypisz mu nowy produkt bankowy (lokata lub kredyt)
-     *    jezeli chce zalozyc konto - wyjatek
-     *
-     */
-   /* private <T extends Product> T createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
-                                                ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IndexOutOfBoundsException
-    {
-        Account account = null;
-        Interest interest = new Interest(interestStrategy, interestPercent);
-
-        Date expireDate = getExpireDate(duration);
-        if(ownerId != null) //klient posiada juz konto
-        {
-            account = _productManager.getAccount(ownerId).get(0);
-        }
-        if(account == null) //klient nie posiada konta
-        {
-            ownerId = _productManager.getAvailableOwnerId();
-            if (productType.getName().equals(Account.class.getName())){
-                return  _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest);
-            }
-            _productManager.createNewProduct(Account.class, ownerId, balance, expireDate, interest);
-        }
-        account = _productManager.getAccount(ownerId).get(0);
-        return _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account);
-    }*/
-
     public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
-                                 double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+                                 double interestPercent) throws Exception
     {
-        return createProduct(Account.class, null, balance, duration, interestStrategy, interestPercent);
+        Interest interest = new Interest(interestStrategy, interestPercent);
+        Integer ownerId = _productManager.getAvailableOwnerId();
+        _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest);
 
-    }
-
-    public Loan createLoan(Integer ownerId, BigDecimal balance,
-                           ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
-    {
-        return createProduct(Loan.class, ownerId, balance, duration, interestStrategy, interestPercent);
-
-    }
-
-    public Loan createLoan(BigDecimal balance,
-                           ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
-    {
-        return createProduct(Loan.class, null, balance, duration, interestStrategy, interestPercent);
-    }
-
-    public Investment createInvestment(Integer ownerId, BigDecimal balance,
-                                       ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
-    {
-        return createProduct(Investment.class, ownerId, balance, duration, interestStrategy, interestPercent);
-    }
-
-    public Investment createInvestment(BigDecimal balance,
-                                       ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
-    {
-        return createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
     }
 
     /**
