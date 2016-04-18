@@ -14,17 +14,14 @@ public class MakeLoanOperation extends Operation implements ICommand
     private Integer _ownerId;
     private BigDecimal _balance;
     private ProductDuration _duration;
-    private IInterestCalculationStrategy _interestStrategy;
-    private double _interestPercent;
+    private Interest _interest;
     private ProductManager _productManager;
 
-    public MakeLoanOperation(Integer ownerId, BigDecimal balance, ProductDuration duration,
-                             IInterestCalculationStrategy interestStrategy, double interestPercent, ProductManager productManager){
+    public MakeLoanOperation(Integer ownerId, BigDecimal balance, ProductDuration duration, Interest interest, ProductManager productManager){
         super(OperationType.MakeLoan);
         this._balance = balance;
         this._duration = duration;
-        this._interestStrategy = interestStrategy;
-        this._interestPercent = interestPercent;
+        this._interest = interest;
         this._ownerId = ownerId;
         this._productManager = productManager;
     }
@@ -36,8 +33,7 @@ public class MakeLoanOperation extends Operation implements ICommand
             return;
 
         Account baseAccount = _productManager.getAccount(_ownerId).get(0);
-        Interest interest = new Interest(_interestStrategy, _interestPercent);
-        _productManager.createNewProduct(Loan.class, _ownerId, _balance, _duration, interest, baseAccount);
+        _productManager.createNewProduct(Loan.class, _ownerId, _balance, _duration, _interest, baseAccount);
 
         _executed = true;
     }

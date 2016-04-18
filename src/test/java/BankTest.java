@@ -33,12 +33,7 @@ public class BankTest
         assertNotNull(account);
     }
 /*
-    @Test
-    public void createLoanTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        Loan loan = _bank.createLoan(new BigDecimal(1200), _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-        assertNotNull(loan);
-    }
+
 
     @Test
     public void createInvestmentTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
@@ -57,24 +52,6 @@ public class BankTest
         Investment investment = _bank.createInvestment(account.getOwnerId(), new BigDecimal(1200), _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
         assertNotNull(investment);
         assertEquals(account.getOwnerId(), investment.getOwnerId());
-    }
-
-
-    @Test
-    public void createLoanToAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        Account account = _bank.createAccount(new BigDecimal(1200), _duration, mock(TimeDependentInterestCalculationStrategy.class), 0.5);
-        assertNotNull(account);
-        Loan loan = _bank.createLoan(account.getOwnerId(), new BigDecimal(1200), _duration, new TimeDependentInterestCalculationStrategy(), 0.3);
-        assertNotNull(loan);
-        assertEquals(account.getOwnerId(), loan.getOwnerId());
-    }
-
-    @Test (expected=IndexOutOfBoundsException.class)
-    public void createLoanToNonexistingAccountTest() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        int ownerId = 999;
-        _bank.createLoan(ownerId, new BigDecimal(1200), mock(ProductDuration.class), new TimeDependentInterestCalculationStrategy(), 0.3);
     }
 
 
