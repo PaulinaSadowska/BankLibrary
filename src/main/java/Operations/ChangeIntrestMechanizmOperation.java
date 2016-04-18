@@ -21,7 +21,11 @@ public class ChangeIntrestMechanizmOperation extends Operation implements IComma
     @Override
     public void execute() throws BankException
     {
+        if(getExecuted())
+            return;
+
         _interest._setStrategy(_strategy);
+        _executed = true;
     }
 
     @Override

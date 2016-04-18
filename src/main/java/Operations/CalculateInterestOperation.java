@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 /**
  * Created by arasz on 15.04.2016.
  */
-public class CalculateIntrestOperation extends Operation implements ICommand
+public class CalculateInterestOperation extends Operation implements ICommand
 {
     private Product _product;
     private Interest _interest;
 
-    public CalculateIntrestOperation(Product product, Interest interest){
+    public CalculateInterestOperation(Product product, Interest interest){
         super(OperationType.CalculateInterest);
         this._product = product;
         this._interest = interest;
@@ -25,6 +25,9 @@ public class CalculateIntrestOperation extends Operation implements ICommand
     @Override
     public void execute() throws BankException
     {
+        if(getExecuted())
+            return;
+
         BigDecimal interestValue = _interest.getStrategy().calculateInterest(_product, _interest.getPercent());
         BigDecimal newBalance = _product.getBalance().add(interestValue);
         _product.setBalance(newBalance);
