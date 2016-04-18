@@ -33,9 +33,14 @@ public class OpenInvestmentOperation extends Operation implements ICommand
     @Override
     public void execute() throws Exception
     {
-        MakeProductOperation makeProduct = new MakeProductOperation(Investment.class,
-                _ownerId, _balance, _duration, new Interest(_interestStrategy, _interestPercent), _productManager);
-        makeProduct.execute();
+        if(getExecuted())
+            return;
+
+        Account baseAccount = _productManager.getAccount(_ownerId).get(0);
+        Interest interest = new Interest(_interestStrategy, _interestPercent);
+        _productManager.createNewProduct(Investment.class, _ownerId, _balance, _duration, interest, baseAccount);
+
+        _executed = true;
     }
 
     @Override

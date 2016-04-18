@@ -25,6 +25,9 @@ public class CloseInvestmentOperation extends Operation implements ICommand
     @Override
     public void execute() throws BankException
     {
+        if(getExecuted())
+            return;
+
         if(Calendar.getInstance().getTime().after(_investment.getExpireDate()))
         {
             CalculateInterestOperation calculateInterest = new CalculateInterestOperation(_baseAccount, _investment.getInterest());

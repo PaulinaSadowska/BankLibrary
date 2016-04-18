@@ -95,27 +95,27 @@ public class ProductManager
 
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
                                                          Interest interest)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, expireDate, interest, null, null);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, null, null);
     }
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
                                                         Interest interest, Account baseAccount)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, expireDate, interest, baseAccount, null);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, null);
     }
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration expireDate,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
                                                         Interest interest, Debit debit)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, expireDate, interest, null, debit);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, null, debit);
     }
 
     public int getAvailableOwnerId(){

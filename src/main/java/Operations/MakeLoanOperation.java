@@ -1,10 +1,7 @@
 package Operations;
 
 import Bank.BankException;
-import Products.Interest;
-import Products.Loan;
-import Products.ProductDuration;
-import Products.ProductManager;
+import Products.*;
 import Utils.IInterestCalculationStrategy;
 
 import java.math.BigDecimal;
@@ -35,9 +32,14 @@ public class MakeLoanOperation extends Operation implements ICommand
     @Override
     public void execute() throws Exception
     {
-        MakeProductOperation makeProduct = new MakeProductOperation(Loan.class,
-                _ownerId, _balance, _duration, new Interest(_interestStrategy, _interestPercent), _productManager);
-        makeProduct.execute();
+        if(getExecuted())
+            return;
+
+        Account baseAccount = _productManager.getAccount(_ownerId).get(0);
+        Interest interest = new Interest(_interestStrategy, _interestPercent);
+        _productManager.createNewProduct(Loan.class, _ownerId, _balance, _duration, interest, baseAccount);
+
+        _executed = true;
     }
 
     @Override
