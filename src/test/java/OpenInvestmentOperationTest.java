@@ -1,4 +1,5 @@
 import Operations.MakeLoanOperation;
+import Operations.OpenInvestmentOperation;
 import Products.*;
 import Utils.IInterestCalculationStrategy;
 import org.junit.Before;
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Paulina Sadowska on 18.04.2016.
  */
-public class MakeLoanOperationTest
+public class OpenInvestmentOperationTest
 {
     private ProductDuration _duration;
     private ProductManager _manager;
@@ -30,25 +31,25 @@ public class MakeLoanOperationTest
     }
 
     @Test
-    public void createLoanToAccountTest() throws Exception
+    public void createInvestmentToAccountTest() throws Exception
     {
         Account account = _manager.createNewProduct(Account.class, _ownerId, _balance, _duration, _interest);
         assertNotNull(account);
-        MakeLoanOperation createLoan =
-                new MakeLoanOperation(account.getOwnerId(), _balance, _duration, _interest, _manager);
-        createLoan.execute();
-        Loan newLoan = _manager.getLoan(_ownerId).get(0);
-        assertNotNull(newLoan);
-        assertEquals(account.getOwnerId(), newLoan.getOwnerId());
+        OpenInvestmentOperation openInvestment =
+                new OpenInvestmentOperation(account.getOwnerId(), _balance, _duration, _interest, _manager);
+        openInvestment.execute();
+        Investment newInvestment = _manager.getInvestment(_ownerId).get(0);
+        assertNotNull(newInvestment);
+        assertEquals(account.getOwnerId(), newInvestment.getOwnerId());
     }
 
     @Test (expected=IndexOutOfBoundsException.class)
-    public void createLoanToNonexistingAccountTest() throws Exception
+    public void createInvestmentToNonexistingAccountTest() throws Exception
     {
         int ownerId = 999;
-        MakeLoanOperation createLoan =
-                new MakeLoanOperation(ownerId, _balance, _duration, _interest, _manager);
-        createLoan.execute();
-        assertNull(_manager.getLoan(ownerId).get(0));
+        OpenInvestmentOperation openInvestment =
+                new OpenInvestmentOperation(ownerId, _balance, _duration, _interest, _manager);
+        openInvestment.execute();
+        assertNull(_manager.getInvestment(ownerId).get(0));
     }
 }
