@@ -30,8 +30,9 @@ public class CloseInvestmentOperation extends Operation implements ICommand
 
         if(Calendar.getInstance().getTime().after(_investment.getExpireDate()))
         {
-            CalculateInterestOperation calculateInterest = new CalculateInterestOperation(_baseAccount, _investment.getInterest());
+            CalculateInterestOperation calculateInterest = new CalculateInterestOperation(_investment, _investment.getInterest());
             calculateInterest.execute();
+            _baseAccount.addToBalance(_investment.getBalance());
             _executed = true;
         }
         _executed = true;
