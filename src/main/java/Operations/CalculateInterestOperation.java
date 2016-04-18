@@ -30,6 +30,7 @@ public class CalculateInterestOperation extends Operation implements ICommand
 
         BigDecimal interestValue = _interest.getStrategy().calculateInterest(_product, _interest.getPercent());
         BigDecimal newBalance = _product.getBalance().add(interestValue);
+
         _product.setBalance(newBalance);
         _executed = true;
     }

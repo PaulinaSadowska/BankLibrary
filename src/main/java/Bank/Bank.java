@@ -27,8 +27,7 @@ public class Bank
     {
         Interest interest = new Interest(interestStrategy, interestPercent);
         Integer ownerId = _productManager.getAvailableOwnerId();
-        _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest);
-
+        return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest);
     }
 
     /**

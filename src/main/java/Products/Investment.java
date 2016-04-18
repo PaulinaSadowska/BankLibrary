@@ -14,7 +14,6 @@ import java.util.Date;
  */
 public class Investment extends Product
 {
-
     protected Account _baseAccount;
 
     public Investment(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
@@ -24,4 +23,10 @@ public class Investment extends Product
         this._baseAccount = baseAccount;
 
     }
+
+    public Account getBaseAccount()
+    {
+        return _baseAccount;
+    }
+
 }

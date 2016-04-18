@@ -16,10 +16,10 @@ public class CloseInvestmentOperation extends Operation implements ICommand
     private Investment _investment;
     private Account _baseAccount;
 
-    public CloseInvestmentOperation(Investment investment, Account baseAccount){
+    public CloseInvestmentOperation(Investment investment){
         super(OperationType.CloseInvestment);
         this._investment = investment;
-        this._baseAccount = baseAccount;
+        this._baseAccount = investment.getBaseAccount();
     }
 
     @Override
