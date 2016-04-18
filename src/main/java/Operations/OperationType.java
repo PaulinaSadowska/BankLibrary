@@ -12,6 +12,7 @@ public enum OperationType
     OpenInvestment,
     CloseInvestment,
     MakeLoan,
+    MakeProduct,
     RepayLoan,
     Transfer,
     Payment,

@@ -1,7 +1,10 @@
 package Operations;
 
 import Bank.BankException;
+import Products.Interest;
+import Products.Loan;
 import Products.ProductDuration;
+import Products.ProductManager;
 import Utils.IInterestCalculationStrategy;
 
 import java.math.BigDecimal;
@@ -16,30 +19,25 @@ public class MakeLoanOperation extends Operation implements ICommand
     private ProductDuration _duration;
     private IInterestCalculationStrategy _interestStrategy;
     private double _interestPercent;
-
-    public MakeLoanOperation(BigDecimal balance, ProductDuration duration,
-                             IInterestCalculationStrategy interestStrategy, double interestPercent){
-        super(OperationType.MakeLoan);
-        this._balance = balance;
-        this._duration = duration;
-        this._interestStrategy = interestStrategy;
-        this._interestPercent = interestPercent;
-    }
+    private ProductManager _productManager;
 
     public MakeLoanOperation(Integer ownerId, BigDecimal balance, ProductDuration duration,
-                             IInterestCalculationStrategy interestStrategy, double interestPercent){
+                             IInterestCalculationStrategy interestStrategy, double interestPercent, ProductManager productManager){
         super(OperationType.MakeLoan);
         this._balance = balance;
         this._duration = duration;
         this._interestStrategy = interestStrategy;
         this._interestPercent = interestPercent;
         this._ownerId = ownerId;
+        this._productManager = productManager;
     }
 
     @Override
-    public void execute() throws BankException
+    public void execute() throws Exception
     {
-        //TODO - how? what about productManager?
+        MakeProductOperation makeProduct = new MakeProductOperation(Loan.class,
+                _ownerId, _balance, _duration, new Interest(_interestStrategy, _interestPercent), _productManager);
+        makeProduct.execute();
     }
 
     @Override

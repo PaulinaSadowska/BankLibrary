@@ -42,7 +42,7 @@ public class Bank
      *    jezeli chce zalozyc konto - wyjatek
      *
      */
-    private <T extends Product> T createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
+   /* private <T extends Product> T createProduct(Class<T> productType, Integer ownerId, BigDecimal balance,
                                                 ProductDuration duration, IInterestCalculationStrategy interestStrategy, double interestPercent)
             throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IndexOutOfBoundsException
     {
@@ -64,7 +64,7 @@ public class Bank
         }
         account = _productManager.getAccount(ownerId).get(0);
         return _productManager.createNewProduct(productType, ownerId, balance, expireDate, interest, account);
-    }
+    }*/
 
     public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
                                  double interestPercent)
@@ -101,14 +101,6 @@ public class Bank
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IndexOutOfBoundsException
     {
         return createProduct(Investment.class, null, balance, duration, interestStrategy, interestPercent);
-    }
-
-    private Date getExpireDate(ProductDuration duration)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, duration.getNumOfMonths());
-        cal.add(Calendar.YEAR, duration.getNumOfYears());
-        return cal.getTime();
     }
 
     /**

@@ -10,7 +10,7 @@ public interface ICommand
     /**
      * Executes command
      */
-    void execute() throws BankException;
+    void execute() throws Exception;
 
     /**
      * Undo command
