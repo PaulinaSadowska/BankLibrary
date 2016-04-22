@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by palka on 11.03.2016.
  * Reprezentuje wspólne cechy produktu bankowego ( konta, lokaty, itp. )
  */
-public abstract class Product
+public abstract class Product implements IProduct
 {
 
     protected int _ownerId;
@@ -41,42 +41,51 @@ public abstract class Product
     }
 
 
+    @Override
     public void setBalance(BigDecimal newBalance)
     {
         _balance = newBalance;
     }
 
+    @Override
     public void addToBalance(BigDecimal amount)
     {
         _balance = _balance.add(amount);
     }
 
+    @Override
     public BigDecimal getBalance()
     {
         return _balance;
     }
 
+    @Override
     public Interest getInterest() {
         return _interest;
     }
 
+    @Override
     public int getOwnerId() {
         return _ownerId;
     }
 
+    @Override
     public Date getCreationDate() {
         return _creationDate;
     }
 
+    @Override
     public Date getExpireDate() {
         return _expireDate;
     }
 
+    @Override
     public OperationsHistory getOperationsHistory()
     {
         return _history;
     }
 
+    @Override
     public boolean expired(){
         Calendar cal = Calendar.getInstance();
         return _expireDate.before(cal.getTime());
