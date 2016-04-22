@@ -12,6 +12,8 @@ import java.math.BigDecimal;
  */
 public class Bank
 {
+    private int id;
+    private CentralBank centralBank;
     private ProductManager _productManager;
     private OperationsHistory _globalHistory;
 
@@ -41,5 +43,19 @@ public class Bank
     public void deleteAccount()
     {
 
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public void registerCentralBank(CentralBank centralBank){
+        this.centralBank = centralBank;
     }
 }

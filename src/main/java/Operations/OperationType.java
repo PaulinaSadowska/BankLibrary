@@ -15,5 +15,6 @@ public enum OperationType
     RepayLoan,
     Transfer,
     Payment,
-    MakeReport
+    MakeReport,
+    TransferRejected
 }
