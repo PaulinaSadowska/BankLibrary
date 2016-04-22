@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 public class Bank
 {
-    private int id;
+    private Integer id;
     private CentralBank centralBank;
     private ProductManager _productManager;
     private OperationsHistory _globalHistory;
@@ -29,7 +29,7 @@ public class Bank
     {
         Interest interest = new Interest(interestStrategy, interestPercent);
         Integer ownerId = _productManager.getAvailableOwnerId();
-        return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest);
+        return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest, id);
     }
 
     /**

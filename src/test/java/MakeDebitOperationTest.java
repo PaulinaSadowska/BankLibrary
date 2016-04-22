@@ -19,7 +19,7 @@ public class MakeDebitOperationTest
 
     @Before
     public void setUp(){
-        _account = new Account(123, mock(BigDecimal.class), mock(Date.class), mock(Interest.class));
+        _account = new Account(123, mock(BigDecimal.class), mock(Date.class), mock(Interest.class), 123);
     }
 
     @Test

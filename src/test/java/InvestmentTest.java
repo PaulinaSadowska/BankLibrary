@@ -23,7 +23,7 @@ public class InvestmentTest {
     private Account createAccountInstance(BigDecimal balance)
     {
 
-        return new Account(12, balance, mock(Date.class), mock(Interest.class));
+        return new Account(12, balance, mock(Date.class), mock(Interest.class), 123);
     }
 
   /*  @Test

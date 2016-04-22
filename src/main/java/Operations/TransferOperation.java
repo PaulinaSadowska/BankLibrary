@@ -13,9 +13,9 @@ import java.util.List;
 public class TransferOperation extends Operation implements ICommand
 {
     private Account sourceAccount;
-    Account targetAccount;
-    BigDecimal amount;
-    List<ICommand> operationsList;
+    private Account targetAccount;
+    private BigDecimal amount;
+    private List<ICommand> operationsList;
 
     public TransferOperation(Account sourceAccount, Account targetAccount, BigDecimal amount, OperationType operationType)
     {

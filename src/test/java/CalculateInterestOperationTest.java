@@ -26,7 +26,7 @@ public class CalculateInterestOperationTest
         BigDecimal balance = new BigDecimal(1000);
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
         Interest interest = new Interest(strategyMock, 0.3);
-        Product product = new Account(1234, balance, mock(Date.class), interest);
+        Product product = new Account(1234, balance, mock(Date.class), interest, 123);
 
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
 

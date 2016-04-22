@@ -37,7 +37,7 @@ public class CloseInvestmentOperationTest
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(_expectedInterestValue);
         _interest = new Interest(strategyMock, 0.3);
-        _account = new Account(1234, _accountBalance, mock(Date.class), mock(Interest.class));
+        _account = new Account(1234, _accountBalance, mock(Date.class), mock(Interest.class), 123);
     }
 
     @Test

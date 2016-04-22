@@ -1,6 +1,5 @@
 package Products;
 
-import Products.*;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.inject.Inject;
@@ -27,100 +26,101 @@ public class ProductManager
         return _products.get(ownerId);
     }
 
-    private <T> void  validateInput(T input)
+    private <T> void validateInput(T input)
     {
         T value = input;
 
-        if(value instanceof Integer)
+        if (value instanceof Integer)
         {
-            if(((Integer)value) < 0)
-                throw new IllegalArgumentException("Owner id cant be less than 0");
-        }
-        else if(value instanceof BigDecimal)
+            if (((Integer) value) < 0)
+                throw new IllegalArgumentException("id cant be less than 0");
+        } else if (value instanceof BigDecimal)
         {
-            if(((BigDecimal) value).longValue() < 0)
+            if (((BigDecimal) value).longValue() < 0)
                 throw new IllegalArgumentException("Balance cant be initialized with value less than  0");
-        }
-        else if(value instanceof Date)
+        } else if (value instanceof Date)
         {
-            if(Calendar.getInstance().getTime().after((Date)value))
+            if (Calendar.getInstance().getTime().after((Date) value))
                 throw new IllegalArgumentException("Expire date before creation date");
         }
     }
 
-    public  <T extends Product> void deleteProduct(T product)
+    public <T extends Product> void deleteProduct(T product)
     {
         /// kiedy moze byc usuniete?
-        if((product instanceof Account))
+        if ((product instanceof Account))
         {
             _products.removeAll(product.getOwnerId());
         }
     }
 
     private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
-                                                   Interest interest, Account baseAccount, Debit debit)
+                                                   Interest interest, Account baseAccount, Debit debit, Integer bankId)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
-            Date expireDate = getExpireDate(duration);
-            validateInput(ownerId);
-            validateInput(balance);
-            validateInput(expireDate);
+        Date expireDate = getExpireDate(duration);
+        validateInput(ownerId);
+        validateInput(balance);
+        validateInput(expireDate);
 
-            T product = null;
-            //find proper constructor and initialize
-            Constructor<T> constructor;
-            if (baseAccount == null && debit == null)
-            {
-                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass());
-                product = constructor.newInstance(ownerId, balance, expireDate, interest);
-                _products.put(ownerId, product);
-            }
-            if (debit == null && baseAccount != null)
-            {
-                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass(), baseAccount.getClass());
-                product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
-                _products.put(ownerId, product);
-            }
-            if (baseAccount == null && debit != null)
-            {
-                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass(), debit.getClass());
-                product = constructor.newInstance(ownerId, balance, expireDate, interest, debit);
-                _products.put(ownerId, product);
-            }
+        T product = null;
+        //find proper constructor and initialize
+        Constructor<T> constructor;
+        if (debit == null && baseAccount != null)
+        {
+            constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                    expireDate.getClass(), interest.getClass(), baseAccount.getClass());
+            product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
+            _products.put(ownerId, product);
+        }
+        if (baseAccount == null && debit == null && bankId!=null)
+        {
+            constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                    expireDate.getClass(), interest.getClass(), bankId.getClass());
+            product = constructor.newInstance(ownerId, balance, expireDate, interest);
+            _products.put(ownerId, product);
+        }
+        if (baseAccount == null && debit != null && bankId != null)
+        {
+            constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                    expireDate.getClass(), interest.getClass(), debit.getClass(), bankId.getClass());
+            product = constructor.newInstance(ownerId, balance, expireDate, interest, debit);
+            _products.put(ownerId, product);
+        }
         return product;
     }
 
 
+
     @Inject
     public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
-                                                         Interest interest)
+                                                  Interest interest, Account baseAccount)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, null, null);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, null, -1);
     }
 
     @Inject
     public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
-                                                        Interest interest, Account baseAccount)
+                                                  Interest interest, Debit debit, Integer bankId)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, null);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, null, debit, bankId);
     }
+
 
     @Inject
     public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
-                                                        Interest interest, Debit debit)
+                                                  Interest interest, Integer bankId)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, null, debit);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, null, null, bankId);
     }
 
-    public int getAvailableOwnerId(){
-        int i=0;
-        while(_products.containsKey(i))
+    public int getAvailableOwnerId()
+    {
+        int i = 0;
+        while (_products.containsKey(i))
         {
             i++;
         }
@@ -131,9 +131,9 @@ public class ProductManager
     {
         List<Product> productList = _products.get(ownerId);
         List<T> out = new ArrayList<T>();
-        if(productList!=null)
+        if (productList != null)
         {
-            for(Product product: productList)
+            for (Product product : productList)
             {
                 if (clazz.isInstance(product))
                 {
@@ -154,9 +154,9 @@ public class ProductManager
         return getProduct(Investment.class, ownerId);
     }
 
-    public  List<Loan> getLoan(Integer ownerId)
+    public List<Loan> getLoan(Integer ownerId)
     {
-        return  getProduct(Loan.class, ownerId);
+        return getProduct(Loan.class, ownerId);
     }
 
     private Date getExpireDate(ProductDuration duration)

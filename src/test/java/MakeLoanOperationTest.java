@@ -32,7 +32,7 @@ public class MakeLoanOperationTest
     @Test
     public void createLoanToAccountTest() throws Exception
     {
-        Account account = _manager.createNewProduct(Account.class, _ownerId, _balance, _duration, _interest);
+        Account account = _manager.createNewProduct(Account.class, _ownerId, _balance, _duration, _interest, 123);
         assertNotNull(account);
         MakeLoanOperation createLoan =
                 new MakeLoanOperation(account.getOwnerId(), _balance, _duration, _interest, _manager);

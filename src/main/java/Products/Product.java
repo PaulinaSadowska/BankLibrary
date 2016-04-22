@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public abstract class Product
 {
-
     protected int _ownerId;
     protected BigDecimal _balance;
     protected Interest _interest;

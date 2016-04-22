@@ -18,7 +18,7 @@ public class ProductFactory
     public static Account createAccount(int balance)
     {
         Interest interestMock = mock(Interest.class);
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock);
+        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, 1234);
     }
 
     public static Account createAccount(int balance, int debitValue)
@@ -27,6 +27,6 @@ public class ProductFactory
         Debit debitMock = mock(Debit.class);
         when(debitMock.getDebitValue()).thenReturn(new BigDecimal(debitValue));
 
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock);
+        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock, 1234);
     }
 }
