@@ -1,19 +1,11 @@
 import Bank.*;
-import Operations.ICommand;
-import Operations.OperationType;
-import Operations.TransferOperation;
-import Products.Account;
 import Products.ProductManager;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Hashtable;
 
-import static Utils.ProductFactory.createAccount;
 import static org.junit.Assert.*;
 
 /**
@@ -34,7 +26,7 @@ public class CentralBankTest
     }
 
     @Test
-    public void banksRegistration_BanksToCentralBankListAdded() throws NoSuchFieldException, IllegalAccessException
+    public void banksRegistration_TwoBanksToCentralBankListAdded() throws NoSuchFieldException, IllegalAccessException
     {
         _centralBank.registerBank(_bank1);
         _centralBank.registerBank(_bank2);
@@ -43,30 +35,4 @@ public class CentralBankTest
         HashMap banksList = (HashMap) f.get(_centralBank); //IllegalAccessException
         assertEquals(banksList.size(), 2);
     }
-
-    @Test
-    public void makeTransferBetweenBanks_CorrectAmountAndAccounts_BalancesChanges() throws Exception
-    {
-        _centralBank.registerBank(_bank1);
-        _centralBank.registerBank(_bank2);
-
-        int balance = 500;
-        int transferValue = 100;
-
-        BigDecimal transferAmount = new BigDecimal(transferValue);
-
-        Account account = createAccount(balance, 0, _bank1.getId());
-        Account targetAccount = createAccount(balance, 0, _bank2.getId());
-
-        ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
-        operation.execute();
-
-        operation.undo();
-
-        BigDecimal balanceValue = new BigDecimal(balance);
-
-        Assert.assertEquals(balanceValue, targetAccount.getBalance());
-        Assert.assertEquals(balanceValue, account.getBalance());
-    }
-
 }
