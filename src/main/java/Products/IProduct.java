@@ -1,8 +1,8 @@
 package Products;
 
+import Products.Balance.Balance;
 import Utils.OperationsHistory;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -10,12 +10,6 @@ import java.util.Date;
  */
 public interface IProduct
 {
-    void setBalance(BigDecimal newBalance);
-
-    void addToBalance(BigDecimal amount);
-
-    BigDecimal getBalance();
-
     Interest getInterest();
 
     int getOwnerId();

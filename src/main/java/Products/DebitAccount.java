@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  */
 public class DebitAccount extends AccountDecorator
 {
-    private Debit _debit;
+    private Debit debit;
 
     public DebitAccount(Account account)
     {
@@ -24,15 +24,15 @@ public class DebitAccount extends AccountDecorator
 
     public boolean hasDebit()
     {
-        return _debit!=null;
+        return debit !=null;
     }
 
     public Debit getDebit()
     {
-        return  _debit;
+        return debit;
     }
 
-    public void setDebit(Debit debit) { _debit = debit;}
+    public void setDebit(Debit debit) { this.debit = debit;}
 
 
     /**

@@ -1,6 +1,8 @@
 package Products;
 
 import Products.Account;
+import Products.Balance.Balance;
+import Products.Balance.BalanceException;
 import Utils.OperationsHistory;
 
 import java.math.BigDecimal;
@@ -15,7 +17,7 @@ public abstract class Product implements IProduct
 {
 
     protected int _ownerId;
-    protected BigDecimal _balance;
+    protected Balance balance;
     protected Interest _interest;
     protected Date _creationDate;
     protected Date _expireDate;
@@ -24,39 +26,30 @@ public abstract class Product implements IProduct
 
 
 
-    public  Product(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest)
+    public  Product(Integer ownerId, Balance balance, Date expireDate, Interest interest)
     {
         _ownerId = ownerId;
-        _balance = balance;
+        this.balance = balance;
         _creationDate = new Date();
         _expireDate = expireDate;
         _interest = interest;
         _history = new OperationsHistory();
     }
 
-    public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public  Product(int ownerId, Balance balance, Date expireDate, Interest interest, Account baseAccount)
     {
         this(ownerId, balance, expireDate, interest);
         _baseAccount = baseAccount;
     }
 
-
-    @Override
-    public void setBalance(BigDecimal newBalance)
+    public void addToBalance(BigDecimal amount) throws BalanceException
     {
-        _balance = newBalance;
+        balance.addToBalance(amount);
     }
 
-    @Override
-    public void addToBalance(BigDecimal amount)
-    {
-        _balance = _balance.add(amount);
-    }
-
-    @Override
     public BigDecimal getBalance()
     {
-        return _balance;
+        return balance.getBalance();
     }
 
     @Override

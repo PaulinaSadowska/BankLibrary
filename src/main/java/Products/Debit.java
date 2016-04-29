@@ -1,5 +1,7 @@
 package Products;
 
+import Products.Balance.Balance;
+
 import java.math.BigDecimal;
 
 /**
@@ -8,16 +10,24 @@ import java.math.BigDecimal;
  */
 public class Debit
 {
-    final private BigDecimal _debit;
+    final private BigDecimal debit;
 
-    public Debit(BigDecimal debitValue)
+    final private Balance balance;
+
+    public Debit(BigDecimal debitValue, Balance balance)
     {
-        this._debit= debitValue;
+        this.balance = balance;
+        this.debit = debitValue;
     }
 
     public BigDecimal getDebitValue()
     {
-        return _debit;
+        return debit;
+    }
+
+    public Balance getBalance()
+    {
+        return balance;
     }
 
 
