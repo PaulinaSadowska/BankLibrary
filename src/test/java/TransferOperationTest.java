@@ -65,7 +65,7 @@ public class TransferOperationTest
         Account targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
-        asserOperationUndone(balance, targetAccount, operation);
+        assertOperationUndone(balance, targetAccount, operation);
     }
 
     @Test(expected = BankException.class)
@@ -81,7 +81,7 @@ public class TransferOperationTest
         Account targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
-        asserOperationUndone(balance, targetAccount, operation);
+        assertOperationUndone(balance, targetAccount, operation);
     }
 
     @Test
@@ -143,10 +143,10 @@ public class TransferOperationTest
         Account targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Payment);
-        asserOperationUndone(balance, targetAccount, operation);
+        assertOperationUndone(balance, targetAccount, operation);
     }
 
-    private void asserOperationUndone(int balance, Account targetAccount, ICommand operation) throws Exception
+    private void assertOperationUndone(int balance, Account targetAccount, ICommand operation) throws Exception
     {
         try
         {
@@ -154,8 +154,8 @@ public class TransferOperationTest
         }
         catch (BankException e)
         {
-            Assert.assertEquals(new BigDecimal(balance) ,account.getBalance());
-            Assert.assertEquals(new BigDecimal(balance) ,targetAccount.getBalance());
+            Assert.assertEquals(new BigDecimal(balance), account.getBalance());
+            Assert.assertEquals(new BigDecimal(balance), targetAccount.getBalance());
             throw e;
         }
     }

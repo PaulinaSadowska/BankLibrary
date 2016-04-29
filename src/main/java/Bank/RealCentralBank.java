@@ -1,6 +1,8 @@
 package Bank;
 
 import Operations.ICommand;
+import Operations.RefusedTransferPayback;
+import Operations.TransferOperation;
 
 import java.util.HashMap;
 
@@ -21,9 +23,14 @@ public class RealCentralBank implements CentralBank
     }
 
     @Override
-    public void transfer(Integer bankId, ICommand operation)
+    public void transfer(TransferOperation operation)
     {
         //send money to bank with given id
-        banks.get(bankId);
+    }
+
+    @Override
+    public void transferPayback(RefusedTransferPayback operation)
+    {
+        //send money back
     }
 }

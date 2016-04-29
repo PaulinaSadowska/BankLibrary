@@ -29,4 +29,14 @@ public class ProductFactory
 
         return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock, 1234);
     }
+
+
+    public static Account createAccount(int balance, int debitValue, int bankId)
+    {
+        Interest interestMock = mock(Interest.class);
+        Debit debitMock = mock(Debit.class);
+        when(debitMock.getDebitValue()).thenReturn(new BigDecimal(debitValue));
+
+        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock, bankId);
+    }
 }
