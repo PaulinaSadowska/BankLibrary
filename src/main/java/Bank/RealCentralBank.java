@@ -1,7 +1,6 @@
 package Bank;
 
 import Operations.ICommand;
-import Operations.TransferOperation;
 
 import java.util.HashMap;
 
@@ -13,7 +12,11 @@ public class RealCentralBank implements CentralBank
     private HashMap<Integer, Bank> banks = new HashMap<Integer, Bank>();
 
     public void registerBank(Bank bank) {
-        bank.registerCentralBank(this);
+        int key = -1;
+        while(banks.containsKey(key)||key<1){
+            key=(int)(Math.random()*Integer.MAX_VALUE);
+        }
+        bank.registerCentralBank(this, key);
         banks.put(bank.getId(), bank);
     }
 

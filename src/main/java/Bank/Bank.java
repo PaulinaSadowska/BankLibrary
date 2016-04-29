@@ -12,8 +12,8 @@ import java.math.BigDecimal;
  */
 public class Bank
 {
-    private Integer id;
-    private CentralBank centralBank;
+    private Integer _id = -1; //not assigned
+    private CentralBank _centralBank;
     private ProductManager _productManager;
     private OperationsHistory _globalHistory;
 
@@ -29,7 +29,7 @@ public class Bank
     {
         Interest interest = new Interest(interestStrategy, interestPercent);
         Integer ownerId = _productManager.getAvailableOwnerId();
-        return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest, id);
+        return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest, _id);
     }
 
     /**
@@ -47,15 +47,11 @@ public class Bank
 
     public int getId()
     {
-        return id;
+        return _id;
     }
 
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    public void registerCentralBank(CentralBank centralBank){
-        this.centralBank = centralBank;
+    public void registerCentralBank(CentralBank centralBank, int bankId){
+        _id = bankId;
+        this._centralBank = centralBank;
     }
 }

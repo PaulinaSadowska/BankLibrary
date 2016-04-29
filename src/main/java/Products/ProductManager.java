@@ -77,14 +77,14 @@ public class ProductManager
         {
             constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                     expireDate.getClass(), interest.getClass(), bankId.getClass());
-            product = constructor.newInstance(ownerId, balance, expireDate, interest);
+            product = constructor.newInstance(ownerId, balance, expireDate, interest, bankId);
             _products.put(ownerId, product);
         }
         if (baseAccount == null && debit != null && bankId != null)
         {
             constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                     expireDate.getClass(), interest.getClass(), debit.getClass(), bankId.getClass());
-            product = constructor.newInstance(ownerId, balance, expireDate, interest, debit);
+            product = constructor.newInstance(ownerId, balance, expireDate, interest, debit, bankId);
             _products.put(ownerId, product);
         }
         return product;
