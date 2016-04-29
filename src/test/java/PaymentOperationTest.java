@@ -8,7 +8,6 @@ import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 import static Utils.ProductFactory.createAccount;
@@ -35,9 +34,9 @@ public class PaymentOperationTest
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
         operation.execute();
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
         operation.undo();
-        Assert.assertEquals(new BigDecimal(balance), account.getBalance());
+        Assert.assertEquals(new BigDecimal(balance), account.getBalanceValue());
     }
 
     @Test
@@ -48,9 +47,9 @@ public class PaymentOperationTest
         BigDecimal amount = new BigDecimal(50);
         ICommand command = new PaymentOperation(account, PaymentDirection.Out, amount, OperationType.Payment);
         command.execute();
-        Assert.assertEquals(amount, account.getBalance());
+        Assert.assertEquals(amount, account.getBalanceValue());
         command.undo();
-        Assert.assertEquals(new BigDecimal(balance), account.getBalance());
+        Assert.assertEquals(new BigDecimal(balance), account.getBalanceValue());
     }
 
     @Test
@@ -70,7 +69,7 @@ public class PaymentOperationTest
         ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
         operation.execute();
         //Sprawdzenie
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
     }
 
     @Test(expected = BankException.class)
@@ -104,7 +103,7 @@ public class PaymentOperationTest
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
         operation.execute();
 
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
     }
 
     @Test(expected = BankException.class)
@@ -141,7 +140,7 @@ public class PaymentOperationTest
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
         operation.execute();
 
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
     }
 
 
@@ -160,7 +159,7 @@ public class PaymentOperationTest
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
         operation.execute();
 
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
     }
 
 

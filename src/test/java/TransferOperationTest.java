@@ -35,8 +35,8 @@ public class TransferOperationTest
 
         BigDecimal balanceValue = new BigDecimal(balance);
 
-        Assert.assertEquals(balanceValue, targetAccount.getBalance());
-        Assert.assertEquals(balanceValue, account.getBalance());
+        Assert.assertEquals(balanceValue, targetAccount.getBalanceValue());
+        Assert.assertEquals(balanceValue, account.getBalanceValue());
     }
 
     @Test(expected = NullPointerException.class)
@@ -103,8 +103,8 @@ public class TransferOperationTest
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         operation.execute();
 
-        Assert.assertEquals(expectedLocalBalance, account.getBalance());
-        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
+        Assert.assertEquals(expectedLocalBalance, account.getBalanceValue());
+        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalanceValue());
     }
 
     @Test
@@ -126,8 +126,8 @@ public class TransferOperationTest
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         operation.execute();
 
-        Assert.assertEquals(expectedLocalBalance, account.getBalance());
-        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalance());
+        Assert.assertEquals(expectedLocalBalance, account.getBalanceValue());
+        Assert.assertEquals(expectedTargetBalance, targetAccount.getBalanceValue());
     }
 
     @Test(expected = BankException.class)
@@ -154,8 +154,8 @@ public class TransferOperationTest
         }
         catch (BankException e)
         {
-            Assert.assertEquals(new BigDecimal(balance) ,account.getBalance());
-            Assert.assertEquals(new BigDecimal(balance) ,targetAccount.getBalance());
+            Assert.assertEquals(new BigDecimal(balance) ,account.getBalanceValue());
+            Assert.assertEquals(new BigDecimal(balance) ,targetAccount.getBalanceValue());
             throw e;
         }
     }

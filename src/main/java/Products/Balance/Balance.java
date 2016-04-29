@@ -37,7 +37,7 @@ public class Balance implements IBalance
     }
 
     @Override
-    public BigDecimal getBalance()
+    public BigDecimal getBalanceValue()
     {
         return balance;
     }

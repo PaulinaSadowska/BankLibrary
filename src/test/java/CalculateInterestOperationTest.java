@@ -33,6 +33,6 @@ public class CalculateInterestOperationTest
         CalculateInterestOperation operation = new CalculateInterestOperation(product, interest);
         operation.execute();
 
-        assertEquals(balance.add(expectedInterestValue), product.getBalance());
+        assertEquals(balance.add(expectedInterestValue), product.getBalanceValue());
     }
 }

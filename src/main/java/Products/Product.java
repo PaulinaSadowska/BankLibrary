@@ -1,6 +1,5 @@
 package Products;
 
-import Products.Account;
 import Products.Balance.Balance;
 import Products.Balance.BalanceException;
 import Utils.OperationsHistory;
@@ -47,9 +46,9 @@ public abstract class Product implements IProduct
         balance.addToBalance(amount);
     }
 
-    public BigDecimal getBalance()
+    public BigDecimal getBalanceValue()
     {
-        return balance.getBalance();
+        return balance.getBalanceValue();
     }
 
     @Override
@@ -82,6 +81,13 @@ public abstract class Product implements IProduct
     public boolean expired(){
         Calendar cal = Calendar.getInstance();
         return _expireDate.before(cal.getTime());
+    }
+
+
+    @Override
+    public void substractFromBalance(BigDecimal amount) throws BalanceException
+    {
+        balance.substractFromBalance(amount);
     }
 
 }

@@ -1,6 +1,7 @@
 package Products;
 
 import Products.Balance.Balance;
+import Products.Balance.IBalance;
 import Utils.OperationsHistory;
 
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
 /**
  * Created by arasz on 22.04.2016.
  */
-public interface IProduct
+public interface IProduct extends IBalance
 {
     Interest getInterest();
 

@@ -9,6 +9,17 @@ public class BankException extends Exception
 {
     private OperationType _operationType;
 
+    public BankException(Exception innerException)
+    {
+        super(innerException);
+    }
+
+    public BankException(String message, Exception innerException)
+    {
+        //TODO: Zrobic tu porzadek
+        super(message, innerException);
+    }
+
     public BankException(String message)
     {
         this(message, OperationType.None);

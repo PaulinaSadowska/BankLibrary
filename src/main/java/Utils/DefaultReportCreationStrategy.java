@@ -22,7 +22,7 @@ public class DefaultReportCreationStrategy implements IReportCreationStrategy<St
        {
            report.append("Product type: "+product.getClass());
            report.append("Owner id: "+ product.getOwnerId());
-           report.append("Balance: "+ product.getBalance());
+           report.append("Balance: "+ product.getBalanceValue());
            report.append("Interest:"+ product.getInterest());
            report.append("Creation date: "+ product.getCreationDate());
            report.append("Expire date: "+ product.getExpireDate());

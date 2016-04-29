@@ -1,5 +1,4 @@
 import Bank.BankException;
-import Operations.ChangeInterestMechanismOperation;
 import Operations.CloseInvestmentOperation;
 import Products.Account;
 import Products.Interest;
@@ -51,7 +50,7 @@ public class CloseInvestmentOperationTest
         CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
         operation.execute();
         BigDecimal newInterestBalance = _balance.add(_expectedInterestValue);
-        assertEquals(newInterestBalance.add(_accountBalance), _account.getBalance());
+        assertEquals(newInterestBalance.add(_accountBalance), _account.getBalanceValue());
     }
 
     @Test
@@ -64,7 +63,7 @@ public class CloseInvestmentOperationTest
 
         CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
         operation.execute();
-        assertEquals(_balance.add(_accountBalance), _account.getBalance());
+        assertEquals(_balance.add(_accountBalance), _account.getBalanceValue());
     }
 
 }

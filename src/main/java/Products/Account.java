@@ -3,6 +3,7 @@ package Products;
 import Bank.BankException;
 import Operations.ICommand;
 import Operations.Operation;
+import Products.Balance.Balance;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
 public class Account extends Product implements IAccount
 {
 
-    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest)
+    public Account(Integer ownerId, Balance balance, Date expireDate, Interest interest)
     {
         super(ownerId, balance, expireDate, interest);
     }

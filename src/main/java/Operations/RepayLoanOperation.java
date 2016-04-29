@@ -27,8 +27,8 @@ public class RepayLoanOperation extends Operation implements ICommand
         if(!canClose())
             throw new BankException("Loan can not be closed", OperationType.RepayLoan);
 
-        BigDecimal repayAmount = _loan.getBalance();
-        _baseAccount.setBalance(_baseAccount.getBalance().subtract(repayAmount));
+        BigDecimal repayAmount = _loan.getBalanceValue();
+        _baseAccount.setBalance(_baseAccount.getBalanceValue().subtract(repayAmount));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class RepayLoanOperation extends Operation implements ICommand
     private boolean canClose()
     {
         BigDecimal initialBalance = _baseAccount.getBalanceWithDebit();
-        BigDecimal repayAmount = _loan.getBalance();
+        BigDecimal repayAmount = _loan.getBalanceValue();
 
         return initialBalance.compareTo(repayAmount) >= 0;
     }

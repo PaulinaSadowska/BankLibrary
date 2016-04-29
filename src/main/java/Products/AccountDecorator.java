@@ -1,6 +1,6 @@
 package Products;
 
-import Operations.ICommand;
+import Products.Balance.BalanceException;
 import Utils.OperationsHistory;
 
 import java.math.BigDecimal;
@@ -19,21 +19,15 @@ import java.util.Date;
     }
 
     @Override
-    public void setBalance(BigDecimal newBalance)
-    {
-        _decoratedAccount.setBalance(newBalance);
-    }
-
-    @Override
-    public void addToBalance(BigDecimal amount)
+    public void addToBalance(BigDecimal amount) throws BalanceException
     {
         _decoratedAccount.addToBalance(amount);
     }
 
     @Override
-    public BigDecimal getBalance()
+    public BigDecimal getBalanceValue()
     {
-        return _decoratedAccount.getBalance();
+        return _decoratedAccount.getBalanceValue();
     }
 
     @Override
@@ -70,5 +64,11 @@ import java.util.Date;
     public boolean expired()
     {
         return _decoratedAccount.expired();
+    }
+
+    @Override
+    public void substractFromBalance(BigDecimal amount) throws BalanceException
+    {
+        _decoratedAccount.substractFromBalance(amount);
     }
 }

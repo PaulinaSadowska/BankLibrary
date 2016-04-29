@@ -1,6 +1,8 @@
 package Products;
 
 import Products.Balance.Balance;
+import Products.Balance.BalanceException;
+import Products.Balance.IBalance;
 
 import java.math.BigDecimal;
 
@@ -8,7 +10,7 @@ import java.math.BigDecimal;
  * Created by palka on 11.03.2016.
  * Reprezentuje debet który może posiadać rachunek
  */
-public class Debit
+public class Debit implements IBalance
 {
     final private BigDecimal debit;
 
@@ -31,4 +33,21 @@ public class Debit
     }
 
 
+    @Override
+    public void addToBalance(BigDecimal amount) throws BalanceException
+    {
+        balance.addToBalance(amount);
+    }
+
+    @Override
+    public void substractFromBalance(BigDecimal amount) throws BalanceException
+    {
+        balance.substractFromBalance(amount);
+    }
+
+    @Override
+    public BigDecimal getBalanceValue()
+    {
+        return balance.getBalanceValue();
+    }
 }

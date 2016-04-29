@@ -1,6 +1,7 @@
 package Products;
 
 import Operations.ICommand;
+import Products.Balance.BalanceException;
 
 import java.math.BigDecimal;
 
@@ -11,9 +12,10 @@ public class DebitAccount extends AccountDecorator
 {
     private Debit debit;
 
-    public DebitAccount(Account account)
+    public DebitAccount(Account account, Debit debit)
     {
         super(account);
+        this.debit = debit;
     }
 
     @Override
@@ -42,10 +44,11 @@ public class DebitAccount extends AccountDecorator
     {
         BigDecimal initialBalance;
         if(hasDebit())
-            initialBalance = getDebit().getDebitValue().add(getBalance());
+            initialBalance = debit.getBalanceValue().add(getBalanceValue());
         else
-            initialBalance = getBalance();
+            initialBalance = getBalanceValue();
 
         return initialBalance;
     }
+
 }

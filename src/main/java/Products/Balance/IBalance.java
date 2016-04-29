@@ -23,5 +23,5 @@ public interface IBalance
      * Gets balance
      * @return balance
      */
-    BigDecimal getBalance();
+    BigDecimal getBalanceValue();
 }
