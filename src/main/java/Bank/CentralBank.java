@@ -1,13 +1,14 @@
 package Bank;
 
-import Operations.ICommand;
-import Operations.RefusedTransferPayback;
-import Operations.TransferOperation;
+import Operations.InterbankTransferOperation;
+import Products.Account;
+
+import java.math.BigDecimal;
 
 /**
  * Created by Paulina Sadowska on 22.04.2016.
  */
-interface CentralBank{
-    public void transfer(TransferOperation operation);
-    public void transferPayback(RefusedTransferPayback operation);
+public interface CentralBank{
+    void transfer(InterbankTransferOperation operation) throws BankException;
+    void transferPayback(Account targetAccount, BigDecimal amount) throws BankException;
 }

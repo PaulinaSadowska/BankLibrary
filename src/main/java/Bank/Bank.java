@@ -32,6 +32,10 @@ public class Bank
         return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest, _id);
     }
 
+    public Account getAccount(int ownerId){
+        return _productManager.getAccount(ownerId).get(0);
+    }
+
     /**
      * Usunięcie konta
      * @pre: account != null

@@ -20,7 +20,7 @@ public class RefusedTransferPayback extends Operation implements ICommand
     }
 
     @Override
-    public void execute() throws Exception
+    public void execute() throws BankException
     {
         if(getExecuted())
             return;
@@ -30,5 +30,15 @@ public class RefusedTransferPayback extends Operation implements ICommand
     public void undo() throws BankException
     {
 
+    }
+
+    public Account getTargetAccount()
+    {
+        return targetAccount;
+    }
+
+    public BigDecimal getAmount()
+    {
+        return amount;
     }
 }

@@ -1,9 +1,9 @@
 package Bank;
 
-import Operations.ICommand;
-import Operations.RefusedTransferPayback;
-import Operations.TransferOperation;
+import Operations.*;
+import Products.Account;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -23,14 +23,38 @@ public class RealCentralBank implements CentralBank
     }
 
     @Override
-    public void transfer(TransferOperation operation)
+    public void transfer(InterbankTransferOperation operation) throws BankException
     {
         //send money to bank with given id
+        Bank targetBank = banks.get(operation.getTargetBankId());
+        if(targetBank == null)
+        {
+            transferPayback(operation.getSourceAccount(), operation.getAmount());
+            return;
+        }
+        Account targetAccount = targetBank.getAccount(operation.getTargetAccountId());
+        if(targetAccount == null){
+            transferPayback(operation.getSourceAccount(), operation.getAmount());
+            return;
+        }
+        PaymentOperation payment = new PaymentOperation(targetAccount, PaymentDirection.In, operation.getAmount(), OperationType.Payment);
+        try
+        {
+            payment.execute();
+        }
+        catch (BankException e)
+        {
+            e.printStackTrace();
+            transferPayback(operation.getSourceAccount(), operation.getAmount());
+        }
     }
 
     @Override
-    public void transferPayback(RefusedTransferPayback operation)
+    public void transferPayback(Account targetAccount, BigDecimal amount) throws BankException
     {
-        //send money back
+        RefusedTransferPayback payback =
+                new RefusedTransferPayback(targetAccount, amount, OperationType.TransferRejected);
+        payback.execute();
     }
+
 }

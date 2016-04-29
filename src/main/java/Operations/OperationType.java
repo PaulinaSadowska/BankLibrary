@@ -16,5 +16,6 @@ public enum OperationType
     Transfer,
     Payment,
     MakeReport,
-    TransferRejected
+    TransferRejected,
+    InterbankTransferOperation
 }
