@@ -16,6 +16,7 @@ public class InterbankTransferOperation extends Operation implements ICommand
     private int targetAccountId;
     private int targetBankId;
     private BigDecimal amount;
+    private PaymentOperation paymentFromSourceAccount;
 
     public InterbankTransferOperation(CentralBank centralBank, Account source, int targetAccountId, int targetBankId, BigDecimal amount)
     {
@@ -28,31 +29,26 @@ public class InterbankTransferOperation extends Operation implements ICommand
     }
 
     @Override
-    public void execute() throws Exception
+    public void execute() throws BankException
     {
-        if(getExecuted())
+        if (getExecuted())
             return;
 
-        if(sourceAccount == null)
+        if (sourceAccount == null)
             throw new NullPointerException("source account is null");
 
         setExecuted(true);
-        try
-        {
-            new PaymentOperation(sourceAccount, PaymentDirection.Out, amount, OperationType.Payment).execute(); //get money from account
-        }
-        catch (BankException exe)
-        {
-            undo();
-            throw exe;
-        }
+
+        paymentFromSourceAccount = new PaymentOperation(sourceAccount, PaymentDirection.Out, amount, OperationType.Payment);
+        paymentFromSourceAccount.execute();
+
         centralBank.transfer(this);
     }
 
     @Override
     public void undo() throws BankException
     {
-//TODO - delete this?
+        //TODO - delete me!
     }
 
     public int getTargetAccountId()

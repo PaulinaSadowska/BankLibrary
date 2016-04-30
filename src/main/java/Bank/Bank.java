@@ -6,6 +6,8 @@ import Utils.OperationsHistory;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by arasz on 02.04.2016.
@@ -33,7 +35,12 @@ public class Bank
     }
 
     public Account getAccount(int ownerId){
-        return _productManager.getAccount(ownerId).get(0);
+
+        List<Account> accounts = _productManager.getAccount(ownerId);
+        if(accounts.size() == 0){
+            return null;
+        }
+        return accounts.get(0);
     }
 
     /**

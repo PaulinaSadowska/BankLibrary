@@ -57,4 +57,49 @@ public class InterbankTransferOperationTest
         assertEquals(expectedTargetBalance, targetAccount.getBalance());
         assertEquals(expectedSourceBalance, sourceAccount.getBalance());
     }
+
+    @Test
+    public void makeInterbankTransfer_TargetAccountDontExist_BalanceDontChange() throws Exception
+    {
+        BigDecimal amount = new BigDecimal(200);
+        int dummyOwnerId = 134;
+
+        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
+                dummyOwnerId, _bank2.getId(), amount);
+        transfer.execute();
+
+        assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+    }
+
+    @Test
+    public void makeInterbankTransfer_WrongBankId_BalanceDontChange() throws Exception
+    {
+        BigDecimal targetAccountBalance = new BigDecimal(1400);
+        BigDecimal amount = new BigDecimal(200);
+        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+                mock(IInterestCalculationStrategy.class), 1.3);
+        int dummyBankId = 134;
+
+        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
+                targetAccount.getOwnerId(), dummyBankId, amount);
+        transfer.execute();
+
+        assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+    }
+
+    @Test(expected = BankException.class)
+    public void makeInterbankTransfer_AmountToHigh_BothBalancesDoesNotChange() throws Exception
+    {
+        BigDecimal targetAccountBalance = new BigDecimal(1400);
+        BigDecimal amount = _sourceAccountBalance.add(new BigDecimal(100));
+        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+                mock(IInterestCalculationStrategy.class), 1.3);
+
+        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
+                targetAccount.getOwnerId(), targetAccount.getBankId(), amount);
+        transfer.execute();
+
+        assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+    }
+
 }
