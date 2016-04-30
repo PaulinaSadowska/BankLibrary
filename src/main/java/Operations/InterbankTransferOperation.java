@@ -4,7 +4,6 @@ import Bank.*;
 import Products.Account;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by Paulina Sadowska on 29.04.2016.
@@ -20,7 +19,7 @@ public class InterbankTransferOperation extends Operation implements ICommand
 
     public InterbankTransferOperation(CentralBank centralBank, Account source, int targetAccountId, int targetBankId, BigDecimal amount)
     {
-        super(OperationType.InterbankTransferOperation);
+        super(OperationType.InterbankTransfer);
         this.centralBank = centralBank;
         this.sourceAccount = source;
         this.targetAccountId = targetAccountId;
@@ -39,7 +38,7 @@ public class InterbankTransferOperation extends Operation implements ICommand
 
         setExecuted(true);
 
-        paymentFromSourceAccount = new PaymentOperation(sourceAccount, PaymentDirection.Out, amount, OperationType.Payment);
+        paymentFromSourceAccount = new PaymentOperation(sourceAccount, PaymentDirection.Out, amount);
         paymentFromSourceAccount.execute();
 
         centralBank.transfer(this);

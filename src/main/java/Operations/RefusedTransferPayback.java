@@ -13,8 +13,8 @@ public class RefusedTransferPayback extends Operation implements ICommand
     private Account targetAccount;
     private BigDecimal amount;
 
-    public RefusedTransferPayback(Account targetAccount, BigDecimal amount, OperationType operationType) {
-        super(operationType);
+    public RefusedTransferPayback(Account targetAccount, BigDecimal amount) {
+        super(OperationType.RefusedTransferPayback);
         this.targetAccount = targetAccount;
         this.amount = amount;
     }
@@ -24,12 +24,12 @@ public class RefusedTransferPayback extends Operation implements ICommand
     {
         if(getExecuted())
             return;
+        if(targetAccount == null)
+            throw new BankException("target account can't be null");
 
-        new PaymentOperation(targetAccount, PaymentDirection.In, amount, OperationType.Payment).execute();
-    }
+        if(amount == null)
+            throw new BankException("amount to transfer can't be null");
 
-    public BigDecimal getAmount()
-    {
-        return amount;
+        new PaymentOperation(targetAccount, PaymentDirection.In, amount).execute();
     }
 }

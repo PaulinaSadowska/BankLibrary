@@ -14,9 +14,9 @@ public class PaymentOperation extends Operation implements ICommand
     private BigDecimal amount;
     private PaymentDirection direction;
 
-    public PaymentOperation(Account sourceAccount, PaymentDirection direction, BigDecimal amount, OperationType operationType)
+    public PaymentOperation(Account sourceAccount, PaymentDirection direction, BigDecimal amount)
     {
-        super(operationType);
+        super(OperationType.Payment);
         this.sourceAccount = sourceAccount;
         this.direction = direction;
         this.amount = amount;

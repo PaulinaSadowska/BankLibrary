@@ -37,7 +37,7 @@ public class RealCentralBank implements CentralBank
             transferPayback(operation.getSourceAccount(), operation.getAmount());
             return;
         }
-        PaymentOperation payment = new PaymentOperation(targetAccount, PaymentDirection.In, operation.getAmount(), OperationType.Payment);
+        PaymentOperation payment = new PaymentOperation(targetAccount, PaymentDirection.In, operation.getAmount());
         try
         {
             payment.execute();
@@ -53,7 +53,7 @@ public class RealCentralBank implements CentralBank
     public void transferPayback(Account targetAccount, BigDecimal amount) throws BankException
     {
         RefusedTransferPayback payback =
-                new RefusedTransferPayback(targetAccount, amount, OperationType.TransferRejected);
+                new RefusedTransferPayback(targetAccount, amount);
         payback.execute();
     }
 

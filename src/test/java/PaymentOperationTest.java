@@ -34,7 +34,7 @@ public class PaymentOperationTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
         //Test
-        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount);
         operation.execute();
         //Sprawdzenie
         Assert.assertEquals(expectedAmount, account.getBalance());
@@ -50,7 +50,7 @@ public class PaymentOperationTest
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
 
         account = createAccount(balance);
-        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount);
         operation.execute();
     }
 
@@ -68,7 +68,7 @@ public class PaymentOperationTest
 
         account = createAccount(balance);
 
-        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
 
         Assert.assertEquals(expectedAmount, account.getBalance());
@@ -88,7 +88,7 @@ public class PaymentOperationTest
 
         account = createAccount(balance);
 
-        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
     }
 
@@ -105,7 +105,7 @@ public class PaymentOperationTest
 
         account = createAccount(balance, debit);
 
-        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
 
         Assert.assertEquals(expectedAmount, account.getBalance());
@@ -124,7 +124,7 @@ public class PaymentOperationTest
 
         account = createAccount(balance, debit);
 
-        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
 
         Assert.assertEquals(expectedAmount, account.getBalance());
@@ -143,7 +143,7 @@ public class PaymentOperationTest
 
         account = createAccount(balance, debit);
 
-        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
     }
 }
