@@ -5,7 +5,6 @@ import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 import static org.mockito.Mockito.mock;

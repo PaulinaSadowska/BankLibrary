@@ -24,17 +24,11 @@ public class CalculateInterestOperation extends Operation implements ICommand
     @Override
     public void execute() throws BankException
     {
-        if(getExecuted())
+        if (getExecuted())
             return;
 
         BigDecimal interestValue = _interest.getStrategy().calculateInterest(_product, _interest.getPercent());
         _product.addToBalance(interestValue);
         _executed = true;
-    }
-
-    @Override
-    public void undo() throws BankException
-    {
-        //TODO is it necessary there?
     }
 }

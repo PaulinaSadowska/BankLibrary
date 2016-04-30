@@ -13,7 +13,8 @@ public enum OperationType
     CloseInvestment,
     MakeLoan,
     RepayLoan,
-    Transfer,
     Payment,
-    MakeReport
+    MakeReport,
+    RefusedTransferPayback,
+    InterbankTransfer
 }

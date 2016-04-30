@@ -27,10 +27,4 @@ public class ChangeInterestMechanismOperation extends Operation implements IComm
         _interest._setStrategy(_strategy);
         _executed = true;
     }
-
-    @Override
-    public void undo() throws BankException
-    {
-        //TODO IS IT NECESSARY HERE?
-    }
 }

@@ -29,8 +29,7 @@ public class AccountTest
 
         Account account = ProductFactory.createAccount(balance);
 
-        ICommand operation = new PaymentOperation(account, PaymentDirection.In, new BigDecimal(amount),
-                OperationType.Payment);
+        ICommand operation = new PaymentOperation(account, PaymentDirection.In, new BigDecimal(amount));
         account.doOperation(operation);
 
         Assert.assertEquals(new BigDecimal(amount+balance), account.getBalance());

@@ -13,16 +13,18 @@ import java.util.Date;
  */
 public class Account extends Product
 {
+    private Integer _bankId;
     private Debit _debit;
 
-    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest)
+    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Integer bankId)
     {
         super(ownerId, balance, expireDate, interest);
+        this._bankId = bankId;
     }
 
-    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Debit debit)
+    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Debit debit, Integer bankId)
     {
-        this(ownerId, balance, expireDate, interest);
+        this(ownerId, balance, expireDate, interest, bankId);
         _debit = debit;
     }
 
@@ -38,7 +40,8 @@ public class Account extends Product
 
     public void setDebit(Debit debit) { _debit = debit;}
 
-
+    public int getBankId(){ return _bankId;
+    }
 
 
     /**

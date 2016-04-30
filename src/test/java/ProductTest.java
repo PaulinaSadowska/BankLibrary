@@ -25,7 +25,7 @@ public class ProductTest
 
     private Product createInstance(Date expireDate)
     {
-        return new Account(12, mock(BigDecimal.class), expireDate, mock(Interest.class));
+        return new Account(12, mock(BigDecimal.class), expireDate, mock(Interest.class),123);
     }
 
 

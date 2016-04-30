@@ -29,10 +29,4 @@ public class MakeDebitOperation extends Operation implements ICommand
         _account.setDebit(new Debit(_debitValue));
         _executed = true;
     }
-
-    @Override
-    public void undo() throws BankException
-    {
-        //todo - is it necessary here?
-    }
 }
