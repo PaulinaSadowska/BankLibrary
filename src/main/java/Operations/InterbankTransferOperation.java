@@ -45,12 +45,6 @@ public class InterbankTransferOperation extends Operation implements ICommand
         centralBank.transfer(this);
     }
 
-    @Override
-    public void undo() throws BankException
-    {
-        //TODO - delete me!
-    }
-
     public int getTargetAccountId()
     {
         return targetAccountId;

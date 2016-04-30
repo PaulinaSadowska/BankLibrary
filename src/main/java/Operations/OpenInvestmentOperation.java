@@ -39,10 +39,4 @@ public class OpenInvestmentOperation extends Operation implements ICommand
 
         _executed = true;
     }
-
-    @Override
-    public void undo() throws BankException
-    {
-
-    }
 }

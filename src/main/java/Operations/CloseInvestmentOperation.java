@@ -36,10 +36,4 @@ public class CloseInvestmentOperation extends Operation implements ICommand
         _baseAccount.addToBalance(_investment.getBalance());
         _executed = true;
     }
-
-    @Override
-    public void undo() throws BankException
-    {
-        //TODO - it cannot be undone!
-    }
 }

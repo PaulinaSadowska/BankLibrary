@@ -31,12 +31,6 @@ public class RepayLoanOperation extends Operation implements ICommand
         _baseAccount.setBalance(_baseAccount.getBalance().subtract(repayAmount));
     }
 
-    @Override
-    public void undo() throws BankException
-    {
-
-    }
-
     private boolean canClose()
     {
         BigDecimal initialBalance = _baseAccount.getBalanceWithDebit();

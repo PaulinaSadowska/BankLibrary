@@ -28,12 +28,6 @@ public class RefusedTransferPayback extends Operation implements ICommand
         new PaymentOperation(targetAccount, PaymentDirection.In, amount, OperationType.Payment).execute();
     }
 
-    @Override
-    public void undo() throws BankException
-    {
-
-    }
-
     public BigDecimal getAmount()
     {
         return amount;

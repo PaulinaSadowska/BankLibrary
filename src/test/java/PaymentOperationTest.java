@@ -21,39 +21,6 @@ public class PaymentOperationTest
     Account account;
 
     @Test
-    public void makeAndUndoPayment_DirectionInCorrectAmount_BalanceNotChanged() throws Exception
-    {
-        int balance = 500;
-        int paymentValue = 100;
-        int expectedValue = balance+paymentValue;
-
-        //Inicjalizacja
-        account = createAccount(balance);
-
-        BigDecimal expectedAmount = new BigDecimal(expectedValue);
-        BigDecimal paymentAmount = new BigDecimal(paymentValue);
-
-        ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount, OperationType.Payment);
-        operation.execute();
-        Assert.assertEquals(expectedAmount, account.getBalance());
-        operation.undo();
-        Assert.assertEquals(new BigDecimal(balance), account.getBalance());
-    }
-
-    @Test
-    public void makeAndUndoPayment_DirectionOutCorrectAmount_BalanceNotChanged() throws Exception
-    {
-        int balance = 100;
-        account = ProductFactory.createAccount(balance);
-        BigDecimal amount = new BigDecimal(50);
-        ICommand command = new PaymentOperation(account, PaymentDirection.Out, amount, OperationType.Payment);
-        command.execute();
-        Assert.assertEquals(amount, account.getBalance());
-        command.undo();
-        Assert.assertEquals(new BigDecimal(balance), account.getBalance());
-    }
-
-    @Test
     public void makePayment_in500_balanceIncreasedBy500() throws Exception
     {
         int balance = 500;

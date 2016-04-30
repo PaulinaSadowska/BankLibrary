@@ -66,15 +66,4 @@ public class PaymentOperation extends Operation implements ICommand
         }
         _executed = true;
     }
-
-    @Override
-    public void undo() throws BankException
-    {
-        if(!getExecuted())
-            return;
-
-        direction = (direction == PaymentDirection.In) ? PaymentDirection.Out : PaymentDirection.In;
-        setExecuted(false);
-        execute();
-    }
 }
