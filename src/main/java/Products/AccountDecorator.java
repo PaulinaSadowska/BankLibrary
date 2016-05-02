@@ -11,9 +11,9 @@ import java.util.Date;
  */
  abstract class AccountDecorator implements IAccount
 {
-    protected Account _decoratedAccount;
+    protected IAccount _decoratedAccount;
 
-    public AccountDecorator(Account account)
+    public AccountDecorator(IAccount account)
     {
         _decoratedAccount = account;
     }
@@ -67,8 +67,8 @@ import java.util.Date;
     }
 
     @Override
-    public void substractFromBalance(BigDecimal amount) throws BalanceException
+    public void subtractFromBalance(BigDecimal amount) throws BalanceException
     {
-        _decoratedAccount.substractFromBalance(amount);
+        _decoratedAccount.subtractFromBalance(amount);
     }
 }

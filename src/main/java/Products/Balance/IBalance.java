@@ -17,7 +17,7 @@ public interface IBalance
      * Substracts given ammount from balance.
      * @param amount amount to substract. Can't be greater than balance and negative
      */
-    void substractFromBalance(BigDecimal amount) throws BalanceException;
+    void subtractFromBalance(BigDecimal amount) throws BalanceException;
 
     /**
      * Gets balance

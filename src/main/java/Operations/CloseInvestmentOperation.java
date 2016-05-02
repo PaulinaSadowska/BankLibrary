@@ -2,6 +2,7 @@ package Operations;
 
 import Bank.BankException;
 import Products.Account;
+import Products.Balance.BalanceException;
 import Products.Investment;
 
 import java.util.Calendar;
@@ -32,7 +33,13 @@ public class CloseInvestmentOperation extends Operation implements ICommand
             CalculateInterestOperation calculateInterest = new CalculateInterestOperation(_investment, _investment.getInterest());
             calculateInterest.execute();
         }
-        _baseAccount.addToBalance(_investment.getBalanceValue());
+        try
+        {
+            _baseAccount.addToBalance(_investment.getBalanceValue());
+        } catch (BalanceException e)
+        {
+           throw new BankException("Repay loan exception", e);
+        }
         _executed = true;
     }
 

@@ -3,6 +3,7 @@ package Products;
 import Operations.Operation;
 import Operations.OperationType;
 import Products.Account;
+import Products.Balance.Balance;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ public class Investment extends Product
 {
     protected Account _baseAccount;
 
-    public Investment(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Investment(Integer ownerId, Balance balance, Date expireDate, Interest interest, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
         _history.add(new Operation(OperationType.OpenInvestment));

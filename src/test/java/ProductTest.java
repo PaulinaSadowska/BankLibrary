@@ -1,4 +1,5 @@
 import Products.Account;
+import Products.Balance.Balance;
 import Products.Interest;
 import Products.Product;
 import org.junit.*;
@@ -25,7 +26,7 @@ public class ProductTest
 
     private Product createInstance(Date expireDate)
     {
-        return new Account(12, mock(BigDecimal.class), expireDate, mock(Interest.class));
+        return new Account(12, mock(Balance.class), expireDate, mock(Interest.class));
     }
 
 

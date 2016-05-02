@@ -4,6 +4,7 @@ import Bank.BankException;
 import Operations.Operation;
 import Operations.OperationType;
 import Products.Account;
+import Products.Balance.Balance;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class Loan extends Product
 
     private Account _baseAccount;
 
-    public Loan(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Loan(Integer ownerId, Balance balance, Date expireDate, Interest interest, Account baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
         _history.add(new Operation(OperationType.MakeLoan));

@@ -1,6 +1,7 @@
 package Operations;
 
 import Bank.BankException;
+import Products.Balance.BalanceException;
 import Products.Interest;
 import Products.Product;
 
@@ -28,7 +29,13 @@ public class CalculateInterestOperation extends Operation implements ICommand
             return;
 
         BigDecimal interestValue = _interest.getStrategy().calculateInterest(_product, _interest.getPercent());
-        _product.addToBalance(interestValue);
+        try
+        {
+            _product.addToBalance(interestValue);
+        } catch (BalanceException e)
+        {
+            throw new BankException("Error during intrest calculation", e);
+        }
         _executed = true;
     }
 

@@ -1,8 +1,7 @@
 package Utils;
 
-import Products.Account;
-import Products.Debit;
-import Products.Interest;
+import Products.*;
+import Products.Balance.Balance;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,18 +14,18 @@ import static org.mockito.Mockito.when;
  */
 public class ProductFactory
 {
-    public static Account createAccount(int balance)
+    public static IAccount createAccount(int balance)
     {
         Interest interestMock = mock(Interest.class);
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock);
+        return new Account(12, new Balance(new BigDecimal(balance)), mock(Date.class), interestMock);
     }
 
-    public static Account createAccount(int balance, int debitValue)
+    public static IAccount createAccount(int balance, int debitValue)
     {
         Interest interestMock = mock(Interest.class);
-        Debit debitMock = mock(Debit.class);
-        when(debitMock.getDebitValue()).thenReturn(new BigDecimal(debitValue));
+        Debit debitMock = new Debit(new BigDecimal(debitValue));
+        IAccount account =  new Account(12, new Balance(new BigDecimal(balance)), mock(Date.class), interestMock);
 
-        return new Account(12, new BigDecimal(balance), mock(Date.class), interestMock, debitMock);
+        return new DebitAccount(account, debitMock);
     }
 }

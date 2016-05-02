@@ -1,6 +1,8 @@
 import Bank.BankException;
 import Operations.CloseInvestmentOperation;
 import Products.Account;
+import Products.Balance.Balance;
+import Products.Balance.BalanceException;
 import Products.Interest;
 import Products.Investment;
 import Products.Product;
@@ -20,37 +22,38 @@ import static org.junit.Assert.*;
 public class CloseInvestmentOperationTest
 {
 
-    private BigDecimal _accountBalance;
-    private BigDecimal _balance;
-    private  BigDecimal _expectedInterestValue;
-    private int _ownerId;
-    private Interest _interest;
-    private Account _account;
+    private Balance accountBalance;
+    private Balance balance;
+    private BigDecimal expectedInterestValue;
+    private int ownerId;
+    private Interest interest;
+    private Account account;
 
     @Before
     public void setUp(){
-        _balance = new BigDecimal(1111);
-        _accountBalance = new BigDecimal(1000);
-        _expectedInterestValue = new BigDecimal(99);
-        _ownerId = 1234;
+        balance = new Balance(new BigDecimal(1111));
+        accountBalance = new Balance(new BigDecimal(1000));
+        expectedInterestValue = new BigDecimal(99);
+        ownerId = 1234;
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
-        when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(_expectedInterestValue);
-        _interest = new Interest(strategyMock, 0.3);
-        _account = new Account(1234, _accountBalance, mock(Date.class), mock(Interest.class));
+        when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
+        interest = new Interest(strategyMock, 0.3);
+        account = new Account(1234, accountBalance, mock(Date.class), mock(Interest.class));
     }
 
     @Test
-    public void CloseInvestment() throws BankException
+    public void CloseInvestment() throws BankException, BalanceException
     {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
         Date expireDate = calendar.getTime();
-        Investment investment = new Investment(_ownerId, _balance, expireDate, _interest, _account);
+        Investment investment = new Investment(ownerId, balance, expireDate, interest, account);
 
         CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
         operation.execute();
-        BigDecimal newInterestBalance = _balance.add(_expectedInterestValue);
-        assertEquals(newInterestBalance.add(_accountBalance), _account.getBalanceValue());
+        balance.addToBalance(expectedInterestValue);
+        BigDecimal newInterestBalance = balance.getBalanceValue();
+        assertEquals(newInterestBalance.add(accountBalance.getBalanceValue()), account.getBalanceValue());
     }
 
     @Test
@@ -59,11 +62,11 @@ public class CloseInvestmentOperationTest
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
         Date expireDate = calendar.getTime();
-        Investment investment = new Investment(_ownerId, _balance, expireDate, _interest, _account);
+        Investment investment = new Investment(ownerId, balance, expireDate, interest, account);
 
         CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
         operation.execute();
-        assertEquals(_balance.add(_accountBalance), _account.getBalanceValue());
+        assertEquals(balance.getBalanceValue().add(accountBalance.getBalanceValue()), account.getBalanceValue());
     }
 
 }

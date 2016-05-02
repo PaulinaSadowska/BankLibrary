@@ -2,7 +2,10 @@ package Operations;
 
 import Bank.BankException;
 import Products.Account;
+import Products.Balance.Balance;
 import Products.Debit;
+import Products.DebitAccount;
+import Products.IAccount;
 
 import java.math.BigDecimal;
 
@@ -11,14 +14,14 @@ import java.math.BigDecimal;
  */
 public class MakeDebitOperation extends Operation implements ICommand
 {
-    private Account _account;
-    private BigDecimal _debitValue;
+    private IAccount account;
+    private BigDecimal debitValue;
 
-    public MakeDebitOperation(Account account, int debitValue)
+    public MakeDebitOperation(IAccount account, BigDecimal debitValue)
     {
         super(OperationType.MakeDebit);
-        this._account = account;
-        this._debitValue = new BigDecimal(debitValue);
+        this.account = account;
+        this.debitValue = debitValue;
     }
 
     @Override
@@ -26,7 +29,7 @@ public class MakeDebitOperation extends Operation implements ICommand
     {
         if(getExecuted())
             return;
-        _account.setDebit(new Debit(_debitValue));
+        account.setDebit(new Debit(debitValue, new Balance(debitValue)));
         _executed = true;
     }
 

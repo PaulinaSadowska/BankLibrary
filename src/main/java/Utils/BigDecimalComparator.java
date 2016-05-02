@@ -13,6 +13,15 @@ public class BigDecimalComparator
         return a.compareTo(b) > 0;
     }
 
+    public static boolean GreaterOrEqual(BigDecimal a, BigDecimal b)
+    {
+        return a.compareTo(b) >= 0;
+    }
+
+    public static boolean LessOrEqual(BigDecimal a, BigDecimal b)
+    {
+        return a.compareTo(b) <= 0;
+    }
 
     public static boolean Equal(BigDecimal a ,BigDecimal b)
     {

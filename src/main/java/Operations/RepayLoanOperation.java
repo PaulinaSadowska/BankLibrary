@@ -3,6 +3,7 @@ package Operations;
 import Bank.BankException;
 import Products.Account;
 import Products.Loan;
+import Utils.BigDecimalComparator;
 
 import java.math.BigDecimal;
 
@@ -28,7 +29,7 @@ public class RepayLoanOperation extends Operation implements ICommand
             throw new BankException("Loan can not be closed", OperationType.RepayLoan);
 
         BigDecimal repayAmount = _loan.getBalanceValue();
-        _baseAccount.setBalance(_baseAccount.getBalanceValue().subtract(repayAmount));
+        _baseAccount.subtractFromBalance(repayAmount);
     }
 
     @Override
@@ -39,9 +40,9 @@ public class RepayLoanOperation extends Operation implements ICommand
 
     private boolean canClose()
     {
-        BigDecimal initialBalance = _baseAccount.getBalanceWithDebit();
+        BigDecimal initialBalance = _baseAccount.getBalanceValue();
         BigDecimal repayAmount = _loan.getBalanceValue();
 
-        return initialBalance.compareTo(repayAmount) >= 0;
+        return BigDecimalComparator.GreaterOrEqual(initialBalance, repayAmount);
     }
 }

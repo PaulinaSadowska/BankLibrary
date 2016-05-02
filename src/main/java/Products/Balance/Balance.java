@@ -28,7 +28,7 @@ public class Balance implements IBalance
     }
 
     @Override
-    public void substractFromBalance(BigDecimal amount) throws BalanceException
+    public void subtractFromBalance(BigDecimal amount) throws BalanceException
     {
         Validiate(amount);
         Validiate(amount, balance);

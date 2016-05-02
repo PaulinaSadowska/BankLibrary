@@ -12,7 +12,7 @@ public class DebitAccount extends AccountDecorator
 {
     private Debit debit;
 
-    public DebitAccount(Account account, Debit debit)
+    public DebitAccount(IAccount account, Debit debit)
     {
         super(account);
         this.debit = debit;

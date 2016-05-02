@@ -1,7 +1,6 @@
 package Operations;
 
 import Bank.BankException;
-import Products.Account;
 import Products.Balance.BalanceException;
 import Products.Debit;
 import Products.DebitAccount;
@@ -39,20 +38,50 @@ public class PaymentOperation extends Operation implements ICommand
             {
                 case In:
                 {
-                    targetAccount.addToBalance(amount);
+                    if(!(targetAccount instanceof DebitAccount))
+                    {
+                        targetAccount.addToBalance(amount);
+                        break;
+                    }
+
+                    DebitAccount debitAccount = (DebitAccount)targetAccount;
+                    Debit debit = debitAccount.getDebit();
+
+                    if(!debit.wasUsed())
+                    {
+                        targetAccount.addToBalance(amount);
+                        break;
+                    }
+
+                    BigDecimal newAmount = debit.addToBalance(amount, true);
+
+                    targetAccount.addToBalance(newAmount);
                     break;
+
                 }
                 case Out:
                 {
-                    if(targetAccount instanceof DebitAccount)
+                    if(BigDecimalComparator.GreaterThan(amount, targetAccount.getBalanceValue()))
                     {
+                        if(!(targetAccount instanceof DebitAccount))
+                            throw new BalanceException("Amount greater than balance",targetAccount.getBalanceValue(),amount);
+
                         DebitAccount debitAccount = (DebitAccount)targetAccount;
                         Debit debit = debitAccount.getDebit();
+                        BigDecimal balanceValue = debitAccount.getBalanceValue();
 
-                        if(BigDecimalComparator.GreaterThan(amount, debit.getDebitValue()))
+                        BigDecimal balanceWithDebit = debit.getBalanceValue().add(balanceValue);
+
+                        if(BigDecimalComparator.GreaterThan(amount, balanceWithDebit ))
+                            throw new BalanceException("Amount greater than balance plus debit",balanceWithDebit,amount);
+
+                        BigDecimal balanceAmountDifference = amount.subtract(balanceValue);
+                        debitAccount.subtractFromBalance(balanceValue);
+                        debit.subtractFromBalance(balanceAmountDifference);
+
                     }
 
-                    targetAccount.substractFromBalance(amount);
+                    targetAccount.subtractFromBalance(amount);
                 }
             }
         }

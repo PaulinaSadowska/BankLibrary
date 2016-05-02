@@ -85,9 +85,9 @@ public abstract class Product implements IProduct
 
 
     @Override
-    public void substractFromBalance(BigDecimal amount) throws BalanceException
+    public void subtractFromBalance(BigDecimal amount) throws BalanceException
     {
-        balance.substractFromBalance(amount);
+        balance.subtractFromBalance(amount);
     }
 
 }

@@ -1,7 +1,6 @@
 import Operations.MakeDebitOperation;
-import Operations.MakeLoanOperation;
 import Products.*;
-import Utils.IInterestCalculationStrategy;
+import Products.Balance.Balance;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,20 +14,20 @@ import static org.junit.Assert.*;
  */
 public class MakeDebitOperationTest
 {
-    private Account _account;
+    private IAccount debitAccount;
 
     @Before
     public void setUp(){
-        _account = new Account(123, mock(BigDecimal.class), mock(Date.class), mock(Interest.class));
+        debitAccount = new Account(123, mock(Balance.class), mock(Date.class), mock(Interest.class));
     }
 
     @Test
     public void makeDebitToAccountTest() throws Exception
     {
-        assertFalse(_account.hasDebit());
-        MakeDebitOperation operation = new MakeDebitOperation(_account, 1200);
+        assertFalse(debitAccount instanceof DebitAccount);
+        MakeDebitOperation operation = new MakeDebitOperation(debitAccount, 1200);
         operation.execute();
-        assertTrue(_account.hasDebit());
+        assertTrue(debitAccount.hasDebit());
     }
 
 }
