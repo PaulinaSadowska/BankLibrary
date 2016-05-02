@@ -25,7 +25,7 @@ public class ChangeInterestMechanismOperation extends Operation implements IComm
             return;
 
         _interest._setStrategy(_strategy);
-        _executed = true;
+        executed = true;
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -25,9 +26,11 @@ public class MakeDebitOperationTest
     public void makeDebitToAccountTest() throws Exception
     {
         assertFalse(debitAccount instanceof DebitAccount);
-        MakeDebitOperation operation = new MakeDebitOperation(debitAccount, 1200);
+        AtomicReference<IAccount> refrence = new AtomicReference<IAccount>(debitAccount);
+        MakeDebitOperation operation = new MakeDebitOperation(refrence, new BigDecimal(100));
         operation.execute();
-        assertTrue(debitAccount.hasDebit());
+        debitAccount = refrence.get();
+        assertTrue(debitAccount instanceof DebitAccount);
     }
 
 }

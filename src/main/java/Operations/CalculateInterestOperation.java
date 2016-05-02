@@ -36,7 +36,7 @@ public class CalculateInterestOperation extends Operation implements ICommand
         {
             throw new BankException("Error during intrest calculation", e);
         }
-        _executed = true;
+        executed = true;
     }
 
     @Override

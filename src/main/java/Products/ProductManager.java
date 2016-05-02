@@ -1,6 +1,7 @@
 package Products;
 
 import Products.*;
+import Products.Balance.Balance;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.inject.Inject;
@@ -57,7 +58,7 @@ public class ProductManager
         }
     }
 
-    private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
+    private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
                                                    Interest interest, Account baseAccount, Debit debit)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
@@ -95,7 +96,7 @@ public class ProductManager
 
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
                                                          Interest interest)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
@@ -103,7 +104,7 @@ public class ProductManager
     }
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
                                                         Interest interest, Account baseAccount)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
@@ -111,7 +112,7 @@ public class ProductManager
     }
 
     @Inject
-    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, BigDecimal balance, ProductDuration duration,
+    public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
                                                         Interest interest, Debit debit)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {

@@ -1,7 +1,6 @@
 package Operations;
 
 import Bank.BankException;
-import Operations.OperationType;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -13,54 +12,54 @@ import java.util.Date;
 public class Operation
 {
 
-    protected OperationType _operationType;
-    protected Date _date;
-    protected String _description;
-    protected boolean _executed;
+    protected OperationType operationType;
+    protected Date date;
+    protected String description;
+    protected boolean executed;
 
 
     public Operation(OperationType operationType)
     {
-        _operationType = operationType;
-        _date = Calendar.getInstance().getTime();
-        _description = "";
+        this.operationType = operationType;
+        date = Calendar.getInstance().getTime();
+        description = "";
     }
 
     public Operation(OperationType operationType, String description)
     {
-        _operationType = operationType;
-        _date = Calendar.getInstance().getTime();
-        _description = description;
+        this.operationType = operationType;
+        date = Calendar.getInstance().getTime();
+        this.description = description;
     }
 
     public void checkExecuted(boolean undo) throws BankException
     {
-        if(_executed && !undo)
+        if(executed && !undo)
             throw new BankException("Operation can't be executed more than once");
-        else if(!_executed && undo)
+        else if(!executed && undo)
             throw new BankException("Operation not executed and undo called");
     }
 
     public  boolean getExecuted()
     {
-        return _executed;
+        return executed;
     }
 
     protected void setExecuted(boolean executed)
     {
-        _executed = executed;
+        this.executed = executed;
     }
 
     public OperationType getOperationType() {
-        return _operationType;
+        return operationType;
     }
 
     public Date getDate() {
-        return _date;
+        return date;
     }
 
     public String getDescription() {
-        return _description;
+        return description;
     }
 
 }

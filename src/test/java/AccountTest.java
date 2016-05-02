@@ -1,5 +1,6 @@
 import Operations.*;
 import Products.Account;
+import Products.IAccount;
 import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class AccountTest
         int balance = 100;
         int amount = 100;
 
-        Account account = ProductFactory.createAccount(balance);
+        IAccount account = ProductFactory.createAccount(balance);
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.In, new BigDecimal(amount),
                 OperationType.Payment);

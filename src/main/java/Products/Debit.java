@@ -1,5 +1,6 @@
 package Products;
 
+import Operations.PaymentDirection;
 import Products.Balance.Balance;
 import Products.Balance.BalanceException;
 import Products.Balance.IBalance;
@@ -44,13 +45,32 @@ public class Debit implements IBalance
         return balance;
     }
 
-    public BigDecimal addToBalance(BigDecimal amount, boolean returnResidue) throws BalanceException
+    /**
+     * Calculates how much of amount can debit take and returns this amount and residue
+     * @param amount payment amount
+     * @param accountBalance payment target balance
+     * @param direction payment direction
+     * @return amount divided into part that debit can take and rest
+     */
+    public DividedAmount divideAmount(BigDecimal amount, BigDecimal accountBalance, PaymentDirection direction)
     {
-        BigDecimal maxAmount = debit.subtract(balance.getBalanceValue());
-        BigDecimal residue = amount.subtract(maxAmount);
-        addToBalance(maxAmount);
-        return residue;
+        DividedAmount dividedAmount = null;
+        switch (direction) {
+            case In:
+                BigDecimal toDebit = debit.subtract(balance.getBalanceValue());
+                BigDecimal residue = amount.subtract(toDebit);
+                dividedAmount = new DividedAmount(residue, toDebit);
+                break;
+            case Out:
+                if(BigDecimalComparator.GreaterThan(amount, accountBalance))
+                    dividedAmount = new DividedAmount(accountBalance,amount.subtract(accountBalance));
+                else
+                    dividedAmount = new DividedAmount(amount, BigDecimal.ZERO);
+                break;
+        }
+        return dividedAmount;
     }
+
 
     @Override
     public void addToBalance(BigDecimal amount) throws BalanceException

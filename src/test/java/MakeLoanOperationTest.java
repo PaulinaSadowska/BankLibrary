@@ -1,5 +1,6 @@
 import Operations.MakeLoanOperation;
 import Products.*;
+import Products.Balance.Balance;
 import Utils.IInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,30 +15,30 @@ import static org.junit.Assert.*;
  */
 public class MakeLoanOperationTest
 {
-    private ProductDuration _duration;
-    private ProductManager _manager;
-    private int _ownerId;
-    private Interest _interest;
-    private BigDecimal _balance;
+    private ProductDuration duration;
+    private ProductManager manager;
+    private int ownerId;
+    private Interest interest;
+    private Balance balance;
 
     @Before
     public void setUp(){
-        _duration = new ProductDuration(1, 1);
-        _manager = new ProductManager();
-        _balance = new BigDecimal(1200);
-        _interest = new Interest(mock(IInterestCalculationStrategy.class), 0.3);
-        _ownerId = 1234;
+        duration = new ProductDuration(1, 1);
+        manager = new ProductManager();
+        balance = new Balance(new BigDecimal(1200));
+        interest = new Interest(mock(IInterestCalculationStrategy.class), 0.3);
+        ownerId = 1234;
     }
 
     @Test
     public void createLoanToAccountTest() throws Exception
     {
-        Account account = _manager.createNewProduct(Account.class, _ownerId, _balance, _duration, _interest);
+        Account account = manager.createNewProduct(Account.class, ownerId, balance, duration, interest);
         assertNotNull(account);
         MakeLoanOperation createLoan =
-                new MakeLoanOperation(account.getOwnerId(), _balance, _duration, _interest, _manager);
+                new MakeLoanOperation(account.getOwnerId(), balance, duration, interest, manager);
         createLoan.execute();
-        Loan newLoan = _manager.getLoan(_ownerId).get(0);
+        Loan newLoan = manager.getLoan(ownerId).get(0);
         assertNotNull(newLoan);
         assertEquals(account.getOwnerId(), newLoan.getOwnerId());
     }
@@ -47,8 +48,8 @@ public class MakeLoanOperationTest
     {
         int ownerId = 999;
         MakeLoanOperation createLoan =
-                new MakeLoanOperation(ownerId, _balance, _duration, _interest, _manager);
+                new MakeLoanOperation(ownerId, balance, duration, interest, manager);
         createLoan.execute();
-        assertNull(_manager.getLoan(ownerId).get(0));
+        assertNull(manager.getLoan(ownerId).get(0));
     }
 }

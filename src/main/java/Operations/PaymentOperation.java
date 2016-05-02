@@ -5,6 +5,7 @@ import Products.Balance.BalanceException;
 import Products.Debit;
 import Products.DebitAccount;
 import Products.IAccount;
+import Products.DividedAmount;
 import Utils.BigDecimalComparator;
 
 import java.math.BigDecimal;
@@ -53,9 +54,11 @@ public class PaymentOperation extends Operation implements ICommand
                         break;
                     }
 
-                    BigDecimal newAmount = debit.addToBalance(amount, true);
+                    DividedAmount residue = debit.divideAmount(amount, debitAccount.getBalanceValue(), PaymentDirection.In);
 
-                    targetAccount.addToBalance(newAmount);
+                    debit.addToBalance(residue.getToDebit());
+
+                    debitAccount.addToBalance(residue.getResidue());
                     break;
 
                 }
@@ -75,10 +78,11 @@ public class PaymentOperation extends Operation implements ICommand
                         if(BigDecimalComparator.GreaterThan(amount, balanceWithDebit ))
                             throw new BalanceException("Amount greater than balance plus debit",balanceWithDebit,amount);
 
-                        BigDecimal balanceAmountDifference = amount.subtract(balanceValue);
-                        debitAccount.subtractFromBalance(balanceValue);
-                        debit.subtractFromBalance(balanceAmountDifference);
+                        DividedAmount dividedAmount = debit.divideAmount(amount, balanceValue, PaymentDirection.Out);
 
+                        debitAccount.subtractFromBalance(dividedAmount.getResidue());
+                        debit.subtractFromBalance(dividedAmount.getToDebit());
+                        break;
                     }
 
                     targetAccount.subtractFromBalance(amount);
@@ -91,7 +95,7 @@ public class PaymentOperation extends Operation implements ICommand
         }
 
 
-        _executed = true;
+        executed = true;
     }
 
     @Override

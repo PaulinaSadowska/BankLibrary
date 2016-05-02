@@ -4,6 +4,9 @@ import Operations.OperationType;
 import Operations.PaymentDirection;
 import Operations.PaymentOperation;
 import Products.Account;
+import Products.Debit;
+import Products.DebitAccount;
+import Products.IAccount;
 import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,7 +20,7 @@ import static Utils.ProductFactory.createAccount;
  */
 public class PaymentOperationTest
 {
-    Account account;
+    IAccount account;
 
     @Test
     public void makeAndUndoPayment_DirectionInCorrectAmount_BalanceNotChanged() throws Exception
@@ -133,14 +136,18 @@ public class PaymentOperationTest
         int expectedValue = balance - paymentValue;
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
-        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+        BigDecimal expectedAmount = BigDecimal.ZERO;
+        BigDecimal expectedDebitValue = new BigDecimal(balance+debit-paymentValue);
 
         account = createAccount(balance, debit);
+        Debit accountDebit = ((DebitAccount)account).getDebit();
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
         operation.execute();
 
         Assert.assertEquals(expectedAmount, account.getBalanceValue());
+        Assert.assertEquals(expectedDebitValue, accountDebit.getBalanceValue());
+
     }
 
 
@@ -152,14 +159,17 @@ public class PaymentOperationTest
         int paymentValue = 600;
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
-        BigDecimal expectedAmount = new BigDecimal(-debit);
+        BigDecimal expectedAmount = BigDecimal.ZERO;
+        BigDecimal expectedDebitValue = new BigDecimal(balance+debit-paymentValue);
 
         account = createAccount(balance, debit);
+        Debit accountDebit = ((DebitAccount)account).getDebit();
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount, OperationType.Payment);
         operation.execute();
 
         Assert.assertEquals(expectedAmount, account.getBalanceValue());
+        Assert.assertEquals(expectedDebitValue, accountDebit.getBalanceValue());
     }
 
 

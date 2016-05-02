@@ -2,6 +2,7 @@ package Operations;
 
 import Bank.BankException;
 import Products.Account;
+import Products.IAccount;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ import java.util.List;
  */
 public class TransferOperation extends Operation implements ICommand
 {
-    private Account sourceAccount;
-    Account targetAccount;
-    BigDecimal amount;
-    List<ICommand> operationsList;
+    private IAccount sourceAccount;
+    private IAccount targetAccount;
+    private BigDecimal amount;
+    private List<ICommand> operationsList;
 
-    public TransferOperation(Account sourceAccount, Account targetAccount, BigDecimal amount, OperationType operationType)
+    public TransferOperation(IAccount sourceAccount, IAccount targetAccount, BigDecimal amount, OperationType operationType)
     {
         super(operationType);
         this.sourceAccount = sourceAccount;

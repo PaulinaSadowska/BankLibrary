@@ -3,6 +3,10 @@ import Operations.ICommand;
 import Operations.OperationType;
 import Operations.TransferOperation;
 import Products.Account;
+import Products.Debit;
+import Products.DebitAccount;
+import Products.IAccount;
+import com.sun.org.apache.bcel.internal.generic.IADD;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +19,7 @@ import static Utils.ProductFactory.createAccount;
  */
 public class TransferOperationTest
 {
-    private Account account;
+    private IAccount account;
 
     @Test
     public void undoTransfer_CorrectAmountAndAccounts_BothBalancesDoNotChanges() throws Exception
@@ -26,7 +30,7 @@ public class TransferOperationTest
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
         account = createAccount(balance);
-        Account targetAccount = createAccount(balance);
+        IAccount targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         operation.execute();
@@ -62,7 +66,7 @@ public class TransferOperationTest
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
         account = createAccount(balance);
-        Account targetAccount = createAccount(balance);
+        IAccount targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         asserOperationUndone(balance, targetAccount, operation);
@@ -78,7 +82,7 @@ public class TransferOperationTest
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
         account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
+        IAccount targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         asserOperationUndone(balance, targetAccount, operation);
@@ -90,21 +94,24 @@ public class TransferOperationTest
         int debit = 100;
         int balance = 500;
         int transferValue = 600;
-        int localBalanceAfterTransfer = -debit;
+        int localBalanceAfterTransfer = 0;
         int targetBalanceAfterTransfer = transferValue + balance;
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
         BigDecimal expectedTargetBalance = new BigDecimal(targetBalanceAfterTransfer);
         BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
+        BigDecimal expectedLocalDebit = new BigDecimal(debit+balance - transferValue);
 
         account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
+        Debit localDebit = ((DebitAccount)account).getDebit();
+        IAccount targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         operation.execute();
 
         Assert.assertEquals(expectedLocalBalance, account.getBalanceValue());
         Assert.assertEquals(expectedTargetBalance, targetAccount.getBalanceValue());
+        Assert.assertEquals(expectedLocalDebit, localDebit.getBalanceValue());
     }
 
     @Test
@@ -121,7 +128,7 @@ public class TransferOperationTest
         BigDecimal expectedLocalBalance = new BigDecimal(localBalanceAfterTransfer);
 
         account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
+        IAccount targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Transfer);
         operation.execute();
@@ -140,13 +147,13 @@ public class TransferOperationTest
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
         account = createAccount(balance, debit);
-        Account targetAccount = createAccount(balance);
+        IAccount targetAccount = createAccount(balance);
 
         ICommand operation = new TransferOperation(account, targetAccount, transferAmount, OperationType.Payment);
         asserOperationUndone(balance, targetAccount, operation);
     }
 
-    private void asserOperationUndone(int balance, Account targetAccount, ICommand operation) throws Exception
+    private void asserOperationUndone(int balance, IAccount targetAccount, ICommand operation) throws Exception
     {
         try
         {

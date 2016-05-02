@@ -1,5 +1,6 @@
 package Bank;
 
+import Operations.Operation;
 import Operations.OperationType;
 
 /**
@@ -16,8 +17,7 @@ public class BankException extends Exception
 
     public BankException(String message, Exception innerException)
     {
-        //TODO: Zrobic tu porzadek
-        super(message, innerException);
+        this(message, OperationType.None, innerException);
     }
 
     public BankException(String message)
@@ -27,7 +27,12 @@ public class BankException extends Exception
 
     public BankException(String message, OperationType operationType)
     {
-        super(message);
+        this(message, operationType, null);
+    }
+
+    public BankException(String message, OperationType operationType, Exception innerException)
+    {
+        super(message, innerException);
         _operationType  = operationType;
     }
 

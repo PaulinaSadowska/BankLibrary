@@ -24,7 +24,7 @@ public class Balance implements IBalance
     public void addToBalance(BigDecimal amount) throws BalanceException
     {
         Validiate(amount);
-        balance.add(amount);
+        balance = balance.add(amount);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class Balance implements IBalance
         Validiate(amount);
         Validiate(amount, balance);
 
-        balance.subtract(amount);
+        balance = balance.subtract(amount);
     }
 
     @Override

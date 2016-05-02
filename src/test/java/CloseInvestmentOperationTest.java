@@ -24,16 +24,17 @@ public class CloseInvestmentOperationTest
 
     private Balance accountBalance;
     private Balance balance;
-    private BigDecimal expectedInterestValue;
+    private BigDecimal expectedInterestValue = new BigDecimal(99);
     private int ownerId;
     private Interest interest;
     private Account account;
+    private BigDecimal investmentBalanceValue = new BigDecimal(1111);
+    private BigDecimal accountBalanceValue = new BigDecimal(1000);
 
     @Before
     public void setUp(){
-        balance = new Balance(new BigDecimal(1111));
-        accountBalance = new Balance(new BigDecimal(1000));
-        expectedInterestValue = new BigDecimal(99);
+        balance = new Balance(investmentBalanceValue);
+        accountBalance = new Balance(accountBalanceValue);
         ownerId = 1234;
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
@@ -49,11 +50,11 @@ public class CloseInvestmentOperationTest
         Date expireDate = calendar.getTime();
         Investment investment = new Investment(ownerId, balance, expireDate, interest, account);
 
+        BigDecimal expectedAccountBalance = investmentBalanceValue.add(expectedInterestValue).add(accountBalanceValue);
+
         CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
         operation.execute();
-        balance.addToBalance(expectedInterestValue);
-        BigDecimal newInterestBalance = balance.getBalanceValue();
-        assertEquals(newInterestBalance.add(accountBalance.getBalanceValue()), account.getBalanceValue());
+        assertEquals(expectedAccountBalance, account.getBalanceValue());
     }
 
     @Test
@@ -64,9 +65,11 @@ public class CloseInvestmentOperationTest
         Date expireDate = calendar.getTime();
         Investment investment = new Investment(ownerId, balance, expireDate, interest, account);
 
+        BigDecimal expectedBalance = accountBalanceValue.add(investmentBalanceValue);
+
         CloseInvestmentOperation operation = new CloseInvestmentOperation(investment);
         operation.execute();
-        assertEquals(balance.getBalanceValue().add(accountBalance.getBalanceValue()), account.getBalanceValue());
+        assertEquals(expectedBalance, account.getBalanceValue());
     }
 
 }
