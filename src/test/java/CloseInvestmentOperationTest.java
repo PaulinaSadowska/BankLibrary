@@ -1,11 +1,8 @@
 import Bank.BankException;
 import Operations.CloseInvestmentOperation;
-import Products.Account;
+import Products.*;
 import Products.Balance.Balance;
 import Products.Balance.BalanceException;
-import Products.Interest;
-import Products.Investment;
-import Products.Product;
 import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +24,7 @@ public class CloseInvestmentOperationTest
     private BigDecimal expectedInterestValue = new BigDecimal(99);
     private int ownerId;
     private Interest interest;
-    private Account account;
+    private IAccount account;
     private BigDecimal investmentBalanceValue = new BigDecimal(1111);
     private BigDecimal accountBalanceValue = new BigDecimal(1000);
 

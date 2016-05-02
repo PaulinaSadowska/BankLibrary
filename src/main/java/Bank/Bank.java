@@ -23,7 +23,7 @@ public class Bank
         _productManager = productManager;
     }
 
-    public Account createAccount(Balance balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
+    public IAccount createAccount(Balance balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
                                  double interestPercent) throws Exception
     {
         Interest interest = new Interest(interestStrategy, interestPercent);

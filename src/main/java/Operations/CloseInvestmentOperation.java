@@ -3,6 +3,7 @@ package Operations;
 import Bank.BankException;
 import Products.Account;
 import Products.Balance.BalanceException;
+import Products.IAccount;
 import Products.Investment;
 
 import java.util.Calendar;
@@ -14,7 +15,7 @@ public class CloseInvestmentOperation extends Operation implements ICommand
 {
 
     private Investment investment;
-    private Account baseAccount;
+    private IAccount baseAccount;
 
     public CloseInvestmentOperation(Investment investment){
         super(OperationType.CloseInvestment);

@@ -34,7 +34,7 @@ public class OpenInvestmentOperation extends Operation implements ICommand
         if(getExecuted())
             return;
 
-        Account baseAccount = productManager.getAccount(ownerId).get(0);
+        IAccount baseAccount = productManager.getAccount(ownerId).get(0);
         productManager.createNewProduct(Investment.class, ownerId, balance, duration, interest, baseAccount);
 
         executed = true;

@@ -15,30 +15,30 @@ import java.util.Date;
 public abstract class Product implements IProduct
 {
 
-    protected int _ownerId;
+    protected int ownerId;
     protected Balance balance;
-    protected Interest _interest;
-    protected Date _creationDate;
-    protected Date _expireDate;
-    protected OperationsHistory _history;
-    protected Account _baseAccount;
+    protected Interest interest;
+    protected Date creationDate;
+    protected Date expireDate;
+    protected OperationsHistory history;
+    protected IAccount baseAccount;
 
 
 
     public  Product(Integer ownerId, Balance balance, Date expireDate, Interest interest)
     {
-        _ownerId = ownerId;
+        this.ownerId = ownerId;
         this.balance = balance;
-        _creationDate = new Date();
-        _expireDate = expireDate;
-        _interest = interest;
-        _history = new OperationsHistory();
+        this.creationDate = new Date();
+        this.expireDate = expireDate;
+        this.interest = interest;
+        this.history = new OperationsHistory();
     }
 
-    public  Product(int ownerId, Balance balance, Date expireDate, Interest interest, Account baseAccount)
+    public  Product(int ownerId, Balance balance, Date expireDate, Interest interest, IAccount baseAccount)
     {
         this(ownerId, balance, expireDate, interest);
-        _baseAccount = baseAccount;
+        this.baseAccount = baseAccount;
     }
 
     public void addToBalance(BigDecimal amount) throws BalanceException
@@ -53,34 +53,34 @@ public abstract class Product implements IProduct
 
     @Override
     public Interest getInterest() {
-        return _interest;
+        return interest;
     }
 
     @Override
     public int getOwnerId() {
-        return _ownerId;
+        return ownerId;
     }
 
     @Override
     public Date getCreationDate() {
-        return _creationDate;
+        return creationDate;
     }
 
     @Override
     public Date getExpireDate() {
-        return _expireDate;
+        return expireDate;
     }
 
     @Override
     public OperationsHistory getOperationsHistory()
     {
-        return _history;
+        return history;
     }
 
     @Override
     public boolean expired(){
         Calendar cal = Calendar.getInstance();
-        return _expireDate.before(cal.getTime());
+        return expireDate.before(cal.getTime());
     }
 
 

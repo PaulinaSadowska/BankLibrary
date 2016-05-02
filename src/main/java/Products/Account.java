@@ -1,11 +1,9 @@
 package Products;
 
-import Bank.BankException;
 import Operations.ICommand;
 import Operations.Operation;
 import Products.Balance.Balance;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -24,7 +22,7 @@ public class Account extends Product implements IAccount
     public void doOperation(ICommand operation) throws Exception
     {
         operation.execute();
-        _history.add((Operation) operation);
+        history.add((Operation) operation);
     }
 
 }

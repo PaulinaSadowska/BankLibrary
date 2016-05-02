@@ -33,7 +33,7 @@ public class OpenInvestmentOperationTest
     @Test
     public void createInvestmentToAccountTest() throws Exception
     {
-        Account account = manager.createNewProduct(Account.class, ownerId, balance, duration, interest);
+        IAccount account = manager.createNewProduct(Account.class, ownerId, balance, duration, interest);
         assertNotNull(account);
         OpenInvestmentOperation openInvestment =
                 new OpenInvestmentOperation(account.getOwnerId(), balance, duration, interest, manager);

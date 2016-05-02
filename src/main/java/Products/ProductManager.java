@@ -1,6 +1,5 @@
 package Products;
 
-import Products.*;
 import Products.Balance.Balance;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -16,16 +15,16 @@ import java.util.*;
  */
 public class ProductManager
 {
-    private ListMultimap<Integer, Product> _products;
+    private ListMultimap<Integer, IProduct> products;
 
     public ProductManager()
     {
-        _products = ArrayListMultimap.create();
+        products = ArrayListMultimap.create();
     }
 
-    public List<Product> getProductList(int ownerId)
+    public List<IProduct> getProductList(int ownerId)
     {
-        return _products.get(ownerId);
+        return products.get(ownerId);
     }
 
     private <T> void  validateInput(T input)
@@ -54,12 +53,12 @@ public class ProductManager
         /// kiedy moze byc usuniete?
         if((product instanceof Account))
         {
-            _products.removeAll(product.getOwnerId());
+            products.removeAll(product.getOwnerId());
         }
     }
 
     private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
-                                                   Interest interest, Account baseAccount, Debit debit)
+                                                   Interest interest, IAccount baseAccount, Debit debit)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
             Date expireDate = getExpireDate(duration);
@@ -75,21 +74,21 @@ public class ProductManager
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                         expireDate.getClass(), interest.getClass());
                 product = constructor.newInstance(ownerId, balance, expireDate, interest);
-                _products.put(ownerId, product);
+                products.put(ownerId, product);
             }
             if (debit == null && baseAccount != null)
             {
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass(), baseAccount.getClass());
+                        expireDate.getClass(), interest.getClass(), baseAccount.getClass().getInterfaces()[0]);
                 product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
-                _products.put(ownerId, product);
+                products.put(ownerId, product);
             }
             if (baseAccount == null && debit != null)
             {
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
                         expireDate.getClass(), interest.getClass(), debit.getClass());
                 product = constructor.newInstance(ownerId, balance, expireDate, interest, debit);
-                _products.put(ownerId, product);
+                products.put(ownerId, product);
             }
         return product;
     }
@@ -105,7 +104,7 @@ public class ProductManager
 
     @Inject
     public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
-                                                        Interest interest, Account baseAccount)
+                                                        Interest interest, IAccount baseAccount)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
         return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, null);
@@ -121,20 +120,20 @@ public class ProductManager
 
     public int getAvailableOwnerId(){
         int i=0;
-        while(_products.containsKey(i))
+        while(products.containsKey(i))
         {
             i++;
         }
         return i;
     }
 
-    private <T extends Product> List<T> getProduct(Class<T> clazz, Integer ownerId)
+    private <T> List<T> getProduct(Class<T> clazz, Integer ownerId)
     {
-        List<Product> productList = _products.get(ownerId);
+        List<IProduct> productList = products.get(ownerId);
         List<T> out = new ArrayList<T>();
         if(productList!=null)
         {
-            for(Product product: productList)
+            for(IProduct product: productList)
             {
                 if (clazz.isInstance(product))
                 {
@@ -145,9 +144,9 @@ public class ProductManager
         return out;
     }
 
-    public List<Account> getAccount(Integer ownerId)
+    public List<IAccount> getAccount(Integer ownerId)
     {
-        return getProduct(Account.class, ownerId);
+        return getProduct(IAccount.class, ownerId);
     }
 
     public List<Investment> getInvestment(Integer ownerId)
