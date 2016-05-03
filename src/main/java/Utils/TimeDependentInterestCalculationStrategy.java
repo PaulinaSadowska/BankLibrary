@@ -18,7 +18,7 @@ public class TimeDependentInterestCalculationStrategy implements IInterestCalcul
         long creation = product.getCreationDate().getTime();
         long now = Calendar.getInstance().getTime().getTime();
         long numOfDays = (now - creation)/oneDay;
-        double interest = product.getBalance().doubleValue() * numOfDays * percent * 0.01;
+        double interest = product.getBalanceValue().doubleValue() * numOfDays * percent * 0.01;
         return new BigDecimal(interest);
     }
 }

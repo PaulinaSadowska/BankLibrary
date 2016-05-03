@@ -2,9 +2,10 @@ package Operations;
 
 import Bank.BankException;
 import Products.Account;
+import Products.Balance.BalanceException;
+import Products.IAccount;
 import Products.Investment;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 
 /**
@@ -13,13 +14,13 @@ import java.util.Calendar;
 public class CloseInvestmentOperation extends Operation implements ICommand
 {
 
-    private Investment _investment;
-    private Account _baseAccount;
+    private Investment investment;
+    private IAccount baseAccount;
 
     public CloseInvestmentOperation(Investment investment){
         super(OperationType.CloseInvestment);
-        this._investment = investment;
-        this._baseAccount = investment.getBaseAccount();
+        this.investment = investment;
+        this.baseAccount = investment.getBaseAccount();
     }
 
     @Override
@@ -28,12 +29,18 @@ public class CloseInvestmentOperation extends Operation implements ICommand
         if(getExecuted())
             return;
 
-        if(Calendar.getInstance().getTime().after(_investment.getExpireDate()))
+        if(Calendar.getInstance().getTime().after(investment.getExpireDate()))
         {
-            CalculateInterestOperation calculateInterest = new CalculateInterestOperation(_investment, _investment.getInterest());
+            CalculateInterestOperation calculateInterest = new CalculateInterestOperation(investment, investment.getInterest());
             calculateInterest.execute();
         }
-        _baseAccount.addToBalance(_investment.getBalance());
-        _executed = true;
+        try
+        {
+            baseAccount.addToBalance(investment.getBalanceValue());
+        } catch (BalanceException e)
+        {
+           throw new BankException("Repay loan exception", e);
+        }
+        executed = true;
     }
 }

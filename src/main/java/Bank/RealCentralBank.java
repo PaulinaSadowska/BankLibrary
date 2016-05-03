@@ -2,6 +2,7 @@ package Bank;
 
 import Operations.*;
 import Products.Account;
+import Products.IAccount;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class RealCentralBank implements CentralBank
             transferPayback(operation.getSourceAccount(), operation.getAmount());
             return;
         }
-        Account targetAccount = targetBank.getAccount(operation.getTargetAccountId());
+        IAccount targetAccount = targetBank.getAccount(operation.getTargetAccountId());
         if(targetAccount == null){
             transferPayback(operation.getSourceAccount(), operation.getAmount());
             return;

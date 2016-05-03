@@ -1,8 +1,7 @@
 import Bank.BankException;
-import Products.Account;
-import Products.Interest;
-import Products.Loan;
-import Products.Product;
+import Products.*;
+import Products.Balance.Balance;
+import Utils.ProductFactory;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -18,9 +17,9 @@ import static org.mockito.Mockito.when;
  * */
 public class LoanTest {
 
-    private Account createAccountInstance(BigDecimal balance)
+    private IAccount createAccountInstance(BigDecimal balance)
     {
-        return new Account(12, balance, mock(Date.class), mock(Interest.class), 123);
+        return ProductFactory.createAccount(balance.intValue());
     }
 
    /* @Test

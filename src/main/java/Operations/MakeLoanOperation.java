@@ -2,7 +2,7 @@ package Operations;
 
 import Bank.BankException;
 import Products.*;
-import Utils.IInterestCalculationStrategy;
+import Products.Balance.Balance;
 
 import java.math.BigDecimal;
 
@@ -11,19 +11,19 @@ import java.math.BigDecimal;
  */
 public class MakeLoanOperation extends Operation implements ICommand
 {
-    private Integer _ownerId;
-    private BigDecimal _balance;
-    private ProductDuration _duration;
-    private Interest _interest;
-    private ProductManager _productManager;
+    private Integer ownerId;
+    private Balance balance;
+    private ProductDuration duration;
+    private Interest interest;
+    private ProductManager productManager;
 
-    public MakeLoanOperation(Integer ownerId, BigDecimal balance, ProductDuration duration, Interest interest, ProductManager productManager){
+    public MakeLoanOperation(Integer ownerId, Balance balance, ProductDuration duration, Interest interest, ProductManager productManager){
         super(OperationType.MakeLoan);
-        this._balance = balance;
-        this._duration = duration;
-        this._interest = interest;
-        this._ownerId = ownerId;
-        this._productManager = productManager;
+        this.balance = balance;
+        this.duration = duration;
+        this.interest = interest;
+        this.ownerId = ownerId;
+        this.productManager = productManager;
     }
 
     @Override
@@ -32,9 +32,9 @@ public class MakeLoanOperation extends Operation implements ICommand
         if(getExecuted())
             return;
 
-        Account baseAccount = _productManager.getAccount(_ownerId).get(0);
-        _productManager.createNewProduct(Loan.class, _ownerId, _balance, _duration, _interest, baseAccount);
+        IAccount baseAccount = productManager.getAccount(ownerId).get(0);
+        productManager.createNewProduct(Loan.class, ownerId, balance, duration, interest, baseAccount);
 
-        _executed = true;
+        executed = true;
     }
 }

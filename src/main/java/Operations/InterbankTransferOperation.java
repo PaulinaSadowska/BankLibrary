@@ -2,6 +2,7 @@ package Operations;
 
 import Bank.*;
 import Products.Account;
+import Products.IAccount;
 
 import java.math.BigDecimal;
 
@@ -11,13 +12,13 @@ import java.math.BigDecimal;
 public class InterbankTransferOperation extends Operation implements ICommand
 {
     private CentralBank centralBank;
-    private Account sourceAccount;
+    private IAccount sourceAccount;
     private int targetAccountId;
     private int targetBankId;
     private BigDecimal amount;
     private PaymentOperation paymentFromSourceAccount;
 
-    public InterbankTransferOperation(CentralBank centralBank, Account source, int targetAccountId, int targetBankId, BigDecimal amount)
+    public InterbankTransferOperation(CentralBank centralBank, IAccount source, int targetAccountId, int targetBankId, BigDecimal amount)
     {
         super(OperationType.InterbankTransfer);
         this.centralBank = centralBank;
@@ -59,7 +60,7 @@ public class InterbankTransferOperation extends Operation implements ICommand
         return amount;
     }
 
-    public Account getSourceAccount()
+    public IAccount getSourceAccount()
     {
         return sourceAccount;
     }

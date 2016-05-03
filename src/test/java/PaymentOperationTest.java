@@ -4,11 +4,13 @@ import Operations.OperationType;
 import Operations.PaymentDirection;
 import Operations.PaymentOperation;
 import Products.Account;
+import Products.Debit;
+import Products.DebitAccount;
+import Products.IAccount;
 import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 import static Utils.ProductFactory.createAccount;
@@ -18,7 +20,7 @@ import static Utils.ProductFactory.createAccount;
  */
 public class PaymentOperationTest
 {
-    Account account;
+    IAccount account;
 
     @Test
     public void makePayment_in500_balanceIncreasedBy500() throws Exception
@@ -37,7 +39,7 @@ public class PaymentOperationTest
         ICommand operation = new PaymentOperation(account, PaymentDirection.In, paymentAmount);
         operation.execute();
         //Sprawdzenie
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
     }
 
     @Test(expected = BankException.class)
@@ -71,7 +73,7 @@ public class PaymentOperationTest
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
 
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
     }
 
     @Test(expected = BankException.class)
@@ -101,14 +103,18 @@ public class PaymentOperationTest
         int expectedValue = balance - paymentValue;
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
-        BigDecimal expectedAmount = new BigDecimal(expectedValue);
+        BigDecimal expectedAmount = BigDecimal.ZERO;
+        BigDecimal expectedDebitValue = new BigDecimal(balance+debit-paymentValue);
 
         account = createAccount(balance, debit);
+        Debit accountDebit = ((DebitAccount)account).getDebit();
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
 
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
+        Assert.assertEquals(expectedDebitValue, accountDebit.getBalanceValue());
+
     }
 
 
@@ -120,14 +126,17 @@ public class PaymentOperationTest
         int paymentValue = 600;
 
         BigDecimal paymentAmount = new BigDecimal(paymentValue);
-        BigDecimal expectedAmount = new BigDecimal(-debit);
+        BigDecimal expectedAmount = BigDecimal.ZERO;
+        BigDecimal expectedDebitValue = new BigDecimal(balance+debit-paymentValue);
 
         account = createAccount(balance, debit);
+        Debit accountDebit = ((DebitAccount)account).getDebit();
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();
 
-        Assert.assertEquals(expectedAmount, account.getBalance());
+        Assert.assertEquals(expectedAmount, account.getBalanceValue());
+        Assert.assertEquals(expectedDebitValue, accountDebit.getBalanceValue());
     }
 
 

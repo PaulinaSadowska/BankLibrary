@@ -1,6 +1,7 @@
 package Products;
 
-import Products.Account;
+import Products.Balance.Balance;
+import Products.Balance.BalanceException;
 import Utils.OperationsHistory;
 
 import java.math.BigDecimal;
@@ -11,74 +12,82 @@ import java.util.Date;
  * Created by palka on 11.03.2016.
  * Reprezentuje wspólne cechy produktu bankowego ( konta, lokaty, itp. )
  */
-public abstract class Product
+public abstract class Product implements IProduct
 {
-    protected int _ownerId;
-    protected BigDecimal _balance;
-    protected Interest _interest;
-    protected Date _creationDate;
-    protected Date _expireDate;
-    protected OperationsHistory _history;
-    protected Account _baseAccount;
+
+    protected int ownerId;
+    protected Balance balance;
+    protected Interest interest;
+    protected Date creationDate;
+    protected Date expireDate;
+    protected OperationsHistory history;
+    protected IAccount baseAccount;
 
 
 
-    public  Product(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest)
+    public  Product(Integer ownerId, Balance balance, Date expireDate, Interest interest)
     {
-        _ownerId = ownerId;
-        _balance = balance;
-        _creationDate = new Date();
-        _expireDate = expireDate;
-        _interest = interest;
-        _history = new OperationsHistory();
+        this.ownerId = ownerId;
+        this.balance = balance;
+        this.creationDate = new Date();
+        this.expireDate = expireDate;
+        this.interest = interest;
+        this.history = new OperationsHistory();
     }
 
-    public  Product(int ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public  Product(int ownerId, Balance balance, Date expireDate, Interest interest, IAccount baseAccount)
     {
         this(ownerId, balance, expireDate, interest);
-        _baseAccount = baseAccount;
+        this.baseAccount = baseAccount;
     }
 
-
-    public void setBalance(BigDecimal newBalance)
+    public void addToBalance(BigDecimal amount) throws BalanceException
     {
-        _balance = newBalance;
+        balance.addToBalance(amount);
     }
 
-    public void addToBalance(BigDecimal amount)
+    public BigDecimal getBalanceValue()
     {
-        _balance = _balance.add(amount);
+        return balance.getBalanceValue();
     }
 
-    public BigDecimal getBalance()
-    {
-        return _balance;
-    }
-
+    @Override
     public Interest getInterest() {
-        return _interest;
+        return interest;
     }
 
+    @Override
     public int getOwnerId() {
-        return _ownerId;
+        return ownerId;
     }
 
+    @Override
     public Date getCreationDate() {
-        return _creationDate;
+        return creationDate;
     }
 
+    @Override
     public Date getExpireDate() {
-        return _expireDate;
+        return expireDate;
     }
 
+    @Override
     public OperationsHistory getOperationsHistory()
     {
-        return _history;
+        return history;
     }
 
+    @Override
     public boolean expired(){
         Calendar cal = Calendar.getInstance();
-        return _expireDate.before(cal.getTime());
+        return expireDate.before(cal.getTime());
+    }
+
+
+    @Override
+    public void subtractFromBalance(BigDecimal amount) throws BalanceException
+    {
+        balance.subtractFromBalance(amount);
     }
 
 }

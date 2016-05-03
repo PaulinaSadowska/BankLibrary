@@ -1,12 +1,12 @@
 import Operations.MakeDebitOperation;
-import Operations.MakeLoanOperation;
 import Products.*;
-import Utils.IInterestCalculationStrategy;
+import Products.Balance.Balance;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -15,20 +15,23 @@ import static org.junit.Assert.*;
  */
 public class MakeDebitOperationTest
 {
-    private Account _account;
+    private IAccount debitAccount;
 
     @Before
     public void setUp(){
-        _account = new Account(123, mock(BigDecimal.class), mock(Date.class), mock(Interest.class), 123);
+
+        debitAccount = new Account(123, mock(Balance.class), mock(Date.class), mock(Interest.class));
     }
 
     @Test
     public void makeDebitToAccountTest() throws Exception
     {
-        assertFalse(_account.hasDebit());
-        MakeDebitOperation operation = new MakeDebitOperation(_account, 1200);
+        assertFalse(debitAccount instanceof DebitAccount);
+        AtomicReference<IAccount> refrence = new AtomicReference<IAccount>(debitAccount);
+        MakeDebitOperation operation = new MakeDebitOperation(refrence, new BigDecimal(100));
         operation.execute();
-        assertTrue(_account.hasDebit());
+        debitAccount = refrence.get();
+        assertTrue(debitAccount instanceof DebitAccount);
     }
 
 }

@@ -3,6 +3,7 @@ import Operations.ICommand;
 import Operations.InterbankTransferOperation;
 import Products.*;
 
+import Products.Balance.Balance;
 import Utils.IInterestCalculationStrategy;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,39 +20,39 @@ import static org.mockito.Mockito.mock;
  */
 public class InterbankTransferOperationTest
 {
-    private RealCentralBank _centralBank;
-    private Account sourceAccount;
-    private Bank _bank1;
-    private Bank _bank2;
-    private BigDecimal _sourceAccountBalance;
+    private RealCentralBank centralBank;
+    private IAccount sourceAccount;
+    private Bank bank;
+    private Bank bank2;
+    private BigDecimal sourceAccountBalance;
 
     @Before
     public void setUp() throws Exception
     {
-        _centralBank = new RealCentralBank();
-        _bank1 = new Bank(new ProductManager());
-        _bank2 = new Bank(new ProductManager());
-        _centralBank.registerBank(_bank1);
-        _centralBank.registerBank(_bank2);
-        _sourceAccountBalance = new BigDecimal(1200);
-        sourceAccount = _bank1.createAccount(_sourceAccountBalance, new ProductDuration(1, 2),
+        centralBank = new RealCentralBank();
+        bank = new Bank(new ProductManager());
+        bank2 = new Bank(new ProductManager());
+        centralBank.registerBank(bank);
+        centralBank.registerBank(bank2);
+        sourceAccountBalance = new BigDecimal(1200);
+        sourceAccount = bank.createAccount(new Balance(sourceAccountBalance), new ProductDuration(1, 2),
                 mock(IInterestCalculationStrategy.class), 1.2);
     }
 
     @Test
     public void makeInterbankTransfer_CorrectAmountAccountAndIds_BothBalancesChanged() throws Exception
     {
-        BigDecimal targetAccountBalance = new BigDecimal(1400);
+        Balance targetAccountBalance = new Balance(new BigDecimal(1400));
         BigDecimal amount = new BigDecimal(200);
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
 
-        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
+        InterbankTransferOperation transfer = new InterbankTransferOperation(centralBank, sourceAccount,
                 targetAccount.getOwnerId(), targetAccount.getBankId(), amount);
         transfer.execute();
 
         BigDecimal expectedTargetBalance = targetAccountBalance.add(amount);
-        BigDecimal expectedSourceBalance = _sourceAccountBalance.subtract(amount);
+        BigDecimal expectedSourceBalance = sourceAccountBalance.subtract(amount);
 
         assertEquals(expectedTargetBalance, targetAccount.getBalance());
         assertEquals(expectedSourceBalance, sourceAccount.getBalance());
@@ -63,43 +64,43 @@ public class InterbankTransferOperationTest
         BigDecimal amount = new BigDecimal(200);
         int dummyOwnerId = 134;
 
-        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
-                dummyOwnerId, _bank2.getId(), amount);
+        InterbankTransferOperation transfer = new InterbankTransferOperation(centralBank, sourceAccount,
+                dummyOwnerId, bank2.getId(), amount);
         transfer.execute();
 
-        assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+        assertEquals(sourceAccountBalance, sourceAccount.getBalance());
     }
 
     @Test
     public void makeInterbankTransfer_WrongBankId_BalanceDontChange() throws Exception
     {
-        BigDecimal targetAccountBalance = new BigDecimal(1400);
+        Balance targetAccountBalance = new Balance(new BigDecimal(1400));
         BigDecimal amount = new BigDecimal(200);
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
         int dummyBankId = 134;
 
-        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
+        InterbankTransferOperation transfer = new InterbankTransferOperation(centralBank, sourceAccount,
                 targetAccount.getOwnerId(), dummyBankId, amount);
         transfer.execute();
 
-        assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+        assertEquals(sourceAccountBalance, sourceAccount.getBalance());
         assertEquals(targetAccount.getBalance(), targetAccountBalance);
     }
 
     @Test(expected = BankException.class)
     public void makeInterbankTransfer_AmountGreaterThanBalanceNoDebit_BothBalancesDoesNotChange() throws Exception
     {
-        BigDecimal targetAccountBalance = new BigDecimal(1400);
-        BigDecimal amount = _sourceAccountBalance.add(new BigDecimal(100));
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        Balance targetAccountBalance = new Balance(new BigDecimal(1400));
+        BigDecimal amount = sourceAccountBalance.add(new BigDecimal(100));
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
 
-        InterbankTransferOperation transfer = new InterbankTransferOperation(_centralBank, sourceAccount,
+        InterbankTransferOperation transfer = new InterbankTransferOperation(centralBank, sourceAccount,
                 targetAccount.getOwnerId(), targetAccount.getBankId(), amount);
         transfer.execute();
 
-        assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+        assertEquals(sourceAccountBalance, sourceAccount.getBalance());
         assertEquals(targetAccount.getBalance(), targetAccountBalance);
     }
 
@@ -110,10 +111,10 @@ public class InterbankTransferOperationTest
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
 
-        ICommand operation = new InterbankTransferOperation(_centralBank, null, sourceAccount.getOwnerId(),
+        ICommand operation = new InterbankTransferOperation(centralBank, null, sourceAccount.getOwnerId(),
                 sourceAccount.getBankId(), transferAmount);
         operation.execute();
-        assertEquals(sourceAccount.getBalance(), _sourceAccountBalance);
+        assertEquals(sourceAccount.getBalance(), sourceAccountBalance);
     }
 
     @Test(expected = NullPointerException.class)
@@ -121,8 +122,8 @@ public class InterbankTransferOperationTest
     {
         int transferValue = 200;
         BigDecimal transferAmount = new BigDecimal(transferValue);
-        BigDecimal targetAccountBalance = new BigDecimal(1400);
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        Balance targetAccountBalance = new Balance(new BigDecimal(1400));
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
 
 
@@ -139,19 +140,19 @@ public class InterbankTransferOperationTest
         assertFalse(sourceAccount.hasDebit());
         sourceAccount.setDebit(new Debit(debitValue));
         assertTrue(sourceAccount.hasDebit());
-        assertEquals(_sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
+        assertEquals(sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
 
         BigDecimal targetAccountBalance = new BigDecimal(1400);
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        Account targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
         assertEquals(targetAccount.getBalance(), targetAccountBalance);
         BigDecimal amount = sourceAccount.getBalanceWithDebit().add(new BigDecimal(10));
 
-        ICommand operation = new InterbankTransferOperation(_centralBank, sourceAccount, targetAccount.getOwnerId(),
+        ICommand operation = new InterbankTransferOperation(centralBank, sourceAccount, targetAccount.getOwnerId(),
                 targetAccount.getBankId(), amount);
 
         assertOperationUndone(targetAccountBalance.intValue(), targetAccount, operation);
-        assertEquals(_sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
+        assertEquals(sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
     }
 
     @Test
@@ -161,18 +162,18 @@ public class InterbankTransferOperationTest
         assertFalse(sourceAccount.hasDebit());
         sourceAccount.setDebit(new Debit(debitValue));
         assertTrue(sourceAccount.hasDebit());
-        assertEquals(_sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
+        assertEquals(sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
 
         BigDecimal targetAccountBalance = new BigDecimal(1400);
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
         assertEquals(targetAccount.getBalance(), targetAccountBalance);
         BigDecimal amount = sourceAccount.getBalanceWithDebit();
 
-        ICommand operation = new InterbankTransferOperation(_centralBank, sourceAccount, targetAccount.getOwnerId(),
+        ICommand operation = new InterbankTransferOperation(centralBank, sourceAccount, targetAccount.getOwnerId(),
                 targetAccount.getBankId(), amount);
         operation.execute();
-        assertEquals(_sourceAccountBalance.add(debitValue).subtract(amount), sourceAccount.getBalanceWithDebit());
+        assertEquals(sourceAccountBalance.add(debitValue).subtract(amount), sourceAccount.getBalanceWithDebit());
         assertEquals(targetAccountBalance.add(amount), targetAccount.getBalance());
     }
 
@@ -183,33 +184,33 @@ public class InterbankTransferOperationTest
         assertFalse(sourceAccount.hasDebit());
         sourceAccount.setDebit(new Debit(debitValue));
         assertTrue(sourceAccount.hasDebit());
-        assertEquals(_sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
+        assertEquals(sourceAccountBalance.add(debitValue), sourceAccount.getBalanceWithDebit());
 
-        BigDecimal targetAccountBalance = new BigDecimal(1400);
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        Balance targetAccountBalance = new Balance(new BigDecimal(1400));
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
         assertEquals(targetAccount.getBalance(), targetAccountBalance);
         BigDecimal amount = sourceAccount.getBalanceWithDebit().subtract(new BigDecimal(50));
 
-        ICommand operation = new InterbankTransferOperation(_centralBank, sourceAccount, targetAccount.getOwnerId(),
+        ICommand operation = new InterbankTransferOperation(centralBank, sourceAccount, targetAccount.getOwnerId(),
                 targetAccount.getBankId(), amount);
         operation.execute();
-        assertEquals(_sourceAccountBalance.add(debitValue).subtract(amount), sourceAccount.getBalanceWithDebit());
+        assertEquals(sourceAccountBalance.add(debitValue).subtract(amount), sourceAccount.getBalanceWithDebit());
         assertEquals(targetAccountBalance.add(amount), targetAccount.getBalance());
     }
 
     @Test(expected = BankException.class)
     public void makeTransfer_AmountLessThanZero_ThrowsException() throws Exception
     {
-        BigDecimal targetAccountBalance = new BigDecimal(680);
+        Balance targetAccountBalance = new Balance(new BigDecimal(680));
         int transferValue = -600;
 
         BigDecimal transferAmount = new BigDecimal(transferValue);
 
-        Account targetAccount = _bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
+        IAccount targetAccount = bank2.createAccount(targetAccountBalance, new ProductDuration(2, 3),
                 mock(IInterestCalculationStrategy.class), 1.3);
 
-        ICommand operation = new InterbankTransferOperation(_centralBank, sourceAccount, targetAccount.getOwnerId(),
+        ICommand operation = new InterbankTransferOperation(centralBank, sourceAccount, targetAccount.getOwnerId(),
                 targetAccount.getBankId(), transferAmount);
         assertOperationUndone(targetAccountBalance.intValue(), targetAccount, operation);
     }
@@ -222,7 +223,7 @@ public class InterbankTransferOperationTest
         }
         catch (BankException e)
         {
-            Assert.assertEquals(_sourceAccountBalance, sourceAccount.getBalance());
+            Assert.assertEquals(sourceAccountBalance, sourceAccount.getBalance());
             Assert.assertEquals(new BigDecimal(balance), targetAccount.getBalanceWithDebit());
             throw e;
         }

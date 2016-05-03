@@ -1,67 +1,34 @@
 package Products;
 
-import Bank.BankException;
 import Operations.ICommand;
 import Operations.Operation;
+import Products.Balance.Balance;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by arasz on 18.03.2016.
  * Konto (rachunek bankowy)
  */
-public class Account extends Product
+public class Account extends Product implements IAccount
 {
-    private Integer _bankId;
-    private Debit _debit;
+    private Integer bankId;
 
-    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Integer bankId)
+    public Account(Integer ownerId, Balance balance, Date expireDate, Interest interest, Integer bankId)
     {
         super(ownerId, balance, expireDate, interest);
-        this._bankId = bankId;
+        this.bankId = bankId;
     }
 
-    public Account(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Debit debit, Integer bankId)
-    {
-        this(ownerId, balance, expireDate, interest, bankId);
-        _debit = debit;
-    }
-
-    public boolean hasDebit()
-    {
-        return _debit!=null;
-    }
-
-    public Debit getDebit()
-    {
-        return  _debit;
-    }
-
-    public void setDebit(Debit debit) { _debit = debit;}
-
-    public int getBankId(){ return _bankId;
-    }
-
-
-    /**
-     * @return Saldo konta powiększone o debet
-     */
-    public BigDecimal getBalanceWithDebit()
-    {
-        BigDecimal initialBalance;
-        if(hasDebit())
-            initialBalance = getDebit().getDebitValue().add(getBalance());
-        else
-            initialBalance = getBalance();
-
-        return initialBalance;
+    @Override
+    public int getBankId() {
+        return bankId;
     }
 
     public void doOperation(ICommand operation) throws Exception
     {
         operation.execute();
-        _history.add((Operation) operation);
+        history.add((Operation) operation);
     }
 
 }

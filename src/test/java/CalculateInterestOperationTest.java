@@ -1,6 +1,7 @@
 import Bank.BankException;
 import Operations.CalculateInterestOperation;
 import Products.Account;
+import Products.Balance.Balance;
 import Products.Interest;
 import Products.Product;
 import Utils.TimeDependentInterestCalculationStrategy;
@@ -21,18 +22,21 @@ public class CalculateInterestOperationTest
     @Test
     public void calculateInterestTest() throws BankException
     {
-
+        BigDecimal balanceValue = new BigDecimal(1000);
         BigDecimal expectedInterestValue = new BigDecimal(1234);
-        BigDecimal balance = new BigDecimal(1000);
+
+        Balance balance = new Balance(balanceValue);
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
         Interest interest = new Interest(strategyMock, 0.3);
         Product product = new Account(1234, balance, mock(Date.class), interest, 123);
 
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
 
+        BigDecimal expectedProductBalance  = balanceValue.add(expectedInterestValue);
+
         CalculateInterestOperation operation = new CalculateInterestOperation(product, interest);
         operation.execute();
 
-        assertEquals(balance.add(expectedInterestValue), product.getBalance());
+        assertEquals(expectedProductBalance, product.getBalanceValue());
     }
 }

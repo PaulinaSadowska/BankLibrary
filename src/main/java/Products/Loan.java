@@ -1,11 +1,9 @@
 package Products;
 
-import Bank.BankException;
 import Operations.Operation;
 import Operations.OperationType;
-import Products.Account;
+import Products.Balance.Balance;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -15,17 +13,17 @@ import java.util.Date;
 public class Loan extends Product
 {
 
-    private Account _baseAccount;
+    private IAccount baseAccount;
 
-    public Loan(Integer ownerId, BigDecimal balance, Date expireDate, Interest interest, Account baseAccount)
+    public Loan(Integer ownerId, Balance balance, Date expireDate, Interest interest, IAccount baseAccount)
     {
         super(ownerId, balance, expireDate, interest);
-        _history.add(new Operation(OperationType.MakeLoan));
-        _baseAccount = baseAccount;
+        history.add(new Operation(OperationType.MakeLoan));
+        this.baseAccount = baseAccount;
     }
 
-    public Account getBaseAccount()
+    public IAccount getBaseAccount()
     {
-        return _baseAccount;
+        return baseAccount;
     }
 }

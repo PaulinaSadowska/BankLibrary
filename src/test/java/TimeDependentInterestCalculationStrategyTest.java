@@ -31,7 +31,7 @@ public class TimeDependentInterestCalculationStrategyTest
         Date creationDate = cal.getTime();
 
         _product = mock(Product.class);
-        when(_product.getBalance()).thenReturn(_balance);
+        when(_product.getBalanceValue()).thenReturn(_balance);
         when(_product.getCreationDate()).thenReturn(creationDate);
     }
 

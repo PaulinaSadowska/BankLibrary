@@ -1,7 +1,12 @@
 package Operations;
 
 import Bank.BankException;
-import Products.Account;
+import Products.Balance.BalanceException;
+import Products.Debit;
+import Products.DebitAccount;
+import Products.IAccount;
+import Products.DividedAmount;
+import Utils.BigDecimalComparator;
 
 import java.math.BigDecimal;
 
@@ -10,14 +15,15 @@ import java.math.BigDecimal;
  */
 public class PaymentOperation extends Operation implements ICommand
 {
-    private Account sourceAccount;
+    private IAccount targetAccount;
     private BigDecimal amount;
     private PaymentDirection direction;
 
-    public PaymentOperation(Account sourceAccount, PaymentDirection direction, BigDecimal amount)
+
+    public PaymentOperation(IAccount targetAccount, PaymentDirection direction, BigDecimal amount)
     {
         super(OperationType.Payment);
-        this.sourceAccount = sourceAccount;
+        this.targetAccount = targetAccount;
         this.direction = direction;
         this.amount = amount;
     }
@@ -28,42 +34,69 @@ public class PaymentOperation extends Operation implements ICommand
         if(getExecuted())
             return;
 
-        if(amount.longValueExact() < 0)
-            throw new BankException("Negative amount");
-
-        switch (direction)
+        try
         {
-            case In:
+            switch (direction)
             {
-                BigDecimal newBalance = sourceAccount.getBalance().add(amount);
-                sourceAccount.setBalance(newBalance);
-                break;
-            }
-            case Out:
-            {
-
-                BigDecimal productBalance = sourceAccount.getBalance();
-                // Zwraca 1 gdy amount jest wieksza od balance
-                if (amount.compareTo(productBalance) <= 0)
+                case In:
                 {
-                    BigDecimal newBalance = sourceAccount.getBalance().subtract(amount);
-                    sourceAccount.setBalance(newBalance);
+                    if(!(targetAccount instanceof DebitAccount))
+                    {
+                        targetAccount.addToBalance(amount);
+                        break;
+                    }
+
+                    DebitAccount debitAccount = (DebitAccount)targetAccount;
+                    Debit debit = debitAccount.getDebit();
+
+                    if(!debit.wasUsed())
+                    {
+                        targetAccount.addToBalance(amount);
+                        break;
+                    }
+
+                    DividedAmount residue = debit.divideAmount(amount, debitAccount.getBalanceValue(), PaymentDirection.In);
+
+                    debit.addToBalance(residue.getToDebit());
+
+                    debitAccount.addToBalance(residue.getResidue());
+                    break;
+
                 }
-                else
+                case Out:
                 {
-                    if (!sourceAccount.hasDebit())
-                        throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
+                    if(BigDecimalComparator.GreaterThan(amount, targetAccount.getBalanceValue()))
+                    {
+                        if(!(targetAccount instanceof DebitAccount))
+                            throw new BalanceException("Amount greater than balance",targetAccount.getBalanceValue(),amount);
 
-                    BigDecimal balancePlusDebit = sourceAccount.getBalanceWithDebit();
+                        DebitAccount debitAccount = (DebitAccount)targetAccount;
+                        Debit debit = debitAccount.getDebit();
+                        BigDecimal balanceValue = debitAccount.getBalanceValue();
 
-                    if (balancePlusDebit.compareTo(amount) < 0)
-                        throw new BankException("Output payment amount grater than account balance", OperationType.Payment);
+                        BigDecimal balanceWithDebit = debit.getBalanceValue().add(balanceValue);
 
-                    sourceAccount.setBalance(productBalance.subtract(amount));
+                        if(BigDecimalComparator.GreaterThan(amount, balanceWithDebit ))
+                            throw new BalanceException("Amount greater than balance plus debit",balanceWithDebit,amount);
+
+                        DividedAmount dividedAmount = debit.divideAmount(amount, balanceValue, PaymentDirection.Out);
+
+                        debitAccount.subtractFromBalance(dividedAmount.getResidue());
+                        debit.subtractFromBalance(dividedAmount.getToDebit());
+                        break;
+                    }
+
+                    targetAccount.subtractFromBalance(amount);
                 }
-                break;
             }
         }
-        _executed = true;
+        catch (BalanceException exception)
+        {
+            throw new BankException("Error during balance modification", exception);
+        }
+
+
+        executed = true;
     }
+
 }

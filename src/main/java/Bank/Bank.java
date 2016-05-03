@@ -1,6 +1,7 @@
 package Bank;
 
 import Products.*;
+import Products.Balance.Balance;
 import Utils.IInterestCalculationStrategy;
 import Utils.OperationsHistory;
 import com.google.inject.Inject;
@@ -26,7 +27,7 @@ public class Bank
         _productManager = productManager;
     }
 
-    public Account createAccount(BigDecimal balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
+    public IAccount createAccount(Balance balance, ProductDuration duration, IInterestCalculationStrategy interestStrategy,
                                  double interestPercent) throws Exception
     {
         Interest interest = new Interest(interestStrategy, interestPercent);
@@ -34,9 +35,9 @@ public class Bank
         return _productManager.createNewProduct(Account.class, ownerId, balance, duration, interest, _id);
     }
 
-    public Account getAccount(int ownerId){
+    public IAccount getAccount(int ownerId){
 
-        List<Account> accounts = _productManager.getAccount(ownerId);
+        List<IAccount> accounts = _productManager.getAccount(ownerId);
         if(accounts.size() == 0){
             return null;
         }
