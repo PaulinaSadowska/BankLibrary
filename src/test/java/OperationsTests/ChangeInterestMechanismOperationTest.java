@@ -1,3 +1,4 @@
+package OperationsTests;
 
 import Bank.BankException;
 import Operations.ChangeInterestMechanismOperation;

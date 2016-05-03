@@ -1,4 +1,4 @@
-/**
+package OperationsTests; /**
  * Created by Paulina Sadowska on 30.04.2016.
  */
 

@@ -1,3 +1,5 @@
+package ReportTests;
+
 import Products.Account;
 import Products.Product;
 import Report.DefaultReportCreationStrategy;

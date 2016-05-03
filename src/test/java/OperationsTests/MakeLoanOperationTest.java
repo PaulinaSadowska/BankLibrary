@@ -1,3 +1,5 @@
+package OperationsTests;
+
 import Operations.MakeLoanOperation;
 import Products.*;
 import Products.Balance.Balance;

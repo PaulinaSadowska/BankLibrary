@@ -1,15 +1,14 @@
+package OperationsTests;
+
 import Operations.MakeDebitOperation;
 import Products.*;
-import Products.Balance.Balance;
 import Utils.ProductFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 /**
  * Created by Paulina Sadowska on 18.04.2016.

@@ -1,3 +1,5 @@
+package OperationsTests;
+
 import Bank.BankException;
 import Operations.CalculateInterestOperation;
 import Products.Account;

@@ -1,3 +1,5 @@
+package BankTests;
+
 import Bank.BankException;
 import Operations.OperationType;
 import org.junit.Before;

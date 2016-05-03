@@ -1,18 +1,13 @@
+package ProductsTests;
 
-import Bank.BankException;
 import Products.*;
-import Products.Balance.Balance;
 import Utils.ProductFactory;
-import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by palka on 31.03.2016.

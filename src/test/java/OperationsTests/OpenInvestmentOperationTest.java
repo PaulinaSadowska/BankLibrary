@@ -1,3 +1,5 @@
+package OperationsTests;
+
 import Operations.OpenInvestmentOperation;
 import Products.*;
 import Products.Balance.Balance;

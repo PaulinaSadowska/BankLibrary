@@ -1,3 +1,4 @@
+package BankTests;
 
 import Bank.Bank;
 import Products.*;

@@ -1,3 +1,5 @@
+package ProductsTests;
+
 import Bank.BankException;
 import Products.Interest;
 import Utils.IInterestCalculationStrategy;

@@ -1,3 +1,5 @@
+package ProductsTests;
+
 import Products.Account;
 import Products.Balance.Balance;
 import Products.Interest;

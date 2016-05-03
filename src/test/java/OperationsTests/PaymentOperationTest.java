@@ -1,13 +1,12 @@
+package OperationsTests;
+
 import Bank.BankException;
 import Operations.ICommand;
-import Operations.OperationType;
 import Operations.PaymentDirection;
 import Operations.PaymentOperation;
-import Products.Account;
 import Products.Debit;
 import Products.DebitAccount;
 import Products.IAccount;
-import Utils.ProductFactory;
 import org.junit.Assert;
 import org.junit.Test;
 

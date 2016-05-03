@@ -1,3 +1,5 @@
+package OperationsTests;
+
 import Bank.*;
 import Operations.ICommand;
 import Operations.InterbankTransferOperation;

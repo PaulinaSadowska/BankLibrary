@@ -1,5 +1,6 @@
+package ProductsTests;
+
 import Operations.*;
-import Products.Account;
 import Products.IAccount;
 import Utils.ProductFactory;
 import org.junit.Assert;

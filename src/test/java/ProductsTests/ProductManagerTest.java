@@ -1,15 +1,11 @@
+package ProductsTests;
 
 import Products.*;
-import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
-import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 

@@ -1,3 +1,5 @@
+package BankTests;
+
 import Bank.*;
 import Products.IAccount;
 import Products.ProductManager;
