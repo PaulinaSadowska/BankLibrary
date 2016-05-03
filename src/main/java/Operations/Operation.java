@@ -32,12 +32,10 @@ public class Operation
         this.description = description;
     }
 
-    public void checkExecuted(boolean undo) throws BankException
+    public void checkExecuted() throws BankException
     {
-        if(executed && !undo)
+        if(executed)
             throw new BankException("Operation can't be executed more than once");
-        else if(!executed && undo)
-            throw new BankException("Operation not executed and undo called");
     }
 
     public  boolean getExecuted()

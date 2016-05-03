@@ -5,7 +5,7 @@ import Products.*;
 /**
  * Created by Paulina Sadowska on 03.05.2016.
  */
-public class PassAllReport implements Visitor
+public class PassAllReport extends Report
 {
     @Override
     public IProduct visit(Account account)
