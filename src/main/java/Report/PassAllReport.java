@@ -10,24 +10,24 @@ public class PassAllReport extends Report
     @Override
     public IProduct visit(Account account)
     {
-        return (IProduct) this;
+        return  account;
     }
 
     @Override
     public IProduct visit(DebitAccount debitAccount)
     {
-        return (IProduct) this;
+        return debitAccount;
     }
 
     @Override
     public IProduct visit(Loan loan)
     {
-        return (IProduct) this;
+        return loan;
     }
 
     @Override
     public IProduct visit(Investment investment)
     {
-        return (IProduct) this;
+        return investment;
     }
 }

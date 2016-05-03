@@ -15,16 +15,15 @@ import static org.mockito.Mockito.when;
  */
 public class ProductFactory
 {
+    private static final Interest interestMock = mock(Interest.class);
+
     public static IAccount createAccount(int balance)
     {
-        Interest interestMock = mock(Interest.class);
-
         return new Account(12, new Balance(new BigDecimal(balance)), mock(Date.class), interestMock, 1234);
     }
 
     public static IAccount createAccount(int balance, int debitValue)
     {
-        Interest interestMock = mock(Interest.class);
         Debit debitMock = new Debit(new BigDecimal(debitValue));
         IAccount account =  new Account(12, new Balance(new BigDecimal(balance)), mock(Date.class), interestMock, 1234);
         return new DebitAccount(account, debitMock);
@@ -47,9 +46,28 @@ public class ProductFactory
 
     public static IAccount createAccount(int balance, int debitValue, int bankId)
     {
-        Interest interestMock = mock(Interest.class);
         Debit debitMock = new Debit(new BigDecimal(debitValue));
         IAccount account =  new Account(12, new Balance(new BigDecimal(balance)), mock(Date.class), interestMock, bankId);
         return  account;
+    }
+
+    public static Investment createInvestment(int balance)
+    {
+        return new Investment(1234, new Balance(balance), mock(Date.class), interestMock, null);
+    }
+
+    public static Investment createInvestment(int balance, Account baseAccount)
+    {
+        return new Investment(baseAccount.getOwnerId(), new Balance(balance), mock(Date.class), interestMock, baseAccount);
+    }
+
+    public static Loan createLoan(int balance)
+    {
+        return new Loan(1234, new Balance(balance), mock(Date.class), interestMock, null);
+    }
+
+    public static Loan createLoan(int balance, Account baseAccount)
+    {
+        return new Loan(baseAccount.getOwnerId(), new Balance(balance), mock(Date.class), interestMock, baseAccount);
     }
 }
