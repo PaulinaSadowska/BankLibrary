@@ -6,6 +6,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.inject.Inject;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -155,5 +156,20 @@ public class ProductManager
         cal.add(Calendar.MONTH, duration.getNumOfMonths());
         cal.add(Calendar.YEAR, duration.getNumOfYears());
         return cal.getTime();
+    }
+
+    public void setBankIdToAllAccounts(int bankId)
+    {
+        for (Integer ownerId : products.keySet())
+        {
+            List<IProduct> productList = products.get(ownerId);
+            for (IProduct product : productList)
+            {
+                if(product instanceof Account){
+                    Account account = (Account)product;
+                    account._setBankId(bankId);
+                }
+            }
+        }
     }
 }

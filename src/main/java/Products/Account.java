@@ -25,6 +25,8 @@ public class Account extends Product implements IAccount
         return bankId;
     }
 
+    public void _setBankId(int bankId) { this.bankId = bankId; }
+
     public void doOperation(ICommand operation) throws Exception
     {
         operation.execute();

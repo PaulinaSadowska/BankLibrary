@@ -64,6 +64,7 @@ public class Bank
 
     public void registerCentralBank(CentralBank centralBank, int bankId){
         _id = bankId;
+        _productManager.setBankIdToAllAccounts(bankId);
         this._centralBank = centralBank;
     }
 }
