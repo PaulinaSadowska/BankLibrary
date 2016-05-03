@@ -47,4 +47,14 @@ public class CentralBankTest
         assertEquals(_bank1.getId(), account1.getBankId());
         assertEquals(_bank1.getId(), account2.getBankId());
     }
+
+    @Test
+    public void bankRegistration_BankToCentralBankListAdded_AccountsBankIdEqualsBankId() throws Exception
+    {
+        _centralBank.registerBank(_bank1);
+        IAccount account1 = ProductFactory.createAccount(_bank1, 1200);
+        IAccount account2 = ProductFactory.createAccount(_bank1, 1500);
+        assertEquals(_bank1.getId(), account1.getBankId());
+        assertEquals(_bank1.getId(), account2.getBankId());
+    }
 }
