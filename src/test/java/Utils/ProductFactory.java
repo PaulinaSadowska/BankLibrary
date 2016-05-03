@@ -82,7 +82,7 @@ public class ProductFactory
     public static Loan createLoan(ProductManager manager, int balance, IAccount baseAccount) throws Exception
     {
         MakeLoanOperation operation = new MakeLoanOperation(baseAccount.getOwnerId(), new Balance(balance), new ProductDuration(1,1),
-                mock(Interest.class), manager);
+                new Interest(mock(IInterestCalculationStrategy.class), 0.1), manager);
         operation.execute();
         List<IProduct> productList = manager.getProductList(baseAccount.getOwnerId());
         for (IProduct product : productList)
