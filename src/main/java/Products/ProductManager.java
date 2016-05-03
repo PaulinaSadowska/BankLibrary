@@ -1,5 +1,6 @@
 package Products;
 
+import Bank.BankException;
 import Products.Balance.Balance;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -48,70 +49,63 @@ public class ProductManager
         }
     }
 
-    public <T extends Product> void deleteProduct(T product)
+    private <T extends Product> T _createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
+                                                    Interest interest, IAccount baseAccount, Integer bankId)
+            throws Exception
     {
-        /// kiedy moze byc usuniete?
-        if ((product instanceof Account))
+        Date expireDate = getExpireDate(duration);
+        validateInput(ownerId);
+        validateInput(balance);
+        validateInput(expireDate);
+
+        T product;
+        //find proper constructor and initialize
+        Constructor<T> constructor;
+        if (baseAccount == null && bankId != null) //account
         {
-            products.removeAll(product.getOwnerId());
+            constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                    expireDate.getClass(), interest.getClass(), Integer.class);
+            product = constructor.newInstance(ownerId, balance, expireDate, interest, bankId);
+            products.put(ownerId, product);
         }
-    }
-
-    private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
-                                                   Interest interest, IAccount baseAccount, Integer bankId)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
-    {
-            Date expireDate = getExpireDate(duration);
-            validateInput(ownerId);
-            validateInput(balance);
-            validateInput(expireDate);
-
-            T product = null;
-            //find proper constructor and initialize
-            Constructor<T> constructor;
-            if (baseAccount == null && bankId!=null) //account
-            {
-                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass(), Integer.class);
-                product = constructor.newInstance(ownerId, balance, expireDate, interest, bankId);
-                products.put(ownerId, product);
-            }
-            if (baseAccount != null )  //investment or loan
-            {
-                constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass(), baseAccount.getClass().getInterfaces()[0]);
-                product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
-                products.put(ownerId, product);
-            }
+        else if (baseAccount != null)  //investment or loan
+        {
+            constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
+                    expireDate.getClass(), interest.getClass(), baseAccount.getClass().getInterfaces()[0]);
+            product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
+            products.put(ownerId, product);
+        }
+        else
+        {
+            throw new BankException("Not valid parameters passed to create product");
+        }
         return product;
     }
-
 
 
     @Inject
     public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
                                                   Interest interest, IAccount baseAccount)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+            throws Exception
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, -1);
+        return _createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, -1);
     }
-
 
 
     @Inject
     public <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
                                                   Interest interest, Integer bankId)
 
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+            throws Exception
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, null, bankId);
+        return _createNewProduct(clazz, ownerId, balance, duration, interest, null, bankId);
     }
 
 
     public int getAvailableOwnerId()
     {
-        int i=0;
-        while(products.containsKey(i))
+        int i = 0;
+        while (products.containsKey(i))
         {
             i++;
         }
@@ -124,7 +118,7 @@ public class ProductManager
         List<T> out = new ArrayList<T>();
         if (productList != null)
         {
-            for(IProduct product: productList)
+            for (IProduct product : productList)
             {
                 if (clazz.isInstance(product))
                 {
@@ -165,8 +159,9 @@ public class ProductManager
             List<IProduct> productList = products.get(ownerId);
             for (IProduct product : productList)
             {
-                if(product instanceof Account){
-                    Account account = (Account)product;
+                if (product instanceof Account)
+                {
+                    Account account = (Account) product;
                     account._setBankId(bankId);
                 }
             }
