@@ -1,11 +1,14 @@
 package Utils;
 
+import Operations.MakeLoanOperation;
 import Products.*;
 import Bank.*;
 import Products.Balance.Balance;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -74,5 +77,20 @@ public class ProductFactory
     public static Loan createLoan(int balance, IAccount baseAccount)
     {
         return new Loan(baseAccount.getOwnerId(), new Balance(balance), mock(Date.class), interestMock, baseAccount);
+    }
+
+    public static Loan createLoan(ProductManager manager, int balance, IAccount baseAccount) throws Exception
+    {
+        MakeLoanOperation operation = new MakeLoanOperation(baseAccount.getOwnerId(), new Balance(balance), new ProductDuration(1,1),
+                mock(Interest.class), manager);
+        operation.execute();
+        List<IProduct> productList = manager.getProductList(baseAccount.getOwnerId());
+        for (IProduct product : productList)
+        {
+            if(product instanceof Loan){
+                return (Loan) product;
+            }
+        }
+        return null;
     }
 }

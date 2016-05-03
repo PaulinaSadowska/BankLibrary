@@ -14,7 +14,7 @@ public class MakeReportOperation extends Operation implements ICommand
     private Bank bank;
     private Report report;
     private IReportCreationStrategy reportStrategy;
-    private ReportDocument reportDecument;
+    private ReportDocument reportDocument;
 
     public MakeReportOperation(Bank bank, Report report, IReportCreationStrategy reportStrategy)
     {
@@ -29,12 +29,14 @@ public class MakeReportOperation extends Operation implements ICommand
     {
         setExecuted(true);
         List<IProduct> productList = bank.doReport(report);
-        reportDecument = reportStrategy.createReport(productList);
+        reportDocument = reportStrategy.createReport(productList);
     }
 
     public ReportDocument getReportDocument() throws BankException
     {
-        checkExecuted();
-        return reportDecument;
+        if(executed)
+            return reportDocument;
+        else
+            throw new BankException("report was not created");
     }
 }

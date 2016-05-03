@@ -7,7 +7,6 @@ package OperationsTests;
 import Bank.BankException;
 import Operations.RepayLoanOperation;
 import Products.*;
-import Products.Balance.Balance;
 import Utils.ProductFactory;
 import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
