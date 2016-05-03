@@ -57,7 +57,7 @@ public class ProductManager
     }
 
     private <T extends Product> T createNewProduct(Class<T> clazz, Integer ownerId, Balance balance, ProductDuration duration,
-                                                   Interest interest, IAccount baseAccount, Debit debit, Integer bankId)
+                                                   Interest interest, IAccount baseAccount, Integer bankId)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
             Date expireDate = getExpireDate(duration);
@@ -68,18 +68,18 @@ public class ProductManager
             T product = null;
             //find proper constructor and initialize
             Constructor<T> constructor;
-            if (baseAccount == null && debit == null )
+            if (baseAccount == null && bankId!=null) //account
             {
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass());
-                product = constructor.newInstance(ownerId, balance, expireDate, interest);
+                        expireDate.getClass(), interest.getClass(), Integer.class);
+                product = constructor.newInstance(ownerId, balance, expireDate, interest, bankId);
                 products.put(ownerId, product);
             }
-            if (debit == null && baseAccount != null && bankId!=null)
+            if (baseAccount != null )  //investment or loan
             {
                 constructor = clazz.getDeclaredConstructor(Integer.class, balance.getClass(),
-                        expireDate.getClass(), interest.getClass(), baseAccount.getClass().getInterfaces()[0], Integer.class);
-                product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount, bankId);
+                        expireDate.getClass(), interest.getClass(), baseAccount.getClass().getInterfaces()[0]);
+                product = constructor.newInstance(ownerId, balance, expireDate, interest, baseAccount);
                 products.put(ownerId, product);
             }
         return product;
@@ -92,7 +92,7 @@ public class ProductManager
                                                   Interest interest, IAccount baseAccount)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, null, -1);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, baseAccount, -1);
     }
 
 
@@ -103,7 +103,7 @@ public class ProductManager
 
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        return createNewProduct(clazz, ownerId, balance, duration, interest, null, null, bankId);
+        return createNewProduct(clazz, ownerId, balance, duration, interest, null, bankId);
     }
 
 

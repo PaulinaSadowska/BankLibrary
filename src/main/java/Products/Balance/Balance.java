@@ -19,6 +19,11 @@ public class Balance implements IBalance
         balance = initialBalance;
     }
 
+    public Balance(int initialBalance)
+    {
+        balance = new BigDecimal(initialBalance);
+    }
+
 
     @Override
     public void addToBalance(BigDecimal amount) throws BalanceException

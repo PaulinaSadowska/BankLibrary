@@ -6,6 +6,7 @@ import Bank.BankException;
 import Operations.ICommand;
 import Operations.RefusedTransferPayback;
 import Products.Account;
+import Products.IAccount;
 import Utils.ProductFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class RefusedTransferPaybackTest
 {
-    private Account _account;
+    private IAccount _account;
     private int _accountBalance;
 
     @Before
@@ -32,7 +33,7 @@ public class RefusedTransferPaybackTest
         BigDecimal amount = new BigDecimal(100);
         ICommand operation = new RefusedTransferPayback(_account, amount);
         operation.execute();
-        assertEquals(amount.add(new BigDecimal(_accountBalance)), _account.getBalance());
+        assertEquals(amount.add(new BigDecimal(_accountBalance)), _account.getBalanceValue());
     }
 
     @Test(expected = BankException.class)

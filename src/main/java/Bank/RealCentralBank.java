@@ -3,6 +3,7 @@ package Bank;
 import Operations.*;
 import Products.Account;
 import Products.IAccount;
+import Products.Product;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class RealCentralBank implements CentralBank
     }
 
     @Override
-    public void transferPayback(Account targetAccount, BigDecimal amount) throws BankException
+    public void transferPayback(IAccount targetAccount, BigDecimal amount) throws BankException
     {
         RefusedTransferPayback payback =
                 new RefusedTransferPayback(targetAccount, amount);

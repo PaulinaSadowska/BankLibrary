@@ -3,6 +3,7 @@ import Operations.CloseInvestmentOperation;
 import Products.*;
 import Products.Balance.Balance;
 import Products.Balance.BalanceException;
+import Utils.ProductFactory;
 import Utils.TimeDependentInterestCalculationStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,6 @@ import static org.junit.Assert.*;
 public class CloseInvestmentOperationTest
 {
 
-    private Balance accountBalance;
     private Balance balance;
     private BigDecimal expectedInterestValue = new BigDecimal(99);
     private int ownerId;
@@ -31,12 +31,11 @@ public class CloseInvestmentOperationTest
     @Before
     public void setUp(){
         balance = new Balance(investmentBalanceValue);
-        accountBalance = new Balance(accountBalanceValue);
         ownerId = 1234;
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
         interest = new Interest(strategyMock, 0.3);
-        account = new Account(1234, accountBalance, mock(Date.class), mock(Interest.class));
+        account = ProductFactory.createAccount(accountBalanceValue.intValue());
 
     }
 

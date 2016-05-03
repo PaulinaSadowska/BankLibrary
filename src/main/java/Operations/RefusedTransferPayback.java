@@ -2,6 +2,7 @@ package Operations;
 
 import Bank.BankException;
 import Products.Account;
+import Products.IAccount;
 
 import java.math.BigDecimal;
 
@@ -10,10 +11,10 @@ import java.math.BigDecimal;
  */
 public class RefusedTransferPayback extends Operation implements ICommand
 {
-    private Account targetAccount;
+    private IAccount targetAccount;
     private BigDecimal amount;
 
-    public RefusedTransferPayback(Account targetAccount, BigDecimal amount) {
+    public RefusedTransferPayback(IAccount targetAccount, BigDecimal amount) {
         super(OperationType.RefusedTransferPayback);
         this.targetAccount = targetAccount;
         this.amount = amount;

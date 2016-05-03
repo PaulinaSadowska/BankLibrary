@@ -1,6 +1,7 @@
 import Operations.MakeDebitOperation;
 import Products.*;
 import Products.Balance.Balance;
+import Utils.ProductFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class MakeDebitOperationTest
     @Before
     public void setUp(){
 
-        debitAccount = new Account(123, mock(Balance.class), mock(Date.class), mock(Interest.class));
+        debitAccount = ProductFactory.createAccount(1234);
     }
 
     @Test

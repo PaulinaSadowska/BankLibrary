@@ -107,7 +107,8 @@ public class PaymentOperationTest
         BigDecimal expectedDebitValue = new BigDecimal(balance+debit-paymentValue);
 
         account = createAccount(balance, debit);
-        Debit accountDebit = ((DebitAccount)account).getDebit();
+        DebitAccount debitAccount = (DebitAccount)account;
+        Debit accountDebit = debitAccount.getDebit();
 
         ICommand operation = new PaymentOperation(account, PaymentDirection.Out, paymentAmount);
         operation.execute();

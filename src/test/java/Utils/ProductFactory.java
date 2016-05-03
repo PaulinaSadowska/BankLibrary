@@ -1,6 +1,7 @@
 package Utils;
 
 import Products.*;
+import Bank.*;
 import Products.Balance.Balance;
 
 import java.math.BigDecimal;
@@ -26,7 +27,21 @@ public class ProductFactory
         Interest interestMock = mock(Interest.class);
         Debit debitMock = new Debit(new BigDecimal(debitValue));
         IAccount account =  new Account(12, new Balance(new BigDecimal(balance)), mock(Date.class), interestMock, 1234);
-        return  account;
+        return new DebitAccount(account, debitMock);
+    }
+
+    public static IAccount createAccount(Bank bank, int balance) throws Exception
+    {
+        return bank.createAccount(new Balance(balance), new ProductDuration(1, 2),
+                mock(IInterestCalculationStrategy.class), 1.2);
+    }
+
+    public static IAccount createAccount(Bank bank, int balance, int debitValue) throws Exception
+    {
+        Debit debitMock = new Debit(new BigDecimal(debitValue));
+        IAccount account = bank.createAccount(new Balance(balance), new ProductDuration(1, 2),
+                mock(IInterestCalculationStrategy.class), 1.2);
+        return new DebitAccount(account, debitMock);
     }
 
 

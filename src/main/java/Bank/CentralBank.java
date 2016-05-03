@@ -2,6 +2,7 @@ package Bank;
 
 import Operations.InterbankTransferOperation;
 import Products.Account;
+import Products.IAccount;
 
 import java.math.BigDecimal;
 
@@ -10,5 +11,5 @@ import java.math.BigDecimal;
  */
 public interface CentralBank{
     void transfer(InterbankTransferOperation operation) throws BankException;
-    void transferPayback(Account targetAccount, BigDecimal amount) throws BankException;
+    void transferPayback(IAccount targetAccount, BigDecimal amount) throws BankException;
 }
