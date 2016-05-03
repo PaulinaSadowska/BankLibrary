@@ -2,10 +2,13 @@ package ProductsTests;
 
 import Products.*;
 import Utils.ProductFactory;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -14,40 +17,19 @@ import static org.mockito.Mockito.mock;
  * */
 public class LoanTest {
 
-    private IAccount createAccountInstance(BigDecimal balance)
+    @Test
+    public void getLoanBaseAccountTest_AccountExists_getsAccount()
     {
-        return ProductFactory.createAccount(balance.intValue());
+        IAccount account = ProductFactory.createAccount(200);
+        Loan loan = ProductFactory.createLoan(1200, account);
+        Assert.assertEquals(loan.getBaseAccount(), account);
     }
 
-   /* @Test
-    public void repayLoanTest() throws BankException
+    @Test
+    public void getLoanBaseAccountNullTest_AccountExists_getsAccount()
     {
-        BigDecimal accountBalance = new BigDecimal(1200);
-        BigDecimal loanBalance = new BigDecimal(200);
-
-        Account account = createAccountInstance(accountBalance);
-
-        Interest interest = mock(Interest.class);
-        when(interest.calculateInterest(any(Product.class))).thenReturn(new BigDecimal(0));
-
-        Loan loan = new Loan(12, loanBalance, mock(Date.class), interest, account);
-        loan.repay();
-        assertEquals(account.getBalance(), accountBalance.subtract(loanBalance));
+        Loan loan = ProductFactory.createLoan(1200);
+        assertNull(loan.getBaseAccount());
     }
-
-    @Test (expected = BankException.class)
-    public void failToRepayLoanTest() throws BankException
-    {
-        BigDecimal accountBalance = new BigDecimal(1200);
-        BigDecimal loanBalance = new BigDecimal(2000);
-
-        Account account = createAccountInstance(accountBalance);
-
-        Interest interest = mock(Interest.class);
-        when(interest.calculateInterest(any(Product.class))).thenReturn(new BigDecimal(0));
-
-        Loan loan = new Loan(12, loanBalance, mock(Date.class), interest, account);
-        loan.repay();
-    }*/
 }
 

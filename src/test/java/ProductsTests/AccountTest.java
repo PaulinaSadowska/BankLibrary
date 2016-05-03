@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static Utils.ProductFactory.createAccount;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by arasz on 18.03.2016.
