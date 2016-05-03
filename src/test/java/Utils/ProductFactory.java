@@ -66,7 +66,12 @@ public class ProductFactory
         return new Loan(1234, new Balance(balance), mock(Date.class), interestMock, null);
     }
 
-    public static Loan createLoan(int balance, Account baseAccount)
+    public static Loan createLoan(int balance, IAccount baseAccount, Interest interest)
+    {
+        return new Loan(1234, new Balance(balance), mock(Date.class), interest, baseAccount);
+    }
+
+    public static Loan createLoan(int balance, IAccount baseAccount)
     {
         return new Loan(baseAccount.getOwnerId(), new Balance(balance), mock(Date.class), interestMock, baseAccount);
     }

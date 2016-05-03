@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -29,15 +28,11 @@ public class RepayLoanOperationTest
 
     private BigDecimal expectedInterestValue = new BigDecimal(expectedInterestValueInt);
     private BigDecimal accountBalanceValue = new BigDecimal(accountBalanceInt);
-    private Balance balance;
-    private int ownerId;
     private Interest interest;
     private IAccount account;
 
     @Before
     public void setUp(){
-        balance = new Balance(loanBalanceValueInt);
-        ownerId = 1234;
         TimeDependentInterestCalculationStrategy strategyMock = mock(TimeDependentInterestCalculationStrategy.class);
         when(strategyMock.calculateInterest(any(Product.class), any(double.class))).thenReturn(expectedInterestValue);
         interest = new Interest(strategyMock, 0.3);
@@ -47,7 +42,7 @@ public class RepayLoanOperationTest
     @Test
     public void CloseLoan_EnoughMoneyOnAccount_getsMoneyFromAccount() throws Exception
     {
-        Loan loan = new Loan(ownerId, balance, mock(Date.class), interest, account);
+        Loan loan = ProductFactory.createLoan(loanBalanceValueInt, account, interest);
 
         BigDecimal expectedAccountBalance = new BigDecimal(accountBalanceInt - loanBalanceValueInt - expectedInterestValueInt);
 
@@ -59,8 +54,7 @@ public class RepayLoanOperationTest
     @Test (expected = BankException.class)
     public void CloseLoan_NotEnoughMoneyOnAccount_throwsException() throws Exception
     {
-        Loan loan = new Loan(ownerId, new Balance(account.getBalanceValue().intValue()+100),
-                mock(Date.class), interest, account);
+        Loan loan = ProductFactory.createLoan(account.getBalanceValue().intValue()+100, account, interest);
 
         RepayLoanOperation operation = new RepayLoanOperation(loan);
         operation.execute();
