@@ -1,8 +1,9 @@
-package Utils;
+package Report;
 
 import Operations.Operation;
 import Operations.OperationType;
 import Products.Product;
+import Utils.OperationsHistory;
 import com.google.inject.Inject;
 
 import java.util.List;

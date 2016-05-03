@@ -3,7 +3,7 @@ package Products;
 import Operations.Operation;
 import Operations.OperationType;
 import Products.Balance.Balance;
-import Utils.Report;
+import Report.Report;
 
 import java.util.Date;
 

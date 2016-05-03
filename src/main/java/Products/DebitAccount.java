@@ -1,8 +1,7 @@
 package Products;
 
 import Operations.ICommand;
-import Products.Balance.BalanceException;
-import Utils.Report;
+import Report.Report;
 
 import java.math.BigDecimal;
 

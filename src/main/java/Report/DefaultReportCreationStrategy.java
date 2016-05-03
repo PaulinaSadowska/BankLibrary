@@ -1,6 +1,7 @@
-package Utils;
+package Report;
 
 import Products.Product;
+import Report.*;
 
 import java.util.Calendar;
 import java.util.List;

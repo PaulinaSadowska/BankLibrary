@@ -1,4 +1,4 @@
-package Utils;
+package Report;
 
 import Products.Product;
 

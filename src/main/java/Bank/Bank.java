@@ -4,12 +4,10 @@ import Products.*;
 import Products.Balance.Balance;
 import Utils.IInterestCalculationStrategy;
 import Utils.OperationsHistory;
-import Utils.Report;
+import Report.Report;
 import com.google.inject.Inject;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

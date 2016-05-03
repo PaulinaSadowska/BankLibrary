@@ -3,7 +3,7 @@ package Products;
 import Operations.ICommand;
 import Operations.Operation;
 import Products.Balance.Balance;
-import Utils.Report;
+import Report.Report;
 
 import java.util.Date;
 

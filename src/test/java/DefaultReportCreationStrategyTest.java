@@ -1,9 +1,7 @@
 import Products.Account;
 import Products.Product;
-import Utils.DefaultReportCreationStrategy;
-import Utils.PassAllReport;
-import Utils.Report;
-import Utils.ReportDocument;
+import Report.DefaultReportCreationStrategy;
+import Report.ReportDocument;
 import org.junit.*;
 
 import java.util.LinkedList;
