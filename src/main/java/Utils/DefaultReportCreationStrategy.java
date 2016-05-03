@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class DefaultReportCreationStrategy implements IReportCreationStrategy<String>
 {
-    public Report<String> createReport(List<Product> products)
+    public ReportDocument<String> createReport(List<Product> products)
     {
         StringBuilder report = new StringBuilder();
 
@@ -29,6 +29,6 @@ public class DefaultReportCreationStrategy implements IReportCreationStrategy<St
            report.append("\n");
        }
 
-        return new Report(report.toString());
+        return new ReportDocument<String>(report.toString());
     }
 }

@@ -15,7 +15,6 @@ public class ReportManager
 {
     OperationsHistory _history = OperationsHistory.getGlobalHistory();
 
-    //TODO: Użyć IOC do tworzenia jednej instancji menagera
     private IReportCreationStrategy _reportCreationStrategy;
 
     @Inject
@@ -29,7 +28,7 @@ public class ReportManager
         _reportCreationStrategy = reportCreationStrategy;
     }
 
-    public <T> Report<T>createReport(List<Product> productList)
+    public <T> ReportDocument<T>createReport(List<Product> productList)
     {
         _history.add(new Operation(OperationType.MakeReport));
         return _reportCreationStrategy.createReport(productList);

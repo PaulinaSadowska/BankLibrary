@@ -4,9 +4,11 @@ import Products.*;
 import Products.Balance.Balance;
 import Utils.IInterestCalculationStrategy;
 import Utils.OperationsHistory;
+import Utils.Report;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,17 +46,12 @@ public class Bank
         return accounts.get(0);
     }
 
-    /**
-     * Usunięcie konta
-     * @pre: account != null
-     * @post: account == null
-     * @invariant:
-     * @return
-     * Nieusuniecie konta powinno rzucać wyjatki
-     */
-    public void deleteAccount()
-    {
-
+    public List<IProduct> doReport(Report report) {
+        List<IProduct> result = new ArrayList<IProduct>();
+        for (IProduct product : _productManager.getProductList()) {
+            result.add(product.accept(report));
+        }
+        return result;
     }
 
     public int getId()

@@ -3,6 +3,7 @@ package Products;
 import Operations.Operation;
 import Operations.OperationType;
 import Products.Balance.Balance;
+import Utils.Report;
 
 import java.util.Date;
 
@@ -25,5 +26,11 @@ public class Loan extends Product
     public IAccount getBaseAccount()
     {
         return baseAccount;
+    }
+
+    @Override
+    public IProduct accept(Report report)
+    {
+        return report.visit(this);
     }
 }

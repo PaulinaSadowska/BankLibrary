@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by arasz on 22.04.2016.
  */
-public interface IProduct extends IBalance
+public interface IProduct extends IBalance, IElement
 {
     Interest getInterest();
 

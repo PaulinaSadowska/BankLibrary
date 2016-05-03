@@ -1,7 +1,9 @@
 import Products.Account;
 import Products.Product;
 import Utils.DefaultReportCreationStrategy;
+import Utils.PassAllReport;
 import Utils.Report;
+import Utils.ReportDocument;
 import org.junit.*;
 
 import java.util.LinkedList;
@@ -23,6 +25,6 @@ public class DefaultReportCreationStrategyTest
         productList.add(mock(Account.class));
         Object o = strategy.createReport(productList);
         assertNotNull(o);
-        assertEquals(o.getClass().getName(), Report.class.getName());
+        assertEquals(o.getClass().getName(), ReportDocument.class.getName());
     }
 }

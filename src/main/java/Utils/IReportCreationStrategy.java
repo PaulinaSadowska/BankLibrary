@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface IReportCreationStrategy<T>
 {
-    Report<T> createReport(List<Product> products);
+    ReportDocument<T> createReport(List<Product> products);
 }

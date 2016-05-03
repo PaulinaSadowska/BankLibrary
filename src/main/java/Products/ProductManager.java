@@ -172,4 +172,17 @@ public class ProductManager
             }
         }
     }
+
+    public List<IProduct> getProductList()
+    {
+        List<IProduct> productList = new ArrayList<IProduct>();
+        for (Integer key : products.keySet())
+        {
+            for (IProduct product : products.get(key))
+            {
+                productList.add(product);
+            }
+        }
+        return productList;
+    }
 }

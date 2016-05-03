@@ -2,6 +2,7 @@ package Products;
 
 import Operations.ICommand;
 import Products.Balance.BalanceException;
+import Utils.Report;
 
 import java.math.BigDecimal;
 
@@ -51,4 +52,9 @@ public class DebitAccount extends AccountDecorator
         return initialBalance;
     }
 
+    @Override
+    public IProduct accept(Report report)
+    {
+        return report.visit(this);
+    }
 }

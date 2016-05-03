@@ -1,19 +1,8 @@
 package Utils;
 
 /**
- * Created by arasz on 03.04.2016.
+ * Created by Paulina Sadowska on 03.05.2016.
  */
-public class Report<T>
+public abstract class Report implements Visitor
 {
-    protected T _report;
-
-    public Report(T report)
-    {
-        _report = report;
-    }
-
-    public T getReport()
-    {
-        return _report;
-    }
 }

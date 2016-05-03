@@ -2,6 +2,7 @@ import Products.Product;
 import Utils.DefaultReportCreationStrategy;
 import Utils.IReportCreationStrategy;
 import Utils.Report;
+import Utils.ReportDocument;
 import Utils.ReportManager;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,8 +26,8 @@ public class ReportManagerTest
     @Before
     public void setUp()
     {
-        Report<String> reportMock = mock(Report.class);
-        when(reportMock.getReport()).thenReturn(_reportString);
+        ReportDocument<String> reportMock = mock(ReportDocument.class);
+        when(reportMock.getReportDocument()).thenReturn(_reportString);
 
         IReportCreationStrategy reportCreationStrategyMock = mock(DefaultReportCreationStrategy.class);
         when(reportCreationStrategyMock.createReport(any(List.class))).thenReturn(reportMock);
@@ -37,7 +38,7 @@ public class ReportManagerTest
     @Test
     public void createReport_ThenReturnDefaultReport()
     {
-        Report<String> report =_reportManager.createReport(new ArrayList<Product>());
-        Assert.assertEquals(_reportString, report.getReport());
+        ReportDocument<String> report =_reportManager.createReport(new ArrayList<Product>());
+        Assert.assertEquals(_reportString, report.getReportDocument());
     }
 }

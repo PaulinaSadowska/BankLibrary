@@ -3,6 +3,7 @@ package Products;
 import Operations.ICommand;
 import Operations.Operation;
 import Products.Balance.Balance;
+import Utils.Report;
 
 import java.util.Date;
 
@@ -33,4 +34,9 @@ public class Account extends Product implements IAccount
         history.add((Operation) operation);
     }
 
+    @Override
+    public IProduct accept(Report report)
+    {
+        return report.visit(this);
+    }
 }
