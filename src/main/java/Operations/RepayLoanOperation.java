@@ -28,6 +28,8 @@ public class RepayLoanOperation extends Operation implements ICommand
         if(!canClose())
             throw new BankException("Loan can not be closed", OperationType.RepayLoan);
 
+        CalculateInterestOperation operation = new CalculateInterestOperation(loan, loan.getInterest());
+        operation.execute();
         BigDecimal repayAmount = loan.getBalanceValue();
         baseAccount.subtractFromBalance(repayAmount);
     }
