@@ -3,7 +3,6 @@ import Products.*;
 import Report.PassAllReport;
 import Utils.ProductFactory;
 import org.junit.*;
-import org.junit.experimental.categories.IncludeCategories;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +20,7 @@ public class PassAllReportTest
     }
 
     @Test
-    public void visitsAccountTest_passesAccount()
+    public void visitsAccountTest_passesProduct()
     {
         IAccount account = ProductFactory.createAccount(1200);
         IProduct product = report.visit((Account) account);
@@ -30,7 +29,7 @@ public class PassAllReportTest
     }
 
     @Test
-    public void visitsDebitAccountTest_passesAccount()
+    public void visitsDebitAccountTest_passesProduct()
     {
         IAccount account = ProductFactory.createAccount(1200, 200);
         IProduct product = report.visit((DebitAccount) account);
@@ -39,7 +38,7 @@ public class PassAllReportTest
     }
 
     @Test
-    public void visitsLoanTest_passesAccount()
+    public void visitsLoanTest_passesProduct()
     {
         Loan loan = ProductFactory.createLoan(1200);
         IProduct product = report.visit(loan);
@@ -48,7 +47,7 @@ public class PassAllReportTest
     }
 
     @Test
-    public void visitsInvestmentTest_passesAccount()
+    public void visitsInvestmentTest_passesProduct()
     {
         Investment investment = ProductFactory.createInvestment(1200);
         IProduct product = report.visit(investment);

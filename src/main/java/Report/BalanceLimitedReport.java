@@ -1,5 +1,6 @@
 package Report;
 
+import Bank.BankException;
 import Products.*;
 import Utils.BigDecimalComparator;
 
@@ -13,8 +14,11 @@ public class BalanceLimitedReport implements Visitor
     private BigDecimal maxBalance;
     private BigDecimal minBalance;
 
-    public BalanceLimitedReport(BigDecimal maxBalance, BigDecimal minBalance)
+    public BalanceLimitedReport(BigDecimal maxBalance, BigDecimal minBalance) throws BankException
     {
+        if(BigDecimalComparator.LessThan(minBalance, maxBalance)){
+            throw new BankException("minimum Balance value must be less or equal to max Balance value");
+        }
         this.maxBalance = maxBalance;
         this.minBalance = minBalance;
     }
@@ -22,18 +26,18 @@ public class BalanceLimitedReport implements Visitor
     private boolean checkBalance(BigDecimal balanceValue){
         boolean result = false;
         if(minBalance != null){
-            result =  BigDecimalComparator.GreaterOrEqual(balanceValue, minBalance);
+            result =  BigDecimalComparator.GreaterOrEqual(minBalance, balanceValue);
         }
         if(maxBalance != null){
-            result = result && BigDecimalComparator.LessOrEqual(balanceValue, maxBalance);
+            result = result && BigDecimalComparator.LessOrEqual(maxBalance, balanceValue);
         }
         return result;
     }
 
-    private IProduct visit(Product product){
+    private IProduct _visit(IProduct product){
         if(checkBalance(product.getBalanceValue()))
         {
-            return (IProduct) this;
+            return product;
         }
         else
             return null;
@@ -42,24 +46,24 @@ public class BalanceLimitedReport implements Visitor
     @Override
     public IProduct visit(Account account)
     {
-        return visit(account);
+        return _visit(account);
     }
 
     @Override
     public IProduct visit(DebitAccount debitAccount)
     {
-        return visit(debitAccount);
+        return _visit(debitAccount);
     }
 
     @Override
     public IProduct visit(Loan loan)
     {
-        return visit(loan);
+        return _visit(loan);
     }
 
     @Override
     public IProduct visit(Investment investment)
     {
-        return visit(investment);
+        return _visit(investment);
     }
 }
